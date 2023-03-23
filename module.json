@@ -1,0 +1,138 @@
+{
+	"name": "WLEDAudioSync",
+	"type": "UDP",
+	"path": "Protocol",
+	
+	"version": "1.0.0",
+	"description": "Stream Sound data to your WLED Sound Reactive",
+	"url":"",
+	"downloadURL": "",
+	"hasInput": false,
+	"hasOutput": true, 
+	"hideDefaultCommands": false,
+	"hideDefaultParameters": [
+		"protocol",
+		"autoAdd",
+		"messageStructure",
+		"firstValueIsTheName",
+		"input"
+	],
+	
+	"defaults": {
+		"input":{
+			"enabled": false
+		},
+		"autoAdd" : false,
+		"protocol" : "Raw",
+		"output":{
+			"local": false,
+			"remoteHost": "239.0.0.1",
+			"remotePort" : 11988
+		},
+		"multicastMode": true
+	},
+
+	"parameters": {
+		"IP Address to bind": {
+			"type": "Enum",
+			"description": "Bind Port to this IP address and send a test message.
+	Used if you're in trouble to send to the Multicast Group",
+			"default": "127.0.0.1",
+			"readOnly": false,
+			"options": {
+				"127.0.0.1":"127.0.0.1"				
+			}
+		},
+		"Send Test Message": {
+			"type": "Trigger",
+			"description": "Click to send test message to the Multicast Group",
+		},		
+		"Audio V1": {
+			"type": "Boolean",
+			"description": "V1 message structure",
+			"default": true
+		},
+		"Audio V2": {
+			"type": "Boolean",
+			"description": "V2 message structure",
+			"default": false			
+		},
+		"Delay": {
+			"type": "Integer",
+			"description": "Delay to send audio data (ms) : max 256",
+			"default": 0,
+			"min": 0,
+			"max": 256
+		},		
+		"Volume Multiplier": {
+			"type": "Float",
+			"description": "Volume level multiplier",
+			"default": 1024
+		},
+		"Frequency Magnitude Multiplier": {
+			"type": "Float",
+			"description": "Frequency magnitude level multiplier",
+			"default": 254
+		},
+		"Take Snapshot": {
+			"type": "Trigger",
+			"description": "Take a snapshot of audio data for replay",
+		},				
+	},
+
+	"values": {	
+	},
+	
+	
+	"scripts": [
+		"WLEDAudioSync.js"
+	],
+	
+	"commands": {
+
+		"Snapshot":
+		{
+			"menu":"Replay",
+			"callback":"runReplay",
+			"parameters":{
+				"File name":{
+					"type":"File",
+					"description": "Select audio data file to replay"
+				},
+				"Duration": {
+					"type": "Integer",
+					"description": "How many time for replay (ms) max 1500",
+					"readOnly": false,
+					"min": 1,
+					"max": 1500
+				}
+			}
+		},
+		"WLED":
+		{
+			"menu":"FFT",
+			"callback":"createWLEDFFT",
+			"parameters":{
+				"Old Style":{
+					"type":"Boolean",
+					"description": "Select old style FFT, otherwise new one",
+					"default": false
+				}
+			}
+		},
+		"Custom":
+		{
+			"menu":"FFT",
+			"callback":"createFFT",
+			"parameters":{
+				"Size": {
+					"type": "Float",
+					"description": "Select FFT size",
+					"readOnly": false,
+					"min": 0.01,
+					"max": 1
+				}
+			}
+		}		
+	}
+}
