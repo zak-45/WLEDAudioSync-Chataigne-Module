@@ -43,6 +43,6 @@ On Command Tester, Replay / FFT : all WLEDAudioSync available commands
 ### ***Info ***
 
 This module use WLED Audio Sync feature to send data via UDP / Multicast. Message version 1 & 2 are provided.
-// On 10/03/2023: Multicast do not work as expected on Chataigne, mainly when more than one network card. Small python utility provided  Will bind to UDP port on specified IP address and join the MulticastGroup in case of.
+// On 10/03/2023: Multicast do not work as expected on Chataigne, mainly when more than one network card. Small python utility provided  to bind on UDP port on specified IP address and join the MulticastGroup in case of.
 
 
