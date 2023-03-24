@@ -72,10 +72,13 @@ On Command Tester, Replay / FFT : all WLEDAudioSync available commands
 
    Let see that on the FFT Analysis Chataigne sound card Module. You can even do any modification you like afterward.   
 
+NEW
 ![image](https://user-images.githubusercontent.com/121941293/227527762-76316aa2-4284-4c68-b6c2-b217abacf5fe.png)
 
+OLD
 ![image](https://user-images.githubusercontent.com/121941293/227594966-2d4ab958-761b-42dd-820a-dc676cb6c2b3.png)
 
+Custom / size 0.10
 ![image](https://user-images.githubusercontent.com/121941293/227595263-a79bf314-5c95-4ee0-90d1-04d3bd7d3b1c.png)
 
 
