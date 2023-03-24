@@ -48,7 +48,33 @@ On Inspector:
 
 ```
 On Command Tester, Replay / FFT : all WLEDAudioSync available commands
+
+    Replay / Snapshot : provide you the possibility to 'replay' audio data from snapshot with defined duration (max 1500 ms).
+        The snapshot is not limited to the effect played , you can change settings and/or  even effect.
 ```
+![image](https://user-images.githubusercontent.com/121941293/227524093-53dd4caa-0807-4d2f-a673-2ba36b40c21a.png)
+
+![image](https://user-images.githubusercontent.com/121941293/227524612-29fdfaf6-22f0-438d-9aab-433358002675.png)
+
+
+```
+   FFT / WLED : got two choice on how FFT data will be captured. OLD or NEW. 
+      / Custom : custom FFT data analysis capture with variable size.
+```
+
+![image](https://user-images.githubusercontent.com/121941293/227527086-6d9b9d29-70e2-40ea-8e87-e5b547255a27.png)
+
+![image](https://user-images.githubusercontent.com/121941293/227527270-46aeb219-3c6f-49b4-a337-e613d9f8b410.png)
+
+
+
+---
+
+   Let see that on the FFT Analysis Chataigne sound card Module. You can even do any modification you like afterward.   
+
+![image](https://user-images.githubusercontent.com/121941293/227527762-76316aa2-4284-4c68-b6c2-b217abacf5fe.png)
+---
+
 
 
 
