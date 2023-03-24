@@ -50,7 +50,7 @@ On Inspector:
 On Command Tester, Replay / FFT : all WLEDAudioSync available commands
 
     Replay / Snapshot : provide you the possibility to 'replay' audio data from snapshot with defined duration (max 1500 ms).
-        The snapshot is not limited to the effect played , you can change settings and/or  even effect.
+        The snapshot is not limited to the played effect, you can change settings and/or effect.
 ```
 ![image](https://user-images.githubusercontent.com/121941293/227524093-53dd4caa-0807-4d2f-a673-2ba36b40c21a.png)
 
