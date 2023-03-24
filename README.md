@@ -85,8 +85,12 @@ Custom / size 0.10
 ---
 
 
+Audio Configuration (Win)
+
+https://user-images.githubusercontent.com/121941293/227597492-aff9c8a6-5314-4f5f-9825-353296f6ff28.mp4
 
 
+---
 
 
 ### ***Info ***
