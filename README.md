@@ -58,7 +58,7 @@ On Command Tester, Replay / FFT : all WLEDAudioSync available commands
 
 
 ```
-   FFT / WLED : got two choice on how FFT data will be captured. OLD or NEW. 
+   FFT / WLED : got two choices on how FFT data will be captured. OLD or NEW. 
       / Custom : custom FFT data analysis capture with variable size.
 ```
 
