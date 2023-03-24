@@ -16,7 +16,6 @@ Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
 ```
 
 
-
 ### ***Use it :***
 
 ```
@@ -24,12 +23,27 @@ Open  Chataigne.
 
 Go to Modules, right click, Protocol/Community Modules, WLEDAudioSync.
 ```
-
+![image](https://user-images.githubusercontent.com/121941293/227391581-d8341ed8-aeb0-4507-9ab9-d0bdd89a4c07.png)
 
 
 ```
 On Inspector:
+  Multicast Mode: need to be checked
+  IP Address to bind: select the computer IP address if more than one.
+  Send Test Message: if more than one network interface and had trouble to send data to MulticastGroup, click on it to send a test message.
+  Audio V1 : V1 message format
+  Audio V2 : V2 message format ( to be used mainly )
+  Delay : delay in ms before sending audio data
+  Volume Multiplier : multiply Chataigne volume audio data before sent
+  frequency Magnitude Multiplier : multiply Chataigne FFT Magnitude data before sent
+  Take snapshot : This will take audio data snapshot and save them to file. Used by the replay feature.
+  Local : send to local IP (127.0.0.1). This will freeze audio data to send.
+  Remote Host : MulticastGroup address
+  Remote Port : port number to bind
+
+  
 ```
+![image](https://user-images.githubusercontent.com/121941293/227391790-5bddd576-7fdd-440a-b03e-cc8985c81764.png)
 
 
 ```
