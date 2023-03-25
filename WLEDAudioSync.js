@@ -228,11 +228,11 @@ function update ()
 		
 		// retreive all IPs
 		var ips = util.getIPs();
-		root.modules.wLEDAudioSync.parameters.ipAddressToBind.removeOptions();
+		local.parameters.ipAddressToBind.removeOptions();
 		
 		for( var i=0; i<ips.length; i +=1 ) 
 		{ 
-			root.modules.wLEDAudioSync.parameters.ipAddressToBind.addOption(ips[i],i);
+			local.parameters.ipAddressToBind.addOption(ips[i],i);
 		}		
 		
 		multicastIP = local.parameters.output.remoteHost.get();;
