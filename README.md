@@ -9,7 +9,7 @@ Use UDP Multicast, so your LED strip can be anywhere.
 Send different message version, to different UDP port with different settings at same time: 
 thanks to Chataigne's Multiple Instances feature. 
 Capture audio datas ( snapshot ) and replay them ( replay ). 
-All WLED Sound effects supported: volume based or FFT based.
+All WLED Sound Reactive effects supported: volume based or FFT based.
 Message version 1 (V1) and version 2 (V2) included, so can be run even with ESP8266 (old SR WLED fw version required : 0.3.b3).
 
 GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
