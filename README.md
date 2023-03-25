@@ -6,6 +6,8 @@ Should Work on any OS where Chataigne run ( Win/Mac/Linux/Pi ).
 You only need to have WLED Sound Reactive version installed. 
 No Hardware( micro analog or digital) required. 
 Use UDP Multicast, so your LED strip can be anywhere.
+Send different message version, to different UDP port with different settings at same time: 
+thanks to Chataigne's Multiple Instances feature.
 
 GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
 
