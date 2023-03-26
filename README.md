@@ -57,7 +57,7 @@ On Inspector:
   Delay : delay in ms before sending audio data
   Volume Multiplier : multiply Chataigne volume audio data before sent
   frequency Magnitude Multiplier : multiply Chataigne FFT Magnitude data before sent
-  Take snapshot : This will take audio data snapshot and save them to file. Used by the replay feature.
+  Take snapshot : This will take audio datas snapshot and save them to file. Used by the replay feature.
   Local : send to local IP (127.0.0.1). This will freeze audio data to send.
   Remote Host : MulticastGroup address
   Remote Port : port number to bind
