@@ -19,7 +19,7 @@ Stream music/audio to WLED Audio reactive.
 - All WLED Sound Reactive effects supported: volume based or FFT based.
 
 - FFT Analysis fully customisable by GUI
-  this provide different way to effects custimisation.
+  this provide different way to effects customisation.
 
 - Message version 1 (V1) and version 2 (V2) included, so can stream even to ESP8266 
 
