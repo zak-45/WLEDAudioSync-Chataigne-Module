@@ -1,6 +1,4 @@
 ![image](https://user-images.githubusercontent.com/121941293/227901678-8f3d1f7c-ae1d-4b85-8199-5b763ec91a5b.png)
-
-
 # **WLEDAudioSync Module for Chataigne.**
 Stream music/audio to WLED Audio reactive. 
 
