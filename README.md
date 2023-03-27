@@ -51,6 +51,7 @@ Go to Modules, right click, Protocol/Community Modules, WLEDAudioSync.
 
 ```
 On Inspector:
+
   Multicast Mode: need to be checked
   IP Address to bind: select the computer IP address if more than one.
   Send Test Message: if more than one network interface and had trouble to send data to MulticastGroup, click on it to send a test message.
@@ -58,12 +59,15 @@ On Inspector:
   Audio V2 : V2 message format ( to be used mainly )
   Delay : delay in ms before sending audio data
   Volume Multiplier : multiply Chataigne volume audio data before sent
-  frequency Magnitude Multiplier : multiply Chataigne FFT Magnitude data before sent
+  Frequency Magnitude Multiplier : multiply Chataigne FFT Magnitude data before sent
   Take snapshot : This will take audio datas snapshot and save them to file. Used by the replay feature.
+  
   Local : send to local IP (127.0.0.1). This will freeze audio data to send.
   Remote Host : MulticastGroup address
   Remote Port : port number to bind
-
+  
+  Update Rate : frequence to send audio data message to WLED (fps)
+    set rate from 1 fps to 1000 (dangerous), 50 is recommended.
   
 ```
 ![image](https://user-images.githubusercontent.com/121941293/227391790-5bddd576-7fdd-440a-b03e-cc8985c81764.png)
