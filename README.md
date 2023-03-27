@@ -13,6 +13,7 @@ Stream music/audio to WLED Audio reactive.
 - No Hardware( micro: analog or digital) required. 
 
 - Use UDP Multicast, so your LED strip can be anywhere.
+  adjustable rate let you choose between bandwidth / quality
 
 - Send different message version, to different UDP port with different settings at same time
   thanks to Chataigne's Multiple Instances feature. 
