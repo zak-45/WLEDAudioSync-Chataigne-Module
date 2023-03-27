@@ -10,7 +10,7 @@ Stream music/audio to WLED Audio reactive.
 - Should Work on any OS where Chataigne run ( Win/Mac/Linux/Pi ). 
 
 - You only need to have WLED Sound Reactive version installed. 
-- No Hardware( micro: analog or digital) required. 
+  No Hardware( micro: analog or digital) required. 
 
 - Use UDP Multicast, so your LED strip can be anywhere.
   adjustable rate let you choose between bandwidth / quality
