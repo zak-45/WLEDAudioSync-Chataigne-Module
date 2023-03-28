@@ -67,7 +67,7 @@ On Inspector:
   Remote Port : port number to bind
   
   Update Rate : frequence to send audio data message to WLED (fps)
-    set rate from 1 fps to 1000 (dangerous), 50 is recommended.
+    set rate from 1 fps to 1000 (for test stress: dangerous), 50 is recommended.
   
 ```
 ![image](https://user-images.githubusercontent.com/121941293/227391790-5bddd576-7fdd-440a-b03e-cc8985c81764.png)
