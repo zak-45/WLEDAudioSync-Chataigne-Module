@@ -103,6 +103,8 @@ var snapshot = false;
 //replay 
 var replay = false;
 var duration = 0;
+var previousFile = "";
+var soundData = [];
 
 // UDP Data
 var  UDP_AUDIO_SYNC = [];
@@ -247,6 +249,7 @@ function update ()
 		isInit = false;
 	}
 	
+	// Send audio data
 	if (SCexist && root.modules.soundCard.values.volume.get()!= 0 && replay === false)
 	{
 		sendAudio(false);
@@ -261,7 +264,7 @@ function update ()
 
 			replay = false;	
 			script.setUpdateRate(50);
-			util.delayThreadMS(30);
+			util.delayThreadMS(20);
 			
 			for ( var k = 0; k < 10; k += 1 )
 			{
@@ -1209,9 +1212,15 @@ function runReplay(fileName, myduration)
 	script.setUpdateRate(10);
 	duration = myduration;
 	
-	var soundData = [];
-	soundData = util.readFile(fileName).split(";");
-	
+	// if same file for replay, avoid to read it again and again
+	if (fileName != previousFile)
+	{
+		soundData = [];
+		soundData = util.readFile(fileName).split(";");
+		previousFile = fileName;
+	}
+
+	// set audio data
 	wledVol = soundData[0];
 	wledPeak = soundData[1];
 	wledMag = soundData[2];
@@ -1219,7 +1228,7 @@ function runReplay(fileName, myduration)
 	
 	for ( i = 0; i < 16; i += 1)
 	{
-		fftWled[i] = soundData[i+4];
+		fftWled[i] = soundData[4+i];
 	}
 
 	replay = true;
@@ -1228,9 +1237,8 @@ function runReplay(fileName, myduration)
 // just for some test
 function test()
 {
-
 	for (var i = 0; i < 16 ; i +=1)
 	{
 		script.log(freqTable[i]);
-	}	
+	}
 }
