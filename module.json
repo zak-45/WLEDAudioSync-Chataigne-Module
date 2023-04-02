@@ -46,16 +46,21 @@
 		"Send Test Message": {
 			"type": "Trigger",
 			"description": "Click to send test message to the Multicast Group",
+		},
+		"Use Live": {
+			"type": "Boolean",
+			"description": "Use live audio datas",
+			"default": true
 		},		
 		"Audio V1": {
 			"type": "Boolean",
 			"description": "V1 message structure",
-			"default": true
+			"default": false
 		},
 		"Audio V2": {
 			"type": "Boolean",
 			"description": "V2 message structure",
-			"default": false			
+			"default": true			
 		},
 		"Delay": {
 			"type": "Integer",
