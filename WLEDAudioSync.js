@@ -250,7 +250,7 @@ function update ()
 	}
 	
 	// Send audio data
-	if (SCexist && root.modules.soundCard.values.volume.get()!= 0 && replay === false)
+	if (SCexist && root.modules.soundCard.values.volume.get()!= 0 && replay === false && local.parameters.useLive.get() == 1)
 	{
 		sendAudio(false);
 		
@@ -262,7 +262,8 @@ function update ()
 			
 		} else {
 
-			replay = false;	
+			replay = false;
+			
 			script.setUpdateRate(50);
 			util.delayThreadMS(20);
 			
@@ -895,12 +896,33 @@ struct audioSyncPacket {
 
 
 */
+
+	// save audio data to file
+	if (snapshot)
+	{
+		script.log("Take snapshot");
+		
+		var soundFileName = "Snapshot_" + util.getTimestamp() + ".csv";
+		var data = wledVol + ";" + wledPeak + ";" + wledMag + ";" + wledFreq;
+		for (i = 0; i < 16; i+=1)
+		{
+			data = data + ";" + fftWled[i];
+		}
+		data = data + ";" + fftMode;
+		
+		// write sound data to file		
+		util.writeFile(soundFileName, data, false);		
+		util.showMessageBox("Snapshot", "file name : " + soundFileName , "info", "Ok");
+		
+		snapshot = false;
+	}
+
 	
 	// FFT Max Freq / Magnitude
 	fftSoundMaxFreqMagnitude = 0;
 	fftSoundMaxFreqIndex = 0;
 
-	if (replay === false)	
+	if (replay === false  && root.modules.wLEDAudioSync.parameters.useLive.get() == 1)	
 	{
 	
 		// sampleRaw 4 Bytes
@@ -942,6 +964,20 @@ struct audioSyncPacket {
 		wledMag = fftSoundMaxFreqMagnitude;
 		// FFT Max Freq 8 bytes
 		wledFreq = fftSoundMaxFreqIndex;
+		
+	} else if (replay === false  && root.modules.wLEDAudioSync.parameters.useLive.get() == 0) {
+		
+		// set audio data
+		wledVol = 0;
+		wledPeak = 0;
+		wledMag = 0;
+		wledFreq = 0;
+		
+		for ( i = 0; i < 16; i += 1)
+		{
+			fftWled[i] = 0;
+		}
+		
 	}
 	
 	//
@@ -1071,26 +1107,6 @@ struct audioSyncPacket {
 	UDP_AUDIO_SYNC[87] = fftFreqArray[0];
 	
 	
-	// save audio data to file
-	if (snapshot)
-	{
-		script.log("Take snapshot");
-		
-		var soundFileName = "Snapshot_" + util.getTimestamp() + ".csv";
-		var data = wledVol + ";" + wledPeak + ";" + wledMag + ";" + wledFreq;
-		for (i = 0; i < 16; i+=1)
-		{
-			data = data + ";" + fftWled[i];
-		}
-		data = data + ";" + fftMode;
-		
-		// write sound data to file		
-		util.writeFile(soundFileName, data, false);		
-		util.showMessageBox("Snapshot", "file name : " + soundFileName , "info", "Ok");
-		
-		snapshot = false;
-	}
-
 return UDP_AUDIO_SYNC;
 }
 
@@ -1241,4 +1257,11 @@ function test()
 	{
 		script.log(freqTable[i]);
 	}
+	
+	
+	var mystate = root.states.addItem();
+	mystate.processors.addItem("Mapping");
+	mystate.processors.addItem("Action");
+	
+	
 }
