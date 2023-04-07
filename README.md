@@ -20,11 +20,14 @@ Stream music/audio to WLED Audio reactive.
 
 - All WLED Sound Reactive effects supported: volume based or FFT based.
 
-- FFT Analysis fully customisable by GUI
-  this provide different way to effects customisation.
+- Real time FFT Analysis fully customisable by GUI
+  this provide different way for effects customisation.
   
 - Real Time Beat and BPM  via OSC
   thanks to https://github.com/DrLuke/aubio-beat-osc
+  
+- Real time pitch detection : freq / pitch / note / octave
+  thanks to Chataigne...
 
 - Message version 1 (V1) and version 2 (V2) included, so can stream even to ESP8266 
 
