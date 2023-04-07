@@ -8,6 +8,18 @@ Chataigne Module for  WLED Sound Reactive
 Send sound card audio data via UDP.
 This script will take Audio data provided by Chataigne and try to map them to WLED values.
 
+ Names of frequency responses
+	20 - 40 Hz			Low Bass
+	40 - 80 Hz			Mid Bass
+	80 - 160 Hz			Upper Bass
+	160 - 320 Hz		Lower Midrange
+	320 - 640 Hz		Middle Midrange
+	640 Hz - 1.28 кHz	Upper Midrange
+	1.28 - 2.56 кHz		Lower Treble
+	2.56 - 5.12 кHz		Middele Treble
+	5.12 - 10.2 кHz		Upper Treble
+	10.2 - 20.4 кHz		Top Octave
+
 The UDP  Multicast  IP is 239.0.0.1, and the default UDP port is 11988.
 
 // From WLED Infos
@@ -64,6 +76,9 @@ var SCexist = false;
 // os
 var OSmodule = null;
 
+// osc
+var OSCmodule = null;
+
 // Volume
 var wledVol = 0;
 // Volume Multiplier
@@ -110,6 +125,10 @@ var soundData = [];
 var  UDP_AUDIO_SYNC = [];
 var  UDP_AUDIO_SYNC_V2 = [];
 
+// BPM
+var cmdName = "aubio-beat-osc";
+var options = "";
+var OSCIP = "127.0.0.1";
 
 //We create necessary entries in module.
 function init ()
@@ -119,6 +138,7 @@ function init ()
 	var UDPexist = root.modules.getItemWithName("WLEDAudioSync");
 	var SCtest = root.modules.getItemWithName("Sound Card");
 	OSmodule = root.modules.getItemWithName("OS");
+	OSCmodule = root.modules.getItemWithName("OSC");
 	
 	if (SCtest.name == "soundCard")
 	{	
@@ -146,6 +166,16 @@ function init ()
 	} else {
 			
 		OSModule = root.modules.addItem("OS");
+			
+	}
+
+	if (OSCmodule.name == "osc")
+	{
+		script.log("Module OSC exist");
+		
+	} else {
+			
+		script.log("Module OSC do not exist");
 			
 	}
 
@@ -209,6 +239,117 @@ function moduleParameterChanged (param)
 		
 		snapshot = true;
 	
+	} else if (param.name == "useBPM"){
+		
+
+		var checkProcess = root.modules.os.getRunningProcesses("*");
+		var aubioIsRunning = false;
+		var aubioProcessName = "";
+		
+		for ( var i = 0; i < checkProcess.length; i ++)
+		{
+			if (checkProcess[i].contains(cmdName))
+			{
+				aubioIsRunning = true;
+				aubioProcessName = checkProcess[i];
+				script.log("aubio is running");
+				break;
+			}				
+		}
+		
+		if (local.parameters.beatParams.useBPM.get() == 1 && aubioIsRunning === false)
+		{
+			OSCModule = root.modules.getItemWithName("OSC");
+			if (OSCModule.name == "undefined" ) 
+			{
+				var newOSCModule = root.modules.addItem("OSC");
+				newOSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
+				
+			} else {
+				
+				OSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
+				
+			}
+			
+			addOSCScript();
+			
+			aubioDevicesList();
+				
+			script.log("run aubio");
+			
+			var scInput = audioFindInput();
+			if (scInput == "")
+			{
+				script.log("Input device not defined in Sound card module");
+			}
+			script.log("Sound card input device : " + scInput);
+			var aubioDevices = local.parameters.beatParams.inputAudio.getAllOptions();
+			
+			for ( var i = 0; i < aubioDevices.length; i++)
+			{
+				if (scInput.contains(aubioDevices[i].key.substring(4,(aubioDevices[i].key.length)-1)))
+				{
+					script.log("Aubio device number : " + aubioDevices[i].value);
+					break;
+				}
+			}
+			
+			options = " beat -c " + 
+					OSCIP + " " + 
+					root.modules.osc.parameters.oscInput.localPort.get() + 
+					' "/WLEDAudioSync/beat/BPM"' + 
+					" -d " + aubioDevices[i].value +
+					" -b 512";
+			var command = cmdName + options;
+			script.log("command to run : " + command);
+			root.modules.os.launchCommand(command, true);
+			
+		} else if (local.parameters.beatParams.useBPM.get() == 0 && aubioIsRunning === true) {
+			
+			script.log("killing aubio : " + aubioProcessName);
+			var killCmd = root.modules.os.commandTester.setCommand("OS","Process","Kill App");		
+			killCmd.target.set(aubioProcessName);
+			root.modules.os.commandTester.trigger.trigger();
+			
+		}
+		
+	} else if (param.name == "forceReload"){
+
+		var checkProcess = root.modules.os.getRunningProcesses("*");
+		var aubioIsRunning = false;
+		var aubioProcessName = "";
+		
+		for ( var i = 0; i < checkProcess.length; i ++)
+		{
+			if (checkProcess[i].contains(cmdName))
+			{
+				aubioIsRunning = true;
+				aubioProcessName = checkProcess[i];
+				script.log("aubio is running");
+				break;
+			}				
+		}
+		
+		if (aubioIsRunning === true) {
+			
+			script.log("killing aubio : " + aubioProcessName);
+			var killCmd = root.modules.os.commandTester.setCommand("OS","Process","Kill App");		
+			killCmd.target.set(aubioProcessName);
+			root.modules.os.commandTester.trigger.trigger();		
+		}
+
+		util.delayThreadMS(500);
+		
+		options = " beat -c " + 
+				OSCIP + " " + 
+				root.modules.osc.parameters.oscInput.localPort.get() + 
+				' "/WLEDAudioSync/beat/BPM"' + 
+				" -d " + local.parameters.beatParams.inputAudio.get() +
+				" -b 512";
+		var command = cmdName + options;
+		script.log("command to run : " + command);
+		root.modules.os.launchCommand(command, true);	
+
 	}
 }
 
@@ -245,12 +386,12 @@ function update ()
 		// create FFT : new
 		createWLEDFFT(false);
 		root.modules.soundCard.parameters.fftAnalysis.enabled.set(1);
-		
+				
 		isInit = false;
 	}
 	
 	// Send audio data
-	if (SCexist && root.modules.soundCard.values.volume.get()!= 0 && replay === false && local.parameters.useLive.get() == 1)
+	if (SCexist && root.modules.soundCard.values.volume.get()!= 0 && replay === false && local.parameters.live.get() == 1)
 	{
 		sendAudio(false);
 		
@@ -264,13 +405,13 @@ function update ()
 
 			replay = false;
 			
-			script.setUpdateRate(50);
-			util.delayThreadMS(20);
-			
+			util.delayThreadMS(20);			
 			for ( var k = 0; k < 10; k += 1 )
 			{
 				sendAudio(false);	
 			}
+			
+			script.setUpdateRate(50);
 		}
 	}
 }
@@ -922,7 +1063,7 @@ struct audioSyncPacket {
 	fftSoundMaxFreqMagnitude = 0;
 	fftSoundMaxFreqIndex = 0;
 
-	if (replay === false  && root.modules.wLEDAudioSync.parameters.useLive.get() == 1)	
+	if (replay === false  && root.modules.wLEDAudioSync.parameters.live.get() == 1)	
 	{
 	
 		// sampleRaw 4 Bytes
@@ -965,7 +1106,7 @@ struct audioSyncPacket {
 		// FFT Max Freq 8 bytes
 		wledFreq = fftSoundMaxFreqIndex;
 		
-	} else if (replay === false  && root.modules.wLEDAudioSync.parameters.useLive.get() == 0) {
+	} else if (replay === false  && root.modules.wLEDAudioSync.parameters.live.get() == 0) {
 		
 		// set audio data
 		wledVol = 0;
@@ -1192,6 +1333,39 @@ function udpAudioSyncV2(udpdataV1)
 return UDP_AUDIO_SYNC_V2;
 }
 
+/*
+
+OSC Module
+
+*/
+
+function addOSCScript()
+{
+	OSCmodule = root.modules.getItemWithName("OSC");
+	
+	if (OSCmodule.name != "undefined")
+	{
+		var testScript = OSCmodule.scripts.getChild("OSCBPM");
+		if (testScript.name == "undefined")
+		{
+			var mysc = OSCmodule.scripts.addItem();
+			mysc.filePath.set(local.parameters.beatParams.scriptFile.get());		
+		}	
+		
+	} else {
+		
+		script.log("OSC module do not exist !!! ");
+	}
+	
+}
+
+
+/*
+ 
+ Utilities
+
+*/
+
 // Convert Sequence of Hex Char values ( from 00 to FF ) to int Array
 function createIntArray(hexSequence)
 {
@@ -1205,7 +1379,7 @@ function createIntArray(hexSequence)
     }
 	
 return intArray;
-}	
+}
 
 // Will bind to UDP port on specified IP address and join the MulticastGroup
 // On 10/03/2023: Multicast do not work as expected on Chataigne, mainly when more than one network card
@@ -1236,18 +1410,85 @@ function runReplay(fileName, myduration)
 		previousFile = fileName;
 	}
 
-	// set audio data
-	wledVol = soundData[0];
+	// set audio datas
+	wledVol  = soundData[0];
 	wledPeak = soundData[1];
-	wledMag = soundData[2];
+	wledMag  = soundData[2];
 	wledFreq = soundData[3];
 	
-	for ( i = 0; i < 16; i += 1)
+	for ( i = 0; i < 16; i += 1 )
 	{
 		fftWled[i] = soundData[4+i];
 	}
 
 	replay = true;
+}
+
+// Find Audio input device name 
+function audioFindInput()
+{
+	var JSONobj = root.modules.soundCard.getJSONData();
+	var JSONdata = JSON.stringify(JSONobj.audioSettings);
+	var audioSettings = JSONdata.split("=");
+	var audioInput = "";
+	
+	for ( var i = 0; i < audioSettings.length ; i++) 
+	{		
+		if (audioSettings[i].contains("audioInputDeviceName"))
+		{
+			audioInput = audioSettings[i+1].split('"')[1];
+			break;
+		}		
+	}
+	
+return audioInput;	
+}
+
+// retreive temp location
+function findTMP ()
+{
+	script.log("Retreive temp folder");
+	// TMP, TMPDIR, and TEMP environment variables 
+	var pathTMP = util.getEnvironmentVariable("TMP");
+	var pathTMPDIR = util.getEnvironmentVariable("TMPDIR");	
+	var pathTEMP = util.getEnvironmentVariable("TEMP");
+	
+	if (pathTMP != "")
+	{
+		tempDIR = pathTMP;
+		return tempDIR;
+		
+	} else if (pathTMPDIR != ""){
+		tempDIR = pathTMPDIR;
+		return tempDIR;
+
+	} else if (pathTEMP != ""){
+		tempDIR = pathTEMP;
+		return tempDIR;	
+	}
+	
+	script.log('ERROR temp directory not found');
+	
+return tempDIR;
+}
+
+// retreive devices list from aubio
+function aubioDevicesList()
+{
+	var fileTmp = findTMP() + "/aubioDevicesList.tmp";
+	var command = cmdName + " list >" + fileTmp;	
+	var result = root.modules.os.launchCommand(command, false);
+	var devicesList = util.readFile(fileTmp).split("\n");
+	
+	local.parameters.beatParams.inputAudio.removeOptions();
+	
+	for ( var i = 0; i < devicesList.length ; i ++)
+	{
+		if (devicesList[i].startsWith("["))
+		{
+			local.parameters.beatParams.inputAudio.addOption(devicesList[i].replace("\n","").replace("\lf",""),devicesList[i].substring(1,2));
+		}
+	}
 }
 
 // just for some test
@@ -1258,10 +1499,18 @@ function test()
 		script.log(freqTable[i]);
 	}
 	
+	var scriptFile = root.modules.wLEDAudioSync.parameters.beatParams.scriptFile.getAbsolutePath();
+	script.log(scriptFile);
+	var myfile = util.fileExists(scriptFile);
+	script.log(myfile);
 	
-	var mystate = root.states.addItem();
-	mystate.processors.addItem("Mapping");
-	mystate.processors.addItem("Action");
+	var testScript = root.modules.osc.scripts.getChild("OSCBPM");
+	if (testScript.name == "undefined")
+	{
+		var mysc = root.modules.osc.scripts.addItem();
+		mysc.filePath.set(scriptFile);		
+	}
+	
 	
 	
 }

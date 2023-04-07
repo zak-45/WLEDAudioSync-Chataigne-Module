@@ -47,7 +47,7 @@
 			"type": "Trigger",
 			"description": "Click to send test message to the Multicast Group",
 		},
-		"Use Live": {
+		"Live": {
 			"type": "Boolean",
 			"description": "Use live audio datas",
 			"default": true
@@ -82,7 +82,34 @@
 		"Take Snapshot": {
 			"type": "Trigger",
 			"description": "Take a snapshot of audio data for replay",
-		},				
+		},
+		"Beat Params":{
+			"type": "Container",
+			"description":"Aubio Beat BPM parameters",
+			"collapsed": true,
+			"Use BPM": {
+				"type": "Boolean",
+				"description": "Checked, will use custom Live BPM calculation received via OSC ",
+				"default": false
+			},		
+			"Input audio": {
+				"type": "Enum",
+				"description": "Choose audio device name for input (first 9th only)",
+				"readOnly": false,
+				"options" : {}
+			},
+			"Script file": {
+				"type": "File",
+				"description": "OSC Script file name",
+				"readOnly": false,
+				"default" : "OSCBPM.js"
+			},			
+			"Force reload": {
+				"type": "Trigger",
+				"description": "Re run the BPM calculation process with 'Input audio' data",
+				"readOnly": false
+			}
+		}
 	},
 
 	"values": {	
