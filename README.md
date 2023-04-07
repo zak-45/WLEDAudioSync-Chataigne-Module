@@ -87,6 +87,7 @@ On Inspector:
 ```
 ![image](https://user-images.githubusercontent.com/121941293/227391790-5bddd576-7fdd-440a-b03e-cc8985c81764.png)
 
+![image](https://user-images.githubusercontent.com/121941293/230686974-c077ef89-51f3-4a71-a101-e385d02b8aa6.png)
 
 ```
 On Command Tester, Replay / FFT : all WLEDAudioSync available commands
