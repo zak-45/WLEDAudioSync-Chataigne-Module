@@ -37,6 +37,7 @@ Real time audio analysis : the real time audio datas are not supposed to be full
 
 GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
 
+For beat / BPM see : https://github.com/DrLuke/aubio-beat-osc
 
 ### ***Installation :***
 
@@ -44,6 +45,9 @@ Manual
 ```
 Take all from this repository and 
 Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
+
+Nota:
+You will need additional step for beat / BPM if you want to use this feature. 
 ```
 
 
