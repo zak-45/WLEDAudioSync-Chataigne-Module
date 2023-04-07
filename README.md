@@ -64,7 +64,7 @@ On Inspector:
   Live : use real time audio data, uncheck when want to use the replay feature.
   Audio V1 : V1 message format
   Audio V2 : V2 message format ( to be used mainly )
-  Delay : delay in ms before sending audio data
+  Delay : delay in ms before sending audio data. audio data during delay are lost.
   Volume Multiplier : multiply Chataigne volume audio data before sent
   Frequency Magnitude Multiplier : multiply Chataigne FFT Magnitude data before sent
   Take snapshot : This will take audio datas snapshot and save them to file. Used by the replay feature.
