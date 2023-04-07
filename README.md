@@ -2,6 +2,8 @@
 # **WLEDAudioSync Module for Chataigne.**
 Stream music/audio to WLED Audio reactive. 
 
+Real time audio analysis : the real time audio datas are not supposed to be fully accurate but enough for light show creation.
+
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
@@ -133,6 +135,17 @@ Audio Configuration (Win)
 For audio control, Voicemeeter is one of the best tools : https://voicemeeter.com/
 
 https://user-images.githubusercontent.com/121941293/227597492-aff9c8a6-5314-4f5f-9825-353296f6ff28.mp4
+
+
+---
+
+---
+
+
+Real Time audio analysis
+
+
+https://user-images.githubusercontent.com/121941293/230689672-cc5d42c5-c94b-488a-aab2-aea43275ef82.mp4
 
 
 ---
