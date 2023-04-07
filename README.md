@@ -22,6 +22,9 @@ Stream music/audio to WLED Audio reactive.
 
 - FFT Analysis fully customisable by GUI
   this provide different way to effects customisation.
+  
+- Real Time Beat and BPM  via OSC
+  thanks to https://github.com/DrLuke/aubio-beat-osc
 
 - Message version 1 (V1) and version 2 (V2) included, so can stream even to ESP8266 
 
