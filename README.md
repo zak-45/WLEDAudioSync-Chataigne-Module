@@ -72,6 +72,14 @@ On Inspector:
   Remote Host : MulticastGroup address
   Remote Port : port number to bind
   
+  Use BPM : will create corresponding process for Beat via OSC
+    if unchecked and aubio-beat-osc process is running, this will kill it.
+  Input audio : audio devices detected by aubio-beat-osc list command 
+    the one selected will be used when 'Force reload' clicked.
+  Script file : script file name location for OSC module
+    use OSCBPM.js under modules folder.
+  Force reload : will kill (if running) and create a new aubio-beat-osc process.
+  
   Update Rate : frequence to send audio data message to WLED (fps)
     set rate from 1 fps to 1000 (for test stress: dangerous), 50 is recommended.
   
