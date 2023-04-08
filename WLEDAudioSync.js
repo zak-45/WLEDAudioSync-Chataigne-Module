@@ -129,6 +129,7 @@ var  UDP_AUDIO_SYNC_V2 = [];
 var cmdName = "aubio-beat-osc";
 var options = "";
 var OSCIP = "127.0.0.1";
+var aubioBuffer = 256;
 
 //We create necessary entries in module.
 function init ()
@@ -292,7 +293,7 @@ function moduleParameterChanged (param)
 						root.modules.osc.parameters.oscInput.localPort.get() + 
 						' "/WLEDAudioSync/beat/BPM"' + 
 						" -d " + aubioDevices[i].value +
-						" -b 512";
+						" -b " + aubioBuffer;
 				var command = cmdName + options;
 				script.log("command to run : " + command);
 				root.modules.os.launchCommand(command, true);
@@ -334,14 +335,14 @@ function moduleParameterChanged (param)
 			root.modules.os.commandTester.trigger.trigger();		
 		}
 
-		util.delayThreadMS(500);
+		util.delayThreadMS(200);
 		
 		options = " beat -c " + 
 				OSCIP + " " + 
 				root.modules.osc.parameters.oscInput.localPort.get() + 
 				' "/WLEDAudioSync/beat/BPM"' + 
 				" -d " + local.parameters.beatParams.inputAudio.get() +
-				" -b 512";
+				" -b " + aubioBuffer;
 		var command = cmdName + options;
 		script.log("command to run : " + command);
 		root.modules.os.launchCommand(command, true);	
@@ -401,7 +402,7 @@ function update ()
 
 			replay = false;
 			
-			util.delayThreadMS(20);			
+			util.delayThreadMS(50);		
 			for ( var k = 0; k < 10; k += 1 )
 			{
 				sendAudio(false);	
@@ -1493,7 +1494,7 @@ function aubioDevicesList()
 	{
 		if (devicesList[i].startsWith("["))
 		{
-			local.parameters.beatParams.inputAudio.addOption(devicesList[i].replace("\n","").replace("\lf",""),devicesList[i].substring(1,2));
+			local.parameters.beatParams.inputAudio.addOption(devicesList[i].replace("\n","").replace("\r",""),devicesList[i].substring(1,2));
 		}
 	}
 }
