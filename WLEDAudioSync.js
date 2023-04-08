@@ -402,7 +402,7 @@ function update ()
 
 			replay = false;
 			
-			util.delayThreadMS(50);		
+			util.delayThreadMS(30);	
 			for ( var k = 0; k < 10; k += 1 )
 			{
 				sendAudio(false);	
@@ -1060,7 +1060,7 @@ struct audioSyncPacket {
 	fftSoundMaxFreqMagnitude = 0;
 	fftSoundMaxFreqIndex = 0;
 
-	if (replay === false  && root.modules.wLEDAudioSync.parameters.live.get() == 1)	
+	if (replay === false  && local.parameters.live.get() == 1)	
 	{
 	
 		// sampleRaw 4 Bytes
@@ -1103,7 +1103,7 @@ struct audioSyncPacket {
 		// FFT Max Freq 8 bytes
 		wledFreq = fftSoundMaxFreqIndex;
 		
-	} else if (replay === false  && root.modules.wLEDAudioSync.parameters.live.get() == 0) {
+	} else if (replay === false  && local.parameters.live.get() == 0) {
 		
 		// set audio data
 		wledVol = 0;
@@ -1507,7 +1507,7 @@ function test()
 		script.log(freqTable[i]);
 	}
 	
-	var scriptFile = root.modules.wLEDAudioSync.parameters.beatParams.scriptFile.getAbsolutePath();
+	var scriptFile = local.parameters.beatParams.scriptFile.getAbsolutePath();
 	script.log(scriptFile);
 	var myfile = util.fileExists(scriptFile);
 	script.log(myfile);
