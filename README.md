@@ -85,7 +85,7 @@ On Inspector:
     the one selected will be used when 'Force reload' clicked.
   Script file : script file name location for OSC module
     use OSCBPM.js under modules folder.
-  Force reload : will kill (if running) and create a new aubio-beat-osc process.
+  Force reload : kill (if running) and create a new aubio-beat-osc process.
   
   Update Rate : frequence to send audio data message to WLED (fps)
     set rate from 1 fps to 1000 (for test stress: dangerous), 50 is recommended.
