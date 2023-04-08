@@ -259,50 +259,44 @@ function moduleParameterChanged (param)
 		
 		if (local.parameters.beatParams.useBPM.get() == 1 && aubioIsRunning === false)
 		{
-			OSCModule = root.modules.getItemWithName("OSC");
-			if (OSCModule.name == "undefined" ) 
-			{
-				var newOSCModule = root.modules.addItem("OSC");
-				newOSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
-				
-			} else {
-				
-				OSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
-				
-			}
-			
-			addOSCScript();
-			
+			// find aubio devices list
 			aubioDevicesList();
 				
 			script.log("run aubio");
 			
+			// find sound card input audio
 			var scInput = audioFindInput();
 			if (scInput == "")
 			{
 				script.log("Input device not defined in Sound card module");
-			}
-			script.log("Sound card input device : " + scInput);
-			var aubioDevices = local.parameters.beatParams.inputAudio.getAllOptions();
-			
-			for ( var i = 0; i < aubioDevices.length; i++)
-			{
-				if (scInput.contains(aubioDevices[i].key.substring(4,(aubioDevices[i].key.length)-1)))
+				util.showMessageBox("WLEDAudioSync ! ", "Input device not defined in Sound card module", "info", "Got it");
+				
+			} else {
+				
+				script.log("Sound card input device : " + scInput);
+				var aubioDevices = local.parameters.beatParams.inputAudio.getAllOptions();
+				
+				for ( var i = 0; i < aubioDevices.length; i++)
 				{
-					script.log("Aubio device number : " + aubioDevices[i].value);
-					break;
+					if (scInput.contains(aubioDevices[i].key.substring(4,(aubioDevices[i].key.length)-1)))
+					{
+						script.log("Aubio device number : " + aubioDevices[i].value);
+						break;
+					}
 				}
+				
+				addOSCScript();
+	
+				options = " beat -c " + 
+						OSCIP + " " + 
+						root.modules.osc.parameters.oscInput.localPort.get() + 
+						' "/WLEDAudioSync/beat/BPM"' + 
+						" -d " + aubioDevices[i].value +
+						" -b 512";
+				var command = cmdName + options;
+				script.log("command to run : " + command);
+				root.modules.os.launchCommand(command, true);
 			}
-			
-			options = " beat -c " + 
-					OSCIP + " " + 
-					root.modules.osc.parameters.oscInput.localPort.get() + 
-					' "/WLEDAudioSync/beat/BPM"' + 
-					" -d " + aubioDevices[i].value +
-					" -b 512";
-			var command = cmdName + options;
-			script.log("command to run : " + command);
-			root.modules.os.launchCommand(command, true);
 			
 		} else if (local.parameters.beatParams.useBPM.get() == 0 && aubioIsRunning === true) {
 			
@@ -318,6 +312,8 @@ function moduleParameterChanged (param)
 		var checkProcess = root.modules.os.getRunningProcesses("*");
 		var aubioIsRunning = false;
 		var aubioProcessName = "";
+		
+		addOSCScript();
 		
 		for ( var i = 0; i < checkProcess.length; i ++)
 		{
@@ -1341,22 +1337,26 @@ OSC Module
 
 function addOSCScript()
 {
-	OSCmodule = root.modules.getItemWithName("OSC");
-	
-	if (OSCmodule.name != "undefined")
+
+	OSCModule = root.modules.getItemWithName("OSC");
+	// create module if not exist
+	if (OSCModule.name == "undefined" ) 
 	{
-		var testScript = OSCmodule.scripts.getChild("OSCBPM");
+		var newOSCModule = root.modules.addItem("OSC");
+		newOSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
+
+		var testScript = newOSCModule.scripts.getChild("OSCBPM");
 		if (testScript.name == "undefined")
 		{
-			var mysc = OSCmodule.scripts.addItem();
+			var mysc = newOSCModule.scripts.addItem();
 			mysc.filePath.set(local.parameters.beatParams.scriptFile.get());		
 		}	
 		
 	} else {
 		
-		script.log("OSC module do not exist !!! ");
-	}
-	
+		OSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
+		
+	}	
 }
 
 
@@ -1440,6 +1440,8 @@ function audioFindInput()
 			break;
 		}		
 	}
+	
+	audioInput = audioInput.substring(0,audioInput.length-1);
 	
 return audioInput;	
 }
