@@ -129,7 +129,7 @@ var  UDP_AUDIO_SYNC_V2 = [];
 var cmdName = "aubio-beat-osc";
 var options = "";
 var OSCIP = "127.0.0.1";
-var aubioBuffer = 256;
+var aubioBuffer = 64;
 
 //We create necessary entries in module.
 function init ()
@@ -378,12 +378,24 @@ function update ()
 		multicastIP = local.parameters.output.remoteHost.get();;
 		uDPPort = local.parameters.output.remotePort.get();
 		myIP = local.parameters.ipAddressToBind.get();
+		
+		// if no FFT then create FFT : new
+		var testFFT = root.modules.soundCard.parameters.fftAnalysis.getItemWithName("Analyzer 1");
+		if (testFFT.name != "undefined") 
+		{
+			script.log("FFT alreaddy there !!");
+			
+		} else {
+			
+			createWLEDFFT(false);
+			root.modules.soundCard.parameters.fftAnalysis.enabled.set(1);
+			
+		}
+		
 		// Remove read only from rate
 		local.scripts.wLEDAudioSync.updateRate.setAttribute("readOnly",false);
-		// create FFT : new
-		createWLEDFFT(false);
-		root.modules.soundCard.parameters.fftAnalysis.enabled.set(1);
-				
+		
+		// end
 		isInit = false;
 	}
 	
