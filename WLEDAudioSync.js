@@ -1337,7 +1337,6 @@ OSC Module
 
 function addOSCScript()
 {
-
 	OSCModule = root.modules.getItemWithName("OSC");
 	// create module if not exist
 	if (OSCModule.name == "undefined" ) 
@@ -1356,6 +1355,12 @@ function addOSCScript()
 		
 		OSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
 		
+		var testScript = OSCModule.scripts.getChild("OSCBPM");
+		if (testScript.name == "undefined")
+		{
+			var mysc = OSCModule.scripts.addItem();
+			mysc.filePath.set(local.parameters.beatParams.scriptFile.get());		
+		}
 	}	
 }
 
