@@ -129,7 +129,7 @@ var  UDP_AUDIO_SYNC_V2 = [];
 var cmdName = "aubio-beat-osc";
 var options = "";
 var OSCIP = "127.0.0.1";
-var aubioBuffer = 64;
+var aubioBuffer = 128;
 
 //We create necessary entries in module.
 function init ()
@@ -383,7 +383,7 @@ function update ()
 		var testFFT = root.modules.soundCard.parameters.fftAnalysis.getItemWithName("Analyzer 1");
 		if (testFFT.name != "undefined") 
 		{
-			script.log("FFT alreaddy there !!");
+			script.log("FFT already there !!");
 			
 		} else {
 			
@@ -436,7 +436,7 @@ function sendAudio(replay)
 		duration -= 100;
 	}
 	
-	// optional delay
+	// optional delay: audio datas during the delay are lost 
 	var mydelay = local.parameters.delay.get();	
 	if (replay === false && mydelay > 0)
 	{
@@ -1356,6 +1356,7 @@ function addOSCScript()
 	{
 		var newOSCModule = root.modules.addItem("OSC");
 		newOSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
+		newOSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
 
 		var testScript = newOSCModule.scripts.getChild("OSCBPM");
 		if (testScript.name == "undefined")
@@ -1372,7 +1373,8 @@ function addOSCScript()
 		if (testScript.name == "undefined")
 		{
 			var mysc = OSCModule.scripts.addItem();
-			mysc.filePath.set(local.parameters.beatParams.scriptFile.get());		
+			mysc.filePath.set(local.parameters.beatParams.scriptFile.get());
+			OSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
 		}
 	}	
 }
