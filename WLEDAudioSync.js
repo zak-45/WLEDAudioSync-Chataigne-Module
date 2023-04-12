@@ -79,6 +79,13 @@ var OSmodule = null;
 // osc
 var OSCmodule = null;
 
+// TMPDIR
+var tempDIR = "";
+
+//HOME Location
+//%USERPROFILE% for WIN and $HOME for others
+var homeDIR = "";
+
 // Volume
 var wledVol = 0;
 // Volume Multiplier
@@ -87,14 +94,14 @@ var volMultiplier = 1024;
 // Global FFT Multiplier
 var fftMultiplier = 254;
 // FFT Data
-var fftWled = [];
+var FFTWLED = [];
 // FFT Max Freq / Magnitude
 var fftSoundMaxFreqMagnitude = 0;
 var fftSoundMaxFreqIndex = 0;
 // FFT Mode
 var fftMode = "";
 // Frequence table
-var freqTable = [];
+var FREQTABLE = [];
 
 // samplePeak
 var wledPeak = 0;
@@ -119,7 +126,7 @@ var snapshot = false;
 var replay = false;
 var duration = 0;
 var previousFile = "";
-var soundData = [];
+var SOUNDDATA = [];
 
 // UDP Data
 var  UDP_AUDIO_SYNC = [];
@@ -185,7 +192,16 @@ function init ()
 
 	var infos = util.getOSInfos(); 
 	script.log("Hello "+infos.username);	
-	script.log("We run under : "+infos.name);	
+	script.log("We run under : "+infos.name);
+	
+	if ( infos.name.contains("Win") )
+	{
+		homeDIR = util.getEnvironmentVariable("USERPROFILE") + "/Documents";
+		
+	} else {
+		
+		homeDIR = util.getEnvironmentVariable("$HOME");
+	}
 	
 }
 
@@ -288,12 +304,9 @@ function moduleParameterChanged (param)
 				
 				addOSCScript();
 	
-				options = " beat -c " + 
-						OSCIP + " " + 
-						root.modules.osc.parameters.oscInput.localPort.get() + 
-						' "/WLEDAudioSync/beat/BPM"' + 
-						" -d " + aubioDevices[i].value +
-						" -b " + aubioBuffer;
+				options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
+							" -d " + aubioDevices[i].value +
+							" -b " + aubioBuffer;
 				var command = cmdName + options;
 				script.log("command to run : " + command);
 				root.modules.os.launchCommand(command, true);
@@ -337,14 +350,11 @@ function moduleParameterChanged (param)
 
 		util.delayThreadMS(200);
 		
-		options = " beat -c " + 
-				OSCIP + " " + 
-				root.modules.osc.parameters.oscInput.localPort.get() + 
-				' "/WLEDAudioSync/beat/BPM"' + 
-				" -d " + local.parameters.beatParams.inputAudio.get() +
-				" -b " + aubioBuffer;
+		options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
+					" -d " + local.parameters.beatParams.inputAudio.get() +
+					" -b " + aubioBuffer;
 		var command = cmdName + options;
-		script.log("command to run : " + command);
+		script.log("command to run : " + command);		
 		root.modules.os.launchCommand(command, true);	
 
 	}
@@ -728,15 +738,15 @@ function updateFreqTable(fftMode, index)
 	{
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 86;
+			FREQTABLE[index] = 86;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 100;			
+			FREQTABLE[index] = 100;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 50;
+			FREQTABLE[index] = 50;
 		
 		}
 		
@@ -744,15 +754,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 129;
+			FREQTABLE[index] = 129;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 120;			
+			FREQTABLE[index] = 120;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 280;
+			FREQTABLE[index] = 280;
 		
 		}
 
@@ -760,15 +770,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 216;
+			FREQTABLE[index] = 216;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 160;			
+			FREQTABLE[index] = 160;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 600;
+			FREQTABLE[index] = 600;
 		
 		}
 
@@ -776,15 +786,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 301;
+			FREQTABLE[index] = 301;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 200;			
+			FREQTABLE[index] = 200;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 950;
+			FREQTABLE[index] = 950;
 		
 		}
 
@@ -792,15 +802,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 430;
+			FREQTABLE[index] = 430;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 260;			
+			FREQTABLE[index] = 260;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 1300;
+			FREQTABLE[index] = 1300;
 		
 		}
 
@@ -808,15 +818,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 560;
+			FREQTABLE[index] = 560;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 340;			
+			FREQTABLE[index] = 340;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 1700;
+			FREQTABLE[index] = 1700;
 		
 		}
 
@@ -824,15 +834,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 818;
+			FREQTABLE[index] = 818;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 440;			
+			FREQTABLE[index] = 440;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 2150;
+			FREQTABLE[index] = 2150;
 		
 		}
 
@@ -840,15 +850,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 1120;
+			FREQTABLE[index] = 1120;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 600;			
+			FREQTABLE[index] = 600;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 2600;
+			FREQTABLE[index] = 2600;
 		
 		}
 
@@ -856,15 +866,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 1421;
+			FREQTABLE[index] = 1421;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 760;			
+			FREQTABLE[index] = 760;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 3100;
+			FREQTABLE[index] = 3100;
 		
 		}
 
@@ -872,15 +882,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 1895;
+			FREQTABLE[index] = 1895;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 980;			
+			FREQTABLE[index] = 980;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 3600;
+			FREQTABLE[index] = 3600;
 		
 		}
 
@@ -888,15 +898,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 2412;
+			FREQTABLE[index] = 2412;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 1300;			
+			FREQTABLE[index] = 1300;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 4200;
+			FREQTABLE[index] = 4200;
 		
 		}
 
@@ -904,15 +914,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 3015;
+			FREQTABLE[index] = 3015;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 1700;			
+			FREQTABLE[index] = 1700;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 4950;
+			FREQTABLE[index] = 4950;
 		
 		}
 
@@ -920,15 +930,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 3704;
+			FREQTABLE[index] = 3704;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 2240;			
+			FREQTABLE[index] = 2240;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 5750;
+			FREQTABLE[index] = 5750;
 		
 		}
 
@@ -936,15 +946,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 4479;
+			FREQTABLE[index] = 4479;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 2960;			
+			FREQTABLE[index] = 2960;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 6800;
+			FREQTABLE[index] = 6800;
 		
 		}
 
@@ -952,15 +962,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 7106;
+			FREQTABLE[index] = 7106;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 3900;			
+			FREQTABLE[index] = 3900;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 8100;
+			FREQTABLE[index] = 8100;
 		
 		}
 
@@ -968,15 +978,15 @@ function updateFreqTable(fftMode, index)
 		
 		if ( fftMode == "new" )
 		{
-			freqTable[index] = 9259;
+			FREQTABLE[index] = 9259;
 			
 		} else if ( fftMode == "old" ) {
 
-			freqTable[index] = 5120;			
+			FREQTABLE[index] = 5120;			
 			
 		} else if ( fftMode == "custom" ) {
 
-			freqTable[index] = 10000;
+			FREQTABLE[index] = 10000;
 		
 		}
 	}	
@@ -1054,9 +1064,9 @@ struct audioSyncPacket {
 		
 		var soundFileName = "Snapshot_" + util.getTimestamp() + ".csv";
 		var data = wledVol + ";" + wledPeak + ";" + wledMag + ";" + wledFreq;
-		for (i = 0; i < 16; i+=1)
+		for (var i = 0; i < 16; i+=1)
 		{
-			data = data + ";" + fftWled[i];
+			data = data + ";" + FFTWLED[i];
 		}
 		data = data + ";" + fftMode;
 		
@@ -1082,31 +1092,31 @@ struct audioSyncPacket {
 		
 		// Calculate FFT Data
 		// Freq value
-		fftWled[0] = root.modules.soundCard.values.fftEnveloppes.analyzer1Value.get()*fftMultiplier;
-		fftWled[1] = root.modules.soundCard.values.fftEnveloppes.analyzer2Value.get()*fftMultiplier;
-		fftWled[2] = root.modules.soundCard.values.fftEnveloppes.analyzer3Value.get()*fftMultiplier;	
-		fftWled[3] = root.modules.soundCard.values.fftEnveloppes.analyzer4Value.get()*fftMultiplier;
-		fftWled[4] = root.modules.soundCard.values.fftEnveloppes.analyzer5Value.get()*fftMultiplier;
-		fftWled[5] = root.modules.soundCard.values.fftEnveloppes.analyzer6Value.get()*fftMultiplier;	
-		fftWled[6] = root.modules.soundCard.values.fftEnveloppes.analyzer7Value.get()*fftMultiplier;	
-		fftWled[7] = root.modules.soundCard.values.fftEnveloppes.analyzer8Value.get()*fftMultiplier;
-		fftWled[8] = root.modules.soundCard.values.fftEnveloppes.analyzer9Value.get()*fftMultiplier;
-		fftWled[9] = root.modules.soundCard.values.fftEnveloppes.analyzer10Value.get()*fftMultiplier;	
-		fftWled[10] = root.modules.soundCard.values.fftEnveloppes.analyzer11Value.get()*fftMultiplier;	
-		fftWled[11] = root.modules.soundCard.values.fftEnveloppes.analyzer12Value.get()*fftMultiplier;
-		fftWled[12] = root.modules.soundCard.values.fftEnveloppes.analyzer13Value.get()*fftMultiplier;
-		fftWled[13] = root.modules.soundCard.values.fftEnveloppes.analyzer14Value.get()*fftMultiplier;	
-		fftWled[14] = root.modules.soundCard.values.fftEnveloppes.analyzer15Value.get()*fftMultiplier;	
-		fftWled[15] = root.modules.soundCard.values.fftEnveloppes.analyzer16Value.get()*fftMultiplier;
+		FFTWLED[0] = root.modules.soundCard.values.fftEnveloppes.analyzer1Value.get()*fftMultiplier;
+		FFTWLED[1] = root.modules.soundCard.values.fftEnveloppes.analyzer2Value.get()*fftMultiplier;
+		FFTWLED[2] = root.modules.soundCard.values.fftEnveloppes.analyzer3Value.get()*fftMultiplier;	
+		FFTWLED[3] = root.modules.soundCard.values.fftEnveloppes.analyzer4Value.get()*fftMultiplier;
+		FFTWLED[4] = root.modules.soundCard.values.fftEnveloppes.analyzer5Value.get()*fftMultiplier;
+		FFTWLED[5] = root.modules.soundCard.values.fftEnveloppes.analyzer6Value.get()*fftMultiplier;	
+		FFTWLED[6] = root.modules.soundCard.values.fftEnveloppes.analyzer7Value.get()*fftMultiplier;	
+		FFTWLED[7] = root.modules.soundCard.values.fftEnveloppes.analyzer8Value.get()*fftMultiplier;
+		FFTWLED[8] = root.modules.soundCard.values.fftEnveloppes.analyzer9Value.get()*fftMultiplier;
+		FFTWLED[9] = root.modules.soundCard.values.fftEnveloppes.analyzer10Value.get()*fftMultiplier;	
+		FFTWLED[10] = root.modules.soundCard.values.fftEnveloppes.analyzer11Value.get()*fftMultiplier;	
+		FFTWLED[11] = root.modules.soundCard.values.fftEnveloppes.analyzer12Value.get()*fftMultiplier;
+		FFTWLED[12] = root.modules.soundCard.values.fftEnveloppes.analyzer13Value.get()*fftMultiplier;
+		FFTWLED[13] = root.modules.soundCard.values.fftEnveloppes.analyzer14Value.get()*fftMultiplier;	
+		FFTWLED[14] = root.modules.soundCard.values.fftEnveloppes.analyzer15Value.get()*fftMultiplier;	
+		FFTWLED[15] = root.modules.soundCard.values.fftEnveloppes.analyzer16Value.get()*fftMultiplier;
 		
 
 		// retreive MaxFreq and Magnitude
-		for (i = 0; i < 16; i +=1)
+		for (var i = 0; i < 16; i +=1)
 		{
-			if (fftSoundMaxFreqMagnitude < fftWled[i])
+			if (fftSoundMaxFreqMagnitude < FFTWLED[i])
 			{
-				fftSoundMaxFreqMagnitude = fftWled[i];				
-				fftSoundMaxFreqIndex = freqTable[i];
+				fftSoundMaxFreqMagnitude = FFTWLED[i];				
+				fftSoundMaxFreqIndex = FREQTABLE[i];
 			}
 		}
 		
@@ -1123,9 +1133,9 @@ struct audioSyncPacket {
 		wledMag = 0;
 		wledFreq = 0;
 		
-		for ( i = 0; i < 16; i += 1)
+		for ( var i = 0; i < 16; i += 1)
 		{
-			fftWled[i] = 0;
+			FFTWLED[i] = 0;
 		}
 		
 	}
@@ -1213,22 +1223,22 @@ struct audioSyncPacket {
 	// Boolean flag for peak. Responding routine must reset this flag
   	UDP_AUDIO_SYNC[52] = samplePeak;
 	//   uint8_t fftResult[16];  //  16 Bytes - FFT results, one byte per GEQ channel 
-	UDP_AUDIO_SYNC[53] = fftWled[0];
-	UDP_AUDIO_SYNC[54] = fftWled[1];
-	UDP_AUDIO_SYNC[55] = fftWled[2];
-	UDP_AUDIO_SYNC[56] = fftWled[3];
-	UDP_AUDIO_SYNC[57] = fftWled[4];
-	UDP_AUDIO_SYNC[58] = fftWled[5];
-	UDP_AUDIO_SYNC[59] = fftWled[6];
-	UDP_AUDIO_SYNC[60] = fftWled[7];
-	UDP_AUDIO_SYNC[61] = fftWled[8];
-	UDP_AUDIO_SYNC[62] = fftWled[9];
-	UDP_AUDIO_SYNC[63] = fftWled[10];
-	UDP_AUDIO_SYNC[64] = fftWled[11];
-	UDP_AUDIO_SYNC[65] = fftWled[12];
-	UDP_AUDIO_SYNC[66] = fftWled[13];
-	UDP_AUDIO_SYNC[67] = fftWled[14];
-	UDP_AUDIO_SYNC[68] = fftWled[15];
+	UDP_AUDIO_SYNC[53] = FFTWLED[0];
+	UDP_AUDIO_SYNC[54] = FFTWLED[1];
+	UDP_AUDIO_SYNC[55] = FFTWLED[2];
+	UDP_AUDIO_SYNC[56] = FFTWLED[3];
+	UDP_AUDIO_SYNC[57] = FFTWLED[4];
+	UDP_AUDIO_SYNC[58] = FFTWLED[5];
+	UDP_AUDIO_SYNC[59] = FFTWLED[6];
+	UDP_AUDIO_SYNC[60] = FFTWLED[7];
+	UDP_AUDIO_SYNC[61] = FFTWLED[8];
+	UDP_AUDIO_SYNC[62] = FFTWLED[9];
+	UDP_AUDIO_SYNC[63] = FFTWLED[10];
+	UDP_AUDIO_SYNC[64] = FFTWLED[11];
+	UDP_AUDIO_SYNC[65] = FFTWLED[12];
+	UDP_AUDIO_SYNC[66] = FFTWLED[13];
+	UDP_AUDIO_SYNC[67] = FFTWLED[14];
+	UDP_AUDIO_SYNC[68] = FFTWLED[15];
 	// Filler
 	UDP_AUDIO_SYNC[69] = 0;	
 	UDP_AUDIO_SYNC[70] = 0;	
@@ -1362,7 +1372,15 @@ function addOSCScript()
 		if (testScript.name == "undefined")
 		{
 			var mysc = newOSCModule.scripts.addItem();
-			mysc.filePath.set(local.parameters.beatParams.scriptFile.get());		
+			if (local.parameters.beatParams.scriptFile.get() == "OSCBPM.js")
+			{
+				mysc.filePath.set(homeDIR + "/Chataigne/Modules/WLEDAudioSync/" + local.parameters.beatParams.scriptFile.get());
+				
+			} else {
+				
+				mysc.filePath.set(local.parameters.beatParams.scriptFile.get());
+			}
+
 		}	
 		
 	} else {
@@ -1373,7 +1391,14 @@ function addOSCScript()
 		if (testScript.name == "undefined")
 		{
 			var mysc = OSCModule.scripts.addItem();
-			mysc.filePath.set(local.parameters.beatParams.scriptFile.get());
+			if (local.parameters.beatParams.scriptFile.get() == "OSCBPM.js")
+			{
+				mysc.filePath.set(homeDIR + "/Chataigne/Modules/WLEDAudioSync/" + local.parameters.beatParams.scriptFile.get());
+				
+			} else {
+				
+				mysc.filePath.set(local.parameters.beatParams.scriptFile.get());
+			}
 			OSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
 		}
 	}	
@@ -1392,7 +1417,7 @@ function createIntArray(hexSequence)
 	var intArray = [];
 	var j = 0;
 	
-    for ( i = 0; i < hexSequence.length; i+=2 )
+    for ( var i = 0; i < hexSequence.length; i+=2 )
 	{
 		intArray[j] = util.hexStringToInt(hexSequence.substring(i,i+1) + hexSequence.substring(i+1,i+2));
 		j +=1;
@@ -1425,20 +1450,20 @@ function runReplay(fileName, myduration)
 	// if same file for replay, avoid to read it again and again
 	if (fileName != previousFile)
 	{
-		soundData = [];
-		soundData = util.readFile(fileName).split(";");
+		SOUNDDATA = [];
+		SOUNDDATA = util.readFile(fileName).split(";");
 		previousFile = fileName;
 	}
 
 	// set audio datas
-	wledVol  = soundData[0];
-	wledPeak = soundData[1];
-	wledMag  = soundData[2];
-	wledFreq = soundData[3];
+	wledVol  = SOUNDDATA[0];
+	wledPeak = SOUNDDATA[1];
+	wledMag  = SOUNDDATA[2];
+	wledFreq = SOUNDDATA[3];
 	
-	for ( i = 0; i < 16; i += 1 )
+	for ( var i = 0; i < 16; i += 1 )
 	{
-		fftWled[i] = soundData[4+i];
+		FFTWLED[i] = SOUNDDATA[4+i];
 	}
 
 	replay = true;
@@ -1447,10 +1472,11 @@ function runReplay(fileName, myduration)
 // Find Audio input device name 
 function audioFindInput()
 {
+	var audioInput = "";
+
 	var JSONobj = root.modules.soundCard.getJSONData();
 	var JSONdata = JSON.stringify(JSONobj.audioSettings);
 	var audioSettings = JSONdata.split("=");
-	var audioInput = "";
 	
 	for ( var i = 0; i < audioSettings.length ; i++) 
 	{		
@@ -1518,7 +1544,7 @@ function test()
 {
 	for (var i = 0; i < 16 ; i +=1)
 	{
-		script.log(freqTable[i]);
+		script.log(FREQTABLE[i]);
 	}
 	
 	var scriptFile = local.parameters.beatParams.scriptFile.getAbsolutePath();
