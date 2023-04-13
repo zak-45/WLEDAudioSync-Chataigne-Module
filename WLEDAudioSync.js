@@ -357,6 +357,16 @@ function moduleParameterChanged (param)
 		script.log("command to run : " + command);		
 		root.modules.os.launchCommand(command, true);	
 
+	} else if (param.name == "live") {
+		
+		// find sound card input audio
+		var scInput = audioFindInput();
+		if (scInput == "")
+		{
+			script.log("Input device not defined in Sound card module");
+			util.showMessageBox("WLEDAudioSync ! ", "Input device not defined in Sound card module", "info", "Got it");
+			
+		}
 	}
 }
 
