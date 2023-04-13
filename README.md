@@ -83,7 +83,7 @@ On Inspector:
     if unchecked and aubio-beat-osc process is running, this will kill it.
   Input audio : audio devices detected by aubio-beat-osc list command 
     the one selected will be used when 'Force reload' clicked.
-  Script file : script file name location for OSC module
+  Script file : script file name for OSC module
     use OSCBPM.js under modules folder.
   Force reload : kill (if running) and create a new aubio-beat-osc process.
   
