@@ -1376,7 +1376,8 @@ function addOSCScript()
 	{
 		var newOSCModule = root.modules.addItem("OSC");
 		newOSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
-		newOSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
+		var beatParam = newOSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
+		beatParam.setAttribute("saveValueOnly", false);
 
 		var testScript = newOSCModule.scripts.getChild("OSCBPM");
 		if (testScript.name == "undefined")
@@ -1443,7 +1444,7 @@ function testMultiCast()
 	myIP = local.parameters.ipAddressToBind.getKey();
 	script.log(myIP , multicastIP , uDPPort);
 	
-	var multiExeCmd = util.readFile("multicast.cmd");
+	var multiExeCmd = util.readFile(homeDIR+"/Chataigne/Modules/WLEDAudioSync/multicast.cmd");
 	var multiOptions = " --ip " + myIP + " --group " + multicastIP + " --port " + uDPPort;
 	var exeCMD = multiExeCmd + multiOptions;
 	script.log('command to run : '+ exeCMD);
