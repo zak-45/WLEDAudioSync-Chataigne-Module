@@ -72,12 +72,16 @@
 		"Volume Multiplier": {
 			"type": "Float",
 			"description": "Volume level multiplier",
-			"default": 1024
+			"default": 1024,
+			"min":0,
+			"max":10240
 		},
 		"Frequency Magnitude Multiplier": {
 			"type": "Float",
 			"description": "Frequency magnitude level multiplier",
-			"default": 254
+			"default": 254,
+			"min":0,
+			"max":2540
 		},
 		"Take Snapshot": {
 			"type": "Trigger",
