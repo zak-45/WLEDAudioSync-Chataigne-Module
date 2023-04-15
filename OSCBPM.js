@@ -9,6 +9,11 @@ To be used with WLEDAudioSync module.
 
 */
 
+function init()
+{
+	local.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
+}
+
 function beatBPMCall(address, args) 
 {
 	
