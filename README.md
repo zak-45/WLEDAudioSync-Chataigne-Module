@@ -50,6 +50,16 @@ Nota:
 You will need additional step for beat / BPM if you want to use this feature. 
 ```
 
+For Windows
+
+Download : https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases/download/1.0/WLEDAudioSync.exe
+```
+This will install Chataigne / python module / chataigne module.
+
+Nota : If Chataigne already installed, just abort its installation.
+
+```
+
 
 ### ***Use it :***
 
