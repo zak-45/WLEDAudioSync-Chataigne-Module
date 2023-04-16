@@ -57,7 +57,7 @@ Download : https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases/dow
 This will install Chataigne / python module / chataigne module.
 
 Nota : If Chataigne already installed, you can abort its installation. 
-       Python need to be installed with pip, required only if want BPM.
+       Python need to be installed with pip (required only if want BPM).
 
 ```
 
