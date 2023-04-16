@@ -1385,7 +1385,7 @@ function addOSCScript()
 			var mysc = newOSCModule.scripts.addItem();
 			if (local.parameters.beatParams.scriptFile.get() == "OSCBPM.js")
 			{
-				mysc.filePath.set(homeDIR + "/Chataigne/Modules/WLEDAudioSync/" + local.parameters.beatParams.scriptFile.get());
+				mysc.filePath.set(homeDIR + "/Chataigne/Modules/WLEDAudioSync/OSCBPM.js");
 				
 			} else {
 				
@@ -1404,13 +1404,14 @@ function addOSCScript()
 			var mysc = OSCModule.scripts.addItem();
 			if (local.parameters.beatParams.scriptFile.get() == "OSCBPM.js")
 			{
-				mysc.filePath.set(homeDIR + "/Chataigne/Modules/WLEDAudioSync/" + local.parameters.beatParams.scriptFile.get());
+				mysc.filePath.set(homeDIR + "/Chataigne/Modules/WLEDAudioSync/OSCBPM.js");
 				
 			} else {
 				
 				mysc.filePath.set(local.parameters.beatParams.scriptFile.get());
 			}
-			OSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
+			var beatParam = OSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
+			beatParam.setAttribute("saveValueOnly", false);
 		}
 	}	
 }
