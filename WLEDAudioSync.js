@@ -1445,6 +1445,7 @@ function testMultiCast()
 	script.log(myIP , multicastIP , uDPPort);
 	
 	var multiExeCmd = util.readFile(homeDIR+"/Chataigne/Modules/WLEDAudioSync/multicast.cmd");
+	multiExeCmd = multiExeCmd.replace("\n","").replace("\r","").replace("%USERPROFILE%",homeDIR);
 	var multiOptions = " --ip " + myIP + " --group " + multicastIP + " --port " + uDPPort;
 	var exeCMD = multiExeCmd + multiOptions;
 	script.log('command to run : '+ exeCMD);
