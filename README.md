@@ -54,10 +54,11 @@ For Windows
 
 Download : https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases/download/1.0/WLEDAudioSync.exe
 ```
-This will install Chataigne / python module / chataigne module.
+This will install Chataigne / python module / chataigne module / Friture
 
 Nota : If Chataigne already installed, you can abort its installation. 
-       Python need to be installed with pip (required only if want BPM / run as admin).
+       Provide portable Python 3.9 x64 with all installed (but optional).
+       Anyway, Python need to be installed with pip if you want BPM (run pip as admin).
 
 ```
 
