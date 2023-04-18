@@ -386,7 +386,7 @@ function moduleParameterChanged (param)
 			//execute Friture
 			var exeCMD = homeDIR+"/Chataigne/Python/WPy64-39100/Friture/friture.exe";
 			if (util.fileExists(homeDIR+"/Chataigne/Python/WPy64-39100/Friture/friture.exe")){
-				var launchresult = root.modules.os.launchProcess(exeCMD, false);
+				var launchresult = root.modules.os.launchApp(exeCMD);
 			} else {
 				util.showMessageBox("Friture not found ", "file name : " + exeCMD , "warning", "Ok");			
 			}
@@ -1500,7 +1500,7 @@ function testMultiCast()
 		script.log("ERROR Python script do not exist");
 	}	
 	var multiOptions = " --ip " + myIP + " --group " + multicastIP + " --port " + uDPPort;
-	var exeCMD = tobeRun[0] + tobeRun[1] + multiOptions;
+	var exeCMD = tobeRun[0] + " " + tobeRun[1] + multiOptions;
 	script.log('command to run : '+ exeCMD);
 	// we execute the cmd 
 	var launchresult = root.modules.os.launchProcess(exeCMD, true);
@@ -1589,7 +1589,7 @@ return tempDIR;
 function aubioDevicesList()
 {
 	var fileTmp = findTMP() + "/aubioDevicesList.tmp";
-	var command = cmdName + " list >" + fileTmp;	
+	var command = aubioPath + cmdName + " list >" + fileTmp;	
 	var result = root.modules.os.launchCommand(command, false);
 	var devicesList = util.readFile(fileTmp).split("\n");
 	
