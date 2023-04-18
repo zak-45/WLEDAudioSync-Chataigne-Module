@@ -80,6 +80,7 @@ On Inspector:
   IP Address to bind: select the computer IP address if more than one.
   Send Test Message: if more than one network interface and had trouble to send data to MulticastGroup, click on it to send a test message.
   Live : use real time audio data, uncheck when want to use the replay feature.
+  Visualize live audio : run Friture, live audio analyzer.
   Audio V1 : V1 message format
   Audio V2 : V2 message format ( to be used mainly )
   Delay : delay in ms before sending audio data. audio data during delay are lost.
