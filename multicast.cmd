@@ -1,1 +1,1 @@
-python %USERPROFILE%\Documents\Chataigne\modules\WLEDAudioSync\multicast_msg.py
+"%USERPROFILE%\Documents\Chataigne\Python\WPy64-39100\python-3.9.10.amd64\python.exe" "%USERPROFILE%\Documents\Chataigne\modules\WLEDAudioSync\multicast_msg.py"

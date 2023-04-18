@@ -85,6 +85,7 @@ var tempDIR = "";
 //HOME Location
 //%USERPROFILE% for WIN and $HOME for others
 var homeDIR = "";
+var winHOME = "";
 
 // Volume
 var wledVol = 0;
@@ -100,6 +101,8 @@ var fftSoundMaxFreqMagnitude = 0;
 var fftSoundMaxFreqIndex = 0;
 // FFT Mode
 var fftMode = "";
+//minAudio DB
+var minDB = -50;
 // Frequence table
 var FREQTABLE = [];
 
@@ -134,6 +137,7 @@ var  UDP_AUDIO_SYNC_V2 = [];
 
 // BPM
 var cmdName = "aubio-beat-osc";
+var aubioPath = "";
 var options = "";
 var OSCIP = "127.0.0.1";
 var aubioBuffer = 128;
@@ -197,6 +201,12 @@ function init ()
 	if ( infos.name.contains("Win") )
 	{
 		homeDIR = util.getEnvironmentVariable("USERPROFILE") + "/Documents";
+		winHOME = util.getEnvironmentVariable("USERPROFILE");
+		if (util.directoryExists(homeDIR + "/Chataigne/Python"))
+		{
+			// set exe path to python portable
+			aubioPath = homeDIR + "/Chataigne/Python/WPy64-39100/python-3.9.10.amd64/Scripts/";
+		}
 		
 	} else {
 		
@@ -307,7 +317,7 @@ function moduleParameterChanged (param)
 				options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
 							" -d " + aubioDevices[i].value +
 							" -b " + aubioBuffer;
-				var command = cmdName + options;
+				var command = aubioPath + cmdName + options;
 				script.log("command to run : " + command);
 				root.modules.os.launchCommand(command, true);
 			}
@@ -353,7 +363,7 @@ function moduleParameterChanged (param)
 		options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
 					" -d " + local.parameters.beatParams.inputAudio.get() +
 					" -b " + aubioBuffer;
-		var command = cmdName + options;
+		var command = aubioPath + cmdName + options;
 		script.log("command to run : " + command);		
 		root.modules.os.launchCommand(command, true);	
 
@@ -367,7 +377,25 @@ function moduleParameterChanged (param)
 			util.showMessageBox("WLEDAudioSync ! ", "Input device not defined in Sound card module", "info", "Got it");
 			
 		}
-	}
+		
+	} else if (param.name == "visualizeLiveAudio") {
+		
+		var infos = util.getOSInfos(); 
+		if ( infos.name.contains("Win") )
+		{
+			//execute Friture
+			var exeCMD = homeDIR+"/Chataigne/Python/WPy64-39100/Friture/friture.exe";
+			if (util.fileExists(homeDIR+"/Chataigne/Python/WPy64-39100/Friture/friture.exe")){
+				var launchresult = root.modules.os.launchProcess(exeCMD, false);
+			} else {
+				util.showMessageBox("Friture not found ", "file name : " + exeCMD , "warning", "Ok");			
+			}
+		} else {
+			
+			script.log("This feature Run Only on windows");
+		}
+		
+	}	
 }
 
 function moduleValueChanged (value) 
@@ -395,9 +423,12 @@ function update ()
 			local.parameters.ipAddressToBind.addOption(ips[i],i);
 		}		
 		
+		local.parameters.ipAddressToBind.set(root.modules.os.values.ip.get());
 		multicastIP = local.parameters.output.remoteHost.get();;
 		uDPPort = local.parameters.output.remotePort.get();
 		myIP = local.parameters.ipAddressToBind.get();
+		
+		testMultiCast();
 		
 		// if no FFT then create FFT : new
 		var testFFT = root.modules.soundCard.parameters.fftAnalysis.getItemWithName("Analyzer 1");
@@ -485,7 +516,7 @@ function createFFT(size)
 {
 
 	removeFFT();
-	root.modules.soundCard.parameters.fftAnalysis.minDB.set(-80);
+	root.modules.soundCard.parameters.fftAnalysis.minDB.set(minDB);
 	
 	fftMode = "custom";
 
@@ -512,7 +543,7 @@ function createWLEDFFT(old)
 {
 
 	removeFFT();
-	root.modules.soundCard.parameters.fftAnalysis.minDB.set(-60);
+	root.modules.soundCard.parameters.fftAnalysis.minDB.set(minDB);
 	
 	if (old)
 	{
@@ -1374,6 +1405,7 @@ function addOSCScript()
 	// create module if not exist
 	if (OSCModule.name == "undefined" ) 
 	{
+		script.log("Create OSC");
 		var newOSCModule = root.modules.addItem("OSC");
 		newOSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
 		var beatParam = newOSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
@@ -1396,6 +1428,7 @@ function addOSCScript()
 		
 	} else {
 		
+		script.log("Use existing OSC");
 		OSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
 		
 		var testScript = OSCModule.scripts.getChild("OSCBPM");
@@ -1447,11 +1480,30 @@ function testMultiCast()
 	
 	var multiExeCmd = util.readFile(homeDIR+"/Chataigne/Modules/WLEDAudioSync/multicast.cmd");
 	multiExeCmd = multiExeCmd.replace("\n","").replace("\r","");
+	var tobeRun = multiExeCmd.split(" ");
+	tobeRun[0] = tobeRun[0].replace("%USERPROFILE%", winHOME);
+	tobeRun[1] = tobeRun[1].replace("%USERPROFILE%", winHOME);
+	if (util.fileExists(tobeRun[0].replace('"','')))
+	{
+		script.log("Python Ok");
+		
+	} else {
+		
+		tobeRun[0] = "python ";
+	}
+	if (util.fileExists(tobeRun[1].replace('"','')))
+	{
+		script.log("Python script Ok");
+		
+	} else {
+		
+		script.log("ERROR Python script do not exist");
+	}	
 	var multiOptions = " --ip " + myIP + " --group " + multicastIP + " --port " + uDPPort;
-	var exeCMD = multiExeCmd + multiOptions;
+	var exeCMD = tobeRun[0] + tobeRun[1] + multiOptions;
 	script.log('command to run : '+ exeCMD);
 	// we execute the cmd 
-	var launchresult = root.modules.os.launchCommand(exeCMD, false);
+	var launchresult = root.modules.os.launchProcess(exeCMD, true);
 }
 
 // replay audio data from snapshot file

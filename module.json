@@ -51,6 +51,11 @@
 			"type": "Boolean",
 			"description": "Use live audio datas",
 			"default": true
+		},
+		"Visualize live audio": {
+			"type": "Trigger",
+			"description": "Friture is a real-time audio analyzer.
+It works on Windows, macOS and Linux. It is free and open source.",
 		},		
 		"Audio V1": {
 			"type": "Boolean",
