@@ -1604,6 +1604,74 @@ function aubioDevicesList()
 	}
 }
 
+// Deactivate FFT
+
+// bass
+function bassFFT(onOff)
+{
+	if (onOff)
+	{
+		root.modules.soundCard.parameters.fftAnalysis.analyzer1.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer2.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer3.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer4.enabled.set(1);		
+		
+	} else {
+		root.modules.soundCard.parameters.fftAnalysis.analyzer1.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer2.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer3.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer4.enabled.set(0);		
+	}
+}
+// midrange
+function midFFT(onOff)
+{
+	if (onOff)
+	{
+		root.modules.soundCard.parameters.fftAnalysis.analyzer5.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer6.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer7.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer8.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer9.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer10.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer11.enabled.set(1);		
+		
+	} else {
+		root.modules.soundCard.parameters.fftAnalysis.analyzer5.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer6.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer7.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer8.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer9.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer10.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer11.enabled.set(0);		
+	}
+}
+// high
+function highFFT(onOff)
+{
+	if (onOff)
+	{
+		root.modules.soundCard.parameters.fftAnalysis.analyzer12.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer13.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer14.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer15.enabled.set(1);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer16.enabled.set(1);		
+		
+	} else {
+		root.modules.soundCard.parameters.fftAnalysis.analyzer12.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer13.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer14.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer15.enabled.set(0);
+		root.modules.soundCard.parameters.fftAnalysis.analyzer16.enabled.set(0);
+	}
+}
+// reset volume & magnitude multiplier
+function resetVolMag()
+{
+	local.parameters.volumeMultiplier.set(1024);
+	local.parameters.frequencyMagnitudeMultiplier.set(254);
+}
+
 // just for some test
 function test()
 {
