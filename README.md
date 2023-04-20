@@ -183,4 +183,4 @@ On 26/03/2023:
 for ESP8266, old SR WLED fw version required : 0.13.03b3 https://wled-install.github.io/.
 Port to the 0.14.xx version is on TO DO list...
 
-Three .noisette files are provided for your convience.
+Some .noisette files are provided for your convience.
