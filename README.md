@@ -4,6 +4,8 @@ Stream music/audio to WLED Audio reactive.
 
 Real time audio analysis : the real time audio datas are not supposed to be fully accurate but enough for light show creation.
 
+![image](https://user-images.githubusercontent.com/121941293/233323026-44b28531-cc75-480f-a542-cc7a81a49c23.png)
+
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
@@ -34,6 +36,7 @@ Real time audio analysis : the real time audio datas are not supposed to be full
 - Message version 1 (V1) and version 2 (V2) included, so can stream even to ESP8266 
 
 ```
+
 
 GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
 
@@ -178,4 +181,4 @@ On 26/03/2023:
 for ESP8266, old SR WLED fw version required : 0.13.03b3 https://wled-install.github.io/.
 Port to the 0.14.xx version is on TO DO list...
 
-
+Three .noisette files are provided for your convience.
