@@ -52,7 +52,7 @@ Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
 Nota:
 You will need additional step for beat / BPM if you want to use this feature. 
 No windows users or windows user who do not choose to use the provided portable python, 
-need to customize the multicast.cmd file.
+need to customize the multicast.cmd file (the content is READ and executed with parameters from module).
 ```
 
 For Windows
