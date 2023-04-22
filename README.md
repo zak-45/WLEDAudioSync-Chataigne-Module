@@ -51,7 +51,7 @@ Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
 
 Nota:
 You will need additional step for beat / BPM if you want to use this feature. 
- -->Python need to be installed with pip if you want BPM (run pip as admin).
+ -->Python need to be installed with pip if you want BPM (run pip as admin on win).
 No windows users or windows user who do not choose to use the provided portable python, 
 need to customize the multicast.cmd file (the content is READ and executed with parameters from module).
 ```
