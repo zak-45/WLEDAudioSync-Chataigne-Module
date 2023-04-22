@@ -51,6 +51,7 @@ Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
 
 Nota:
 You will need additional step for beat / BPM if you want to use this feature. 
+ -->Python need to be installed with pip if you want BPM (run pip as admin).
 No windows users or windows user who do not choose to use the provided portable python, 
 need to customize the multicast.cmd file (the content is READ and executed with parameters from module).
 ```
@@ -61,11 +62,9 @@ Download : https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases/dow
 ```
 This will install Chataigne / python module / chataigne module / Friture
 
-Nota : If Chataigne already installed, you can abort its installation. 
-       Python need to be installed with pip if you want BPM (run pip as admin).
-       Provide portable Python 3.9 x64 with all installed (optional but recommanded).
-
-
+Nota :  Provide portable Python 3.9 x64 with all installed (optional but recommanded).
+        If Chataigne already installed, you can abort its installation. 
+        
 ```
 
 
