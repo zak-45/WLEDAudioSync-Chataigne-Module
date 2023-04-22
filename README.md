@@ -168,6 +168,12 @@ https://user-images.githubusercontent.com/121941293/227597492-aff9c8a6-5314-4f5f
 Real Time audio analysis
 
 
+RealTime.noisette file view:
+
+https://user-images.githubusercontent.com/121941293/233774047-d2a33500-3579-4174-bea7-725e00a4fa19.mp4
+
+
+
 https://user-images.githubusercontent.com/121941293/230689672-cc5d42c5-c94b-488a-aab2-aea43275ef82.mp4
 
 
