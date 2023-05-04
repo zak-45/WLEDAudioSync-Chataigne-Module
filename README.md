@@ -11,7 +11,7 @@ Real time audio analysis : the real time audio datas are not supposed to be full
 
 - Should Work on any OS where Chataigne run ( Win/Mac/Linux/Pi ). 
 
-- You only need to have WLED Sound Reactive version installed. 
+- On your ESP8266/ESP32 you only need to have WLED Sound Reactive version installed. 
   No Hardware( micro: analog or digital) required. 
 
 - Use UDP Multicast, so your LED strip can be anywhere.
