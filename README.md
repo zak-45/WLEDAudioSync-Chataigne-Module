@@ -3,7 +3,7 @@
 Stream music/audio to WLED Audio reactive.
 
 Real time audio analysis : the real time audio datas are not supposed to be fully accurate for a scientific need but enough for light show creation.
-This can be used even if you do not use WLED and want to drive some others LEDs or software due to Chataigne's features.
+This can be used even if you do not own WLED and want to drive some others LEDs or software due to Chataigne's features.
 
 ![image](https://user-images.githubusercontent.com/121941293/233323026-44b28531-cc75-480f-a542-cc7a81a49c23.png)
 
