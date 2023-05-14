@@ -112,7 +112,7 @@ On Inspector:
   Force reload : kill (if running) and create a new aubio-beat-osc process.
   
   Use RTMGC : this will execute the Nodejs server and launch chrome
-  Server Port : port bumber for the Nodejs server , default to 8000
+  Server Port : port number for the Nodejs server , default to 8000
   Script file: scrpt file name for OSC module
     use OSCRTMGC.js under modules folder.
   
