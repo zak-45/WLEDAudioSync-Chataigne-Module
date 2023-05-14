@@ -183,6 +183,14 @@ Real Time audio analysis
 https://user-images.githubusercontent.com/121941293/230689672-cc5d42c5-c94b-488a-aab2-aea43275ef82.mp4
 
 
+RTMGC
+
+
+
+https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/958e140b-c4e1-4627-93b5-a1b53836775c
+
+
+
 ---
 
 
