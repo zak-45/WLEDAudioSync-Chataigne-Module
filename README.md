@@ -22,16 +22,19 @@ Real time audio analysis : the real time audio datas are not supposed to be full
 
 - All WLED Sound Reactive effects supported: volume based or FFT based.
 
+- Message version 1 (V1) and version 2 (V2) included, so can stream even to ESP8266 
+
 - Real time FFT Analysis fully customisable by GUI
   this provide different way for effects customisation.
   
-- Real Time Beat and BPM  via OSC
+- Real Time Beat and BPM  send data via OSC
   thanks to https://github.com/DrLuke/aubio-beat-osc
   
 - Real time pitch detection : freq / pitch / note / octave
   thanks to Chataigne...
 
-- Message version 1 (V1) and version 2 (V2) included, so can stream even to ESP8266 
+- Real Time Music Genre Classification send data via OSC
+thanks to Essentia.js https://mtg.github.io/essentia.js/
 
 ```
 
