@@ -4,6 +4,8 @@ Stream music/audio to WLED Audio reactive.
 
 Real time audio analysis : the real time audio datas are not supposed to be fully accurate but enough for light show creation.
 
+Real Time Music Genre Classification : get real-time music genre predictions based on the analysed audio stream.
+
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
