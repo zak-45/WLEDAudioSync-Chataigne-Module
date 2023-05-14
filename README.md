@@ -62,7 +62,7 @@ You will need additional step for beat / BPM or RTMGC if you want to use these f
 
 For Windows
 
-Download : https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases/download/1.0/WLEDAudioSync.exe
+Download release : (https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases)
 ```
 This will install Chataigne / python module / chataigne module / Friture / WrtmgcSRV
 
