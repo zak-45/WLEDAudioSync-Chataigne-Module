@@ -108,6 +108,11 @@ On Inspector:
     use OSCBPM.js under modules folder.
   Force reload : kill (if running) and create a new aubio-beat-osc process.
   
+  Use RTMGC : this will execute the Nodejs server and launch chrome
+  Server Port : port bumber for the Nodejs server , default to 8000
+  Script file: scrpt file name for OSC module
+    use OSCRTMGC.js under modules folder.
+  
   Update Rate : frequence to send audio data message to WLED (fps)
     set rate from 1 fps to 1000 (for test stress: dangerous), 50 is recommended.
   
@@ -115,6 +120,8 @@ On Inspector:
 ![image](https://user-images.githubusercontent.com/121941293/227391790-5bddd576-7fdd-440a-b03e-cc8985c81764.png)
 
 ![image](https://user-images.githubusercontent.com/121941293/230686974-c077ef89-51f3-4a71-a101-e385d02b8aa6.png)
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/d651b923-8cc5-4abf-b7c6-a8beecbadded)
 
 ```
 On Command Tester, Replay / FFT : all WLEDAudioSync available commands
