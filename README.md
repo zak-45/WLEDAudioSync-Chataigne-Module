@@ -33,14 +33,16 @@ Real time audio analysis : the real time audio datas are not supposed to be full
 - Real time pitch detection : freq / pitch / note / octave
   thanks to Chataigne...
 
-- Real Time Music Genre Classification send data via OSC
-thanks to Essentia.js https://mtg.github.io/essentia.js/
+- Real Time Music Genre Classification send data via OSC  
+  thanks to Essentia.js https://mtg.github.io/essentia.js/
 
 ```
 
 GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
 
 For beat / BPM see : https://github.com/DrLuke/aubio-beat-osc
+
+For RMTGC see: see: https://github.com/zak-45/WLEDAudioSyncRTMGC
 
 ### ***Installation :***
 
@@ -50,22 +52,22 @@ Take all from this repository and
 Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
 
 Nota:
-You will need additional step for beat / BPM if you want to use this feature. 
+You will need additional step for beat / BPM or RTMGC if you want to use these features.
+       Python need to be installed with pip if you want BPM (run pip as admin).
+       For RTMGC, you can download binaries from https://github.com/zak-45/WLEDAudioSyncRTMGC
+
 ```
 
 For Windows
 
 Download : https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases/download/1.0/WLEDAudioSync.exe
 ```
-This will install Chataigne / python module / chataigne module / Friture
+This will install Chataigne / python module / chataigne module / Friture / WrtmgcSRV
 
 Nota : If Chataigne already installed, you can abort its installation. 
-       Python need to be installed with pip if you want BPM (run pip as admin).
-       Provide portable Python 3.9 x64 with all installed (optional but recommanded).
-
-
+      Provide portable Python 3.9 x64 with all installed (optional but recommanded).
+      Provide portable Nodejs with WrtmgcSRV.js preconfigured (optional but recommanded).
 ```
-
 
 ### ***Use it :***
 
