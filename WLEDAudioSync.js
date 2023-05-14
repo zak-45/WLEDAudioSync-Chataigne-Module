@@ -2,11 +2,31 @@
 
 a:zak45
 d:25/01/2023
-v:1.0.0
+v:1.1.0
 
 Chataigne Module for  WLED Sound Reactive
 Send sound card audio data via UDP.
 This script will take Audio data provided by Chataigne and try to map them to WLED values.
+It also provide some real time sound data analysis (e.g Pitch, FFT, BPM, etc..).
+
+
+    Classical (Classique) : 60-120 BPM
+    Jazz : 80-140 BPM
+    Blues : 60-120 BPM
+    Rock : 100-160 BPM
+    Pop : 90-130 BPM
+    R&B : 60-100 BPM
+    Hip Hop : 60-100 BPM
+    Electronic (EDM, Trance, House) : 120-140 BPM (varie selon les sous-genres)
+    Country : 60-120 BPM
+    Reggae : 70-100 BPM
+    Funk : 90-120 BPM
+    Metal : 100-200 BPM (varie selon les sous-genres)
+    Punk : 150-200 BPM
+    Salsa : 150-250 BPM
+    Ballad : 60-80 BPM
+
+
 
  Names of frequency responses
 	20 - 40 Hz			Low Bass
@@ -77,7 +97,8 @@ var SCexist = false;
 var OSmodule = null;
 
 // osc
-var OSCmodule = null;
+var OSCModule = null;
+var OSCIP = "127.0.0.1";
 
 // TMPDIR
 var tempDIR = "";
@@ -101,8 +122,9 @@ var fftSoundMaxFreqMagnitude = 0;
 var fftSoundMaxFreqIndex = 0;
 // FFT Mode
 var fftMode = "";
-//minAudio DB
+//minAudio/max DB
 var minDB = -50;
+var maxDB = 0;
 // Frequence table
 var FREQTABLE = [];
 
@@ -136,11 +158,22 @@ var  UDP_AUDIO_SYNC = [];
 var  UDP_AUDIO_SYNC_V2 = [];
 
 // BPM
-var cmdName = "aubio-beat-osc";
-var aubioPath = "";
-var options = "";
-var OSCIP = "127.0.0.1";
+var aubioCmdName = "aubio.cmd";
+var aubioProcName = "aubio-beat-osc";
 var aubioBuffer = 128;
+// Friture
+var fritureCmdName = "friture.cmd";
+// RTMGC
+var rtmgcCmdName = "rtmgc.cmd";
+var rtmgcProcName = "WrtmgcSRV";
+// multicast
+var multicastCmdName = "multicast.cmd";
+// python
+var wpythonPath = "";
+// module
+var moduleDIR = "/Chataigne/modules/WLEDAudioSync/";
+
+var options = "";
 
 //We create necessary entries in module.
 function init ()
@@ -150,7 +183,7 @@ function init ()
 	var UDPexist = root.modules.getItemWithName("WLEDAudioSync");
 	var SCtest = root.modules.getItemWithName("Sound Card");
 	OSmodule = root.modules.getItemWithName("OS");
-	OSCmodule = root.modules.getItemWithName("OSC");
+	OSCModule = root.modules.getItemWithName("OSC");
 	
 	if (SCtest.name == "soundCard")
 	{	
@@ -181,7 +214,7 @@ function init ()
 			
 	}
 
-	if (OSCmodule.name == "osc")
+	if (OSCModule.name == "osc")
 	{
 		script.log("Module OSC exist");
 		
@@ -202,10 +235,10 @@ function init ()
 	{
 		homeDIR = util.getEnvironmentVariable("USERPROFILE") + "/Documents";
 		winHOME = util.getEnvironmentVariable("USERPROFILE");
-		if (util.directoryExists(homeDIR + "/Chataigne/Python"))
+		if (util.directoryExists(homeDIR + "/Chataigne/Python/WPy64-39100/python-3.9.10.amd64/"))
 		{
-			// set exe path to python portable
-			aubioPath = homeDIR + "/Chataigne/Python/WPy64-39100/python-3.9.10.amd64/Scripts/";
+			// set win exe path to python portable
+			wpythonPath = homeDIR + "/Chataigne/Python/WPy64-39100/python-3.9.10.amd64";
 		}
 		
 	} else {
@@ -275,7 +308,7 @@ function moduleParameterChanged (param)
 		
 		for ( var i = 0; i < checkProcess.length; i ++)
 		{
-			if (checkProcess[i].contains(cmdName))
+			if (checkProcess[i].contains(aubioProcName))
 			{
 				aubioIsRunning = true;
 				aubioProcessName = checkProcess[i];
@@ -283,8 +316,10 @@ function moduleParameterChanged (param)
 				break;
 			}				
 		}
+
+		addOSCScript("OSCBPM");
 		
-		if (local.parameters.beatParams.useBPM.get() == 1 && aubioIsRunning === false)
+		if (local.parameters.beatParams.useBPM.get() == 1)
 		{
 			// find aubio devices list
 			aubioDevicesList();
@@ -297,6 +332,7 @@ function moduleParameterChanged (param)
 			{
 				script.log("Input device not defined in Sound card module");
 				util.showMessageBox("WLEDAudioSync ! ", "Input device not defined in Sound card module", "info", "Got it");
+				local.parameters.beatParams.useBPM.set(0); 
 				
 			} else {
 				
@@ -312,58 +348,65 @@ function moduleParameterChanged (param)
 					}
 				}
 				
-				addOSCScript();
-	
-				options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
-							" -d " + aubioDevices[i].value +
-							" -b " + aubioBuffer;
-				var command = aubioPath + cmdName + options;
-				script.log("command to run : " + command);
-				root.modules.os.launchCommand(command, true);
+				if (aubioIsRunning === false)
+				{
+					options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
+								" -d " + aubioDevices[i].value +
+								" -b " + aubioBuffer;
+					var command = homeDIR + moduleDIR + aubioCmdName + options;
+					script.log("command to run : " + command);
+					root.modules.os.launchCommand(command, true);
+					
+				} else {
+					
+					script.log("aubio is already running");
+				}
 			}
 			
-		} else if (local.parameters.beatParams.useBPM.get() == 0 && aubioIsRunning === true) {
+		} else {
 			
-			script.log("killing aubio : " + aubioProcessName);
-			var killCmd = root.modules.os.commandTester.setCommand("OS","Process","Kill App");		
-			killCmd.target.set(aubioProcessName);
-			root.modules.os.commandTester.trigger.trigger();
-			
+			if (aubioIsRunning === true)
+			{
+				script.log("killing aubio : " + aubioProcessName);
+				var killCmd = root.modules.os.commandTester.setCommand("OS","Process","Kill App");		
+				killCmd.target.set(aubioProcessName);
+				killCmd.hardKill.set(1);
+				root.modules.os.commandTester.trigger.trigger();
+				
+			} else {
+				
+				script.log("nothing to kill");
+			}		
 		}
 		
 	} else if (param.name == "forceReload"){
 
 		var checkProcess = root.modules.os.getRunningProcesses("*");
-		var aubioIsRunning = false;
 		var aubioProcessName = "";
 		
-		addOSCScript();
+		addOSCScript("OSCBPM");
 		
 		for ( var i = 0; i < checkProcess.length; i ++)
 		{
-			if (checkProcess[i].contains(cmdName))
+			if (checkProcess[i].contains(aubioProcName))
 			{
-				aubioIsRunning = true;
 				aubioProcessName = checkProcess[i];
 				script.log("aubio is running");
+				script.log("killing aubio : " + aubioProcessName);
+				var killCmd = root.modules.os.commandTester.setCommand("OS","Process","Kill App");		
+				killCmd.target.set(aubioProcessName);
+				killCmd.hardKill.set(1);
+				root.modules.os.commandTester.trigger.trigger();				
 				break;
 			}				
 		}
 		
-		if (aubioIsRunning === true) {
-			
-			script.log("killing aubio : " + aubioProcessName);
-			var killCmd = root.modules.os.commandTester.setCommand("OS","Process","Kill App");		
-			killCmd.target.set(aubioProcessName);
-			root.modules.os.commandTester.trigger.trigger();		
-		}
-
 		util.delayThreadMS(200);
 		
 		options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
 					" -d " + local.parameters.beatParams.inputAudio.get() +
 					" -b " + aubioBuffer;
-		var command = aubioPath + cmdName + options;
+		var command = homeDIR + moduleDIR + aubioCmdName + options;
 		script.log("command to run : " + command);		
 		root.modules.os.launchCommand(command, true);	
 
@@ -380,22 +423,47 @@ function moduleParameterChanged (param)
 		
 	} else if (param.name == "visualizeLiveAudio") {
 		
-		var infos = util.getOSInfos(); 
-		if ( infos.name.contains("Win") )
-		{
-			//execute Friture
-			var exeCMD = homeDIR+"/Chataigne/Python/WPy64-39100/Friture/friture.exe";
-			if (util.fileExists(homeDIR+"/Chataigne/Python/WPy64-39100/Friture/friture.exe")){
-				var launchresult = root.modules.os.launchApp(exeCMD);
-			} else {
-				util.showMessageBox("Friture not found ", "file name : " + exeCMD , "warning", "Ok");			
-			}
+		//execute Friture
+		var exeCMD = homeDIR + moduleDIR + fritureCmdName;
+		if (util.fileExists(exeCMD)){
+			var launchresult = root.modules.os.launchProcess(exeCMD, false);
 		} else {
-			
-			script.log("This feature Run Only on windows");
-		}
+			util.showMessageBox("Friture not found ", "file name : " + exeCMD , "warning", "Ok");			
+		}		
 		
-	}	
+	} else if (param.name == "useRTMGC") {
+	
+		if ( local.parameters.rtmgcParams.useRTMGC.get() == 1) 
+		{
+			var checkProcess = root.modules.os.getRunningProcesses("*");
+			var rtmgcRun = false;
+			
+			for ( var i = 0; i < checkProcess.length; i ++)
+			{
+				if (checkProcess[i].contains(rtmgcProcName))
+				{
+					script.log("RTMGC is already running");
+					var rtmgcRun = true;
+					break;
+					
+				}
+			}
+			
+			if (rtmgcRun === false) 
+			{
+				addOSCScript("OSCRTMGC");				
+				var oscPort = OSCModule.parameters.oscInput.localPort.get();
+				options = " " + local.parameters.rtmgcParams.serverPort.get() + " " + OSCIP + " " + oscPort;
+				var command = homeDIR + moduleDIR + rtmgcCmdName + options;
+				script.log("command to run : " + command);
+				if (util.fileExists(homeDIR + moduleDIR + rtmgcCmdName)){
+					root.modules.os.launchProcess(command, false);
+				} else {
+					script.log('Command file do not exist : ' + homeDIR + moduleDIR + rtmgcCmdName);
+				}
+			}
+		}
+	}
 }
 
 function moduleValueChanged (value) 
@@ -517,6 +585,7 @@ function createFFT(size)
 
 	removeFFT();
 	root.modules.soundCard.parameters.fftAnalysis.minDB.set(minDB);
+	root.modules.soundCard.parameters.fftAnalysis.maxDB.set(maxDB);
 	
 	fftMode = "custom";
 
@@ -544,6 +613,7 @@ function createWLEDFFT(old)
 
 	removeFFT();
 	root.modules.soundCard.parameters.fftAnalysis.minDB.set(minDB);
+	root.modules.soundCard.parameters.fftAnalysis.maxDB.set(maxDB);	
 	
 	if (old)
 	{
@@ -1399,54 +1469,47 @@ OSC Module
 
 */
 
-function addOSCScript()
+function addOSCScript(scriptName)
 {
 	OSCModule = root.modules.getItemWithName("OSC");
 	// create module if not exist
 	if (OSCModule.name == "undefined" ) 
 	{
 		script.log("Create OSC");
-		var newOSCModule = root.modules.addItem("OSC");
-		newOSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
-		var beatParam = newOSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
-		beatParam.setAttribute("saveValueOnly", false);
+		OSCModule = root.modules.addItem("OSC");
+		util.delayThreadMS(200);
+	}
 
-		var testScript = newOSCModule.scripts.getChild("OSCBPM");
-		if (testScript.name == "undefined")
-		{
-			var mysc = newOSCModule.scripts.addItem();
-			if (local.parameters.beatParams.scriptFile.get() == "OSCBPM.js")
-			{
-				mysc.filePath.set(homeDIR + "/Chataigne/Modules/WLEDAudioSync/OSCBPM.js");
-				
-			} else {
-				
-				mysc.filePath.set(local.parameters.beatParams.scriptFile.get());
-			}
-
-		}	
+	var localTest = '';	
+	if (scriptName == "OSCBPM")
+	{		
+		localTest = local.parameters.getChild("Beat Params");		
+		
+	} else if (scriptName == "OSCRTMGC") {
+		
+		localTest = local.parameters.getChild("RTMGC Params");
 		
 	} else {
 		
-		script.log("Use existing OSC");
-		OSCModule.register("/WLEDAudioSync/beat/BPM", "beatBPMCall");
-		
-		var testScript = OSCModule.scripts.getChild("OSCBPM");
-		if (testScript.name == "undefined")
+		script.log('unknown script');
+		return;
+	}
+	
+
+	var testScript = OSCModule.scripts.getChild(scriptName);	
+	if (testScript.name == "undefined")
+	{
+		var mysc = OSCModule.scripts.addItem();
+		if (localTest.scriptFile.get() == scriptName + ".js")
 		{
-			var mysc = OSCModule.scripts.addItem();
-			if (local.parameters.beatParams.scriptFile.get() == "OSCBPM.js")
-			{
-				mysc.filePath.set(homeDIR + "/Chataigne/Modules/WLEDAudioSync/OSCBPM.js");
-				
-			} else {
-				
-				mysc.filePath.set(local.parameters.beatParams.scriptFile.get());
-			}
-			var beatParam = OSCModule.values.addBoolParameter("WLEDAudioSyncBeat","Value change at each beat",false);
-			beatParam.setAttribute("saveValueOnly", false);
+			mysc.filePath.set(homeDIR + "/Chataigne/modules/WLEDAudioSync/"+scriptName+".js");
+			
+		} else {
+			
+			mysc.filePath.set(localTest.scriptFile.get());
 		}
-	}	
+	}
+
 }
 
 
@@ -1478,32 +1541,20 @@ function testMultiCast()
 	myIP = local.parameters.ipAddressToBind.getKey();
 	script.log(myIP , multicastIP , uDPPort);
 	
-	var multiExeCmd = util.readFile(homeDIR+"/Chataigne/Modules/WLEDAudioSync/multicast.cmd");
-	multiExeCmd = multiExeCmd.replace("\n","").replace("\r","");
-	var tobeRun = multiExeCmd.split(" ");
-	tobeRun[0] = tobeRun[0].replace("%USERPROFILE%", winHOME);
-	tobeRun[1] = tobeRun[1].replace("%USERPROFILE%", winHOME);
-	if (util.fileExists(tobeRun[0].replace('"','')))
+	var multiExeCmd = homeDIR + moduleDIR + multicastCmdName;
+	if (util.fileExists(multiExeCmd))
 	{
-		script.log("Python Ok");
+		script.log("multicastCmdName Ok");
+		var multiOptions = " --ip " + myIP + " --group " + multicastIP + " --port " + uDPPort;
+		var exeCMD = multiExeCmd + multiOptions;
+		script.log('command to run : '+ exeCMD);
+		// we execute the cmd 
+		var launchresult = root.modules.os.launchProcess(exeCMD, false);
 		
 	} else {
 		
-		tobeRun[0] = "python ";
+		script.log('multicmd not found');
 	}
-	if (util.fileExists(tobeRun[1].replace('"','')))
-	{
-		script.log("Python script Ok");
-		
-	} else {
-		
-		script.log("ERROR Python script do not exist");
-	}	
-	var multiOptions = " --ip " + myIP + " --group " + multicastIP + " --port " + uDPPort;
-	var exeCMD = tobeRun[0] + " " + tobeRun[1] + multiOptions;
-	script.log('command to run : '+ exeCMD);
-	// we execute the cmd 
-	var launchresult = root.modules.os.launchProcess(exeCMD, true);
 }
 
 // replay audio data from snapshot file
@@ -1589,7 +1640,7 @@ return tempDIR;
 function aubioDevicesList()
 {
 	var fileTmp = findTMP() + "/aubioDevicesList.tmp";
-	var command = aubioPath + cmdName + " list >" + fileTmp;	
+	var command = homeDIR + moduleDIR + aubioCmdName + " list >" + fileTmp;
 	var result = root.modules.os.launchCommand(command, false);
 	var devicesList = util.readFile(fileTmp).split("\n");
 	
@@ -1672,26 +1723,74 @@ function resetVolMag()
 	local.parameters.frequencyMagnitudeMultiplier.set(254);
 }
 
+// We take the BPM to give a genre probability, based on medium values.
+// could be associated to RTMGC
+function getProbableGenres (bpm) 
+{
+	// Name: min BPM, max BPM
+	var genres = [
+		'Ambient: 60, 100',
+		'Bachata: 128, 128',
+		'Ballad: 60, 80',
+		'Blues: 60, 120',
+		'Classical: 60, 120',
+		'Country: 60, 120',
+		'Crunk: 80, 80',
+		'Cumbia: 70, 80',
+		'Disco: 110, 140',
+		'Drum n Bass: 160, 180',
+		'Dubstep: 130, 150',
+		'Electronic: 120, 140',
+		'Eurodance: 126, 132',
+		'Frenchcore: 200, 210',
+		'Folk: 90, 130',
+		'Funk: 90, 120',
+		'Funky House: 128, 136',
+		'Hard Rock: 130, 160',
+		'Heavy Metal: 100, 120',
+		'Hip Hop: 60, 100',
+		'House: 120, 130',
+		'Indie: 100, 160',
+		'Jazz: 80, 140',
+		'Latin: 90, 130',
+		'Makina: 150, 190',
+		'Metal: 100, 200',
+		'New Beat: 110, 120',
+		'Pop: 90, 130',
+		'Psytrance: 140, 145',
+		'Punk: 150, 200',
+		'R&B: 60, 100',
+		'Rap: 90, 100',
+		'Reggae: 70, 100',
+		'Reggaeton: 80, 90',
+		'Rock: 100, 160',
+		'Salsa: 150, 250',
+		'Soul: 60, 120',
+		'Tango: 50, 56',	
+		'Techno: 120, 140',
+		'Techno Hardcore: 170, 200',
+		'Trance: 130, 150',
+		'Tribe: 145, 180',
+		'Trip Hop: 60, 120'
+	];
+
+	var probableGenres = [];
+	var j = 0;
+
+	for (var i = 0; i < genres.length; i ++) {
+		var genre = genres[i].split(':');
+		var bpmRange = genre[1].split(',');
+		if (bpm >= parseInt(bpmRange[0]) && bpm <= parseInt(bpmRange[1])) {
+		  probableGenres[j] = genre[0];
+		  j = j+1;
+		}
+	}
+
+	return probableGenres;
+}
+
 // just for some test
 function test()
 {
-	for (var i = 0; i < 16 ; i +=1)
-	{
-		script.log(FREQTABLE[i]);
-	}
-	
-	var scriptFile = local.parameters.beatParams.scriptFile.getAbsolutePath();
-	script.log(scriptFile);
-	var myfile = util.fileExists(scriptFile);
-	script.log(myfile);
-	
-	var testScript = root.modules.osc.scripts.getChild("OSCBPM");
-	if (testScript.name == "undefined")
-	{
-		var mysc = root.modules.osc.scripts.addItem();
-		mysc.filePath.set(scriptFile);		
-	}
-	
-	
-	
+		script.log('test');
 }

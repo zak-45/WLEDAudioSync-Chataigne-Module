@@ -2,17 +2,14 @@
 # **WLEDAudioSync Module for Chataigne.**
 Stream music/audio to WLED Audio reactive.
 
-Real time audio analysis : the real time audio datas are not supposed to be fully accurate for a scientific need but enough for light show creation.
-This can be used even if you do not own WLED and want to drive some others LEDs or software due to Chataigne's features.
-
-![image](https://user-images.githubusercontent.com/121941293/233323026-44b28531-cc75-480f-a542-cc7a81a49c23.png)
+Real time audio analysis : the real time audio datas are not supposed to be fully accurate but enough for light show creation.
 
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
 - Should Work on any OS where Chataigne run ( Win/Mac/Linux/Pi ). 
 
-- On your ESP8266/ESP32 you only need to have WLED Sound Reactive version installed. 
+- You only need to have WLED Sound Reactive version installed. 
   No Hardware( micro: analog or digital) required. 
 
 - Use UDP Multicast, so your LED strip can be anywhere.
@@ -38,7 +35,6 @@ This can be used even if you do not own WLED and want to drive some others LEDs 
 
 ```
 
-
 GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
 
 For beat / BPM see : https://github.com/DrLuke/aubio-beat-osc
@@ -52,9 +48,6 @@ Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
 
 Nota:
 You will need additional step for beat / BPM if you want to use this feature. 
- -->Python need to be installed with pip if you want BPM (run pip as admin on win).
-No windows users or windows user who do not choose to use the provided portable python, 
-need to customize the multicast.cmd file (the content is READed and executed with parameters from module).
 ```
 
 For Windows
@@ -63,9 +56,11 @@ Download : https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases/dow
 ```
 This will install Chataigne / python module / chataigne module / Friture
 
-Nota :  Provide portable Python 3.9 x64 with all installed (optional but recommanded).
-        If Chataigne already installed, you can abort its installation. 
-        
+Nota : If Chataigne already installed, you can abort its installation. 
+       Python need to be installed with pip if you want BPM (run pip as admin).
+       Provide portable Python 3.9 x64 with all installed (optional but recommanded).
+
+
 ```
 
 
@@ -153,7 +148,7 @@ Custom / size 0.10
 ---
 
 
-### Audio Configuration (Win)
+Audio Configuration (Win)
 
 For audio control, Voicemeeter is one of the best tools : https://voicemeeter.com/
 
@@ -165,13 +160,7 @@ https://user-images.githubusercontent.com/121941293/227597492-aff9c8a6-5314-4f5f
 ---
 
 
-### Real Time audio analysis
-
-
-RealTime.noisette file view:
-
-https://user-images.githubusercontent.com/121941293/233774047-d2a33500-3579-4174-bea7-725e00a4fa19.mp4
-
+Real Time audio analysis
 
 
 https://user-images.githubusercontent.com/121941293/230689672-cc5d42c5-c94b-488a-aab2-aea43275ef82.mp4
@@ -189,4 +178,4 @@ On 26/03/2023:
 for ESP8266, old SR WLED fw version required : 0.13.03b3 https://wled-install.github.io/.
 Port to the 0.14.xx version is on TO DO list...
 
-Some .noisette files are provided for your convience. Need to be run from `<MyDocuments>`\chataigne\modules folder.
+

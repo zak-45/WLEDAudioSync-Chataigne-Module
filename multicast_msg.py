@@ -15,7 +15,7 @@ def sendMulticastMessage(ip,port,group,msg):
     
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_ADD_MEMBERSHIP,  mgroup+iface)
 
-    ttl_setting = 1;
+    ttl_setting = 5;
 
     ttl = struct.pack('b', ttl_setting)
     sock.setsockopt(socket.IPPROTO_IP, socket.IP_MULTICAST_TTL, ttl)

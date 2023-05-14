@@ -2,8 +2,7 @@
 	"name": "WLEDAudioSync",
 	"type": "UDP",
 	"path": "Protocol",
-	
-	"version": "1.0.0",
+	"version": "1.1.0",
 	"description": "Stream Sound data to your WLED Sound Reactive",
 	"url":"",
 	"downloadURL": "",
@@ -31,7 +30,6 @@
 		},
 		"multicastMode": true
 	},
-
 	"parameters": {
 		"IP Address to bind": {
 			"type": "Enum",
@@ -103,7 +101,7 @@ It works on Windows, macOS and Linux. It is free and open source.",
 			},		
 			"Input audio": {
 				"type": "Enum",
-				"description": "Choose audio device name for input (first 9th only)",
+				"description": "Choose audio device name for input (first 9 only)",
 				"readOnly": false,
 				"options" : {}
 			},
@@ -118,6 +116,29 @@ It works on Windows, macOS and Linux. It is free and open source.",
 				"description": "Re run the BPM calculation process with 'Input audio' data",
 				"readOnly": false
 			}
+		},
+		"RTMGC Params":{
+			"type": "Container",
+			"description":"Real Time Music Genre Classification parameters",
+			"collapsed": true,
+			"Use RTMGC": {
+				"type": "Boolean",
+				"description": "Checked, will use RTMGC",
+				"default": false
+			},
+			"Server Port": {
+				"type": "Integer",
+				"description": ": Node js server port : max 65536",
+				"default": 8000,
+				"min": 1,
+				"max": 65536
+			},			
+			"Script file": {
+				"type": "File",
+				"description": "OSC Script file name",
+				"readOnly": false,
+				"default" : "OSCRTMGC.js"
+			}
 		}
 	},
 
@@ -128,7 +149,7 @@ It works on Windows, macOS and Linux. It is free and open source.",
 	"scripts": [
 		"WLEDAudioSync.js"
 	],
-	
+
 	"commands": {
 
 		"Snapshot":
@@ -175,5 +196,5 @@ It works on Windows, macOS and Linux. It is free and open source.",
 				}
 			}
 		}		
-	}
+	}	
 }
