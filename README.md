@@ -44,7 +44,7 @@ GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
 
 For beat / BPM see : https://github.com/DrLuke/aubio-beat-osc
 
-For RMTGC see: see: https://github.com/zak-45/WLEDAudioSyncRTMGC
+For RMTGC see: https://github.com/zak-45/WLEDAudioSyncRTMGC
 
 ### ***Installation :***
 
