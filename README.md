@@ -45,6 +45,8 @@ GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
 
 For beat / BPM see : https://github.com/DrLuke/aubio-beat-osc
 
+For Friture see : https://friture.org/
+
 For RMTGC see: https://github.com/zak-45/WLEDAudioSyncRTMGC
 
 ### ***Installation :***
