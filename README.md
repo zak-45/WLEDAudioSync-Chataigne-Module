@@ -6,6 +6,7 @@ Real time audio analysis : the real time audio datas are not supposed to be full
 
 Real Time Music Genre Classification : get real-time music genre predictions based on the analysed audio stream.
 
+This can be used with or without WLED device.
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
