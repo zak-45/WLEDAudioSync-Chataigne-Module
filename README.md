@@ -116,7 +116,7 @@ On Inspector:
   
   Use RTMGC : this will execute the Nodejs server and launch chrome
   Server Port : port number for the Nodejs server , default to 8000
-  Script file: scrpt file name for OSC module
+  Script file: script file name for OSC module
     use OSCRTMGC.js under modules folder.
   
   Update Rate : frequence to send audio data message to WLED (fps)
