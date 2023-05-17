@@ -194,6 +194,10 @@ https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/958e14
 
 
 
+LedFx demo
+
+https://youtu.be/yu8QgQlLT5g
+
 ---
 
 
