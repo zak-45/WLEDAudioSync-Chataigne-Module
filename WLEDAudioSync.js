@@ -175,6 +175,9 @@ var moduleDIR = "/Chataigne/modules/WLEDAudioSync/";
 
 var options = "";
 
+// SCAnalyzer test
+var SCAModule = false;
+
 //We create necessary entries in module.
 function init ()
 {
@@ -184,6 +187,7 @@ function init ()
 	var SCtest = root.modules.getItemWithName("Sound Card");
 	OSmodule = root.modules.getItemWithName("OS");
 	OSCModule = root.modules.getItemWithName("OSC");
+	SCAModule = root.modules.getItemWithName("SCAnalyzer");	
 	
 	if (SCtest.name == "soundCard")
 	{	
@@ -194,6 +198,7 @@ function init ()
 			
 		script.log("No Sound Card present");
 		var newSCModule = root.modules.addItem("Sound Card");
+		util.delayThreadMS(100);
 		if (newSCModule.name != "undefined")
 		{
 			SCexist = true;
@@ -211,6 +216,7 @@ function init ()
 	} else {
 			
 		OSModule = root.modules.addItem("OS");
+		util.delayThreadMS(100);
 			
 	}
 
@@ -223,6 +229,16 @@ function init ()
 		script.log("Module OSC do not exist");
 			
 	}
+
+	if (SCAModule.name != "undefined")
+	{
+		script.log("Module SCAnalyzer exist");
+		
+	} else {
+			
+		script.log("Module SCAnalyzer does not exist");
+			
+	}	
 
 	local.scripts.wLEDAudioSync.updateRate.setAttribute("readOnly",false);
 	root.modules.soundCard.parameters.pitchDetectionMethod.set("YIN");
@@ -245,6 +261,8 @@ function init ()
 		
 		homeDIR = util.getEnvironmentVariable("$HOME");
 	}
+	
+	script.setUpdateRate(50);
 	
 }
 
@@ -480,7 +498,6 @@ function update ()
 	if (isInit === true)
 	{
 		script.log('Initialize');
-		script.setUpdateRate(50);
 		
 		// retreive all IPs
 		var ips = util.getIPs();
@@ -491,7 +508,7 @@ function update ()
 			local.parameters.ipAddressToBind.addOption(ips[i],i);
 		}		
 		
-		local.parameters.ipAddressToBind.set(root.modules.os.values.ip.get());
+		local.parameters.ipAddressToBind.set(root.modules.os.values.networkInfos.ip.get());
 		multicastIP = local.parameters.output.remoteHost.get();;
 		uDPPort = local.parameters.output.remotePort.get();
 		myIP = local.parameters.ipAddressToBind.get();
@@ -513,6 +530,12 @@ function update ()
 		
 		// Remove read only from rate
 		local.scripts.wLEDAudioSync.updateRate.setAttribute("readOnly",false);
+		
+		// add WLEDAudioSync to SCAnalyzer options
+		if (SCAModule.name != "undefined")
+		{
+			SCAModule.parameters.wLEDAudioSyncParams.moduleName.addOption(local.name, local.name);	
+		}		
 		
 		// end
 		isInit = false;
@@ -601,6 +624,7 @@ function createFFT(size)
 	for (var i = 0; i < 16; i += 1)
 	{
 		var bin = root.modules.soundCard.parameters.fftAnalysis.addItem();
+		util.delayThreadMS(100);
 		bin.position.set(0.0625 * i);
 		bin.size.set(size);
 		updateFreqTable(fftMode, i);
@@ -628,6 +652,7 @@ function createWLEDFFT(old)
 	for (var i = 0; i < 16; i += 1)
 	{
 		var bin = root.modules.soundCard.parameters.fftAnalysis.addItem();
+		util.delayThreadMS(100);
 		if (i == 0)
 		{
 			if (old) 
@@ -1116,7 +1141,7 @@ WLED Specifics
 
 */
 
-// This one should be always executed. If replay is true we take data from file.
+// This one should be always executed. If replay is true we had taken data from file.
 function udpAudioSyncV1(replay)
 {
 /* 
@@ -1477,7 +1502,7 @@ function addOSCScript(scriptName)
 	{
 		script.log("Create OSC");
 		OSCModule = root.modules.addItem("OSC");
-		util.delayThreadMS(200);
+		util.delayThreadMS(100);
 	}
 
 	var localTest = '';	
@@ -1500,6 +1525,7 @@ function addOSCScript(scriptName)
 	if (testScript.name == "undefined")
 	{
 		var mysc = OSCModule.scripts.addItem();
+		util.delayThreadMS(100);
 		if (localTest.scriptFile.get() == scriptName + ".js")
 		{
 			mysc.filePath.set(homeDIR + "/Chataigne/modules/WLEDAudioSync/"+scriptName+".js");
@@ -1789,8 +1815,11 @@ function getProbableGenres (bpm)
 	return probableGenres;
 }
 
+
 // just for some test
 function test()
 {
 		script.log('test');
+		root.modules.sCAnalyzer.parameters.wLEDAudioSyncParams.moduleName.addOption(local.name, local.name);
+		script.log(local.name);
 }
