@@ -1586,12 +1586,13 @@ function testMultiCast()
 // replay audio data from snapshot file
 function runReplay(fileName, myduration)
 {
-	script.setUpdateRate(10);
 	duration = myduration;
 	
 	// if same file for replay, avoid to read it again and again
 	if (fileName != previousFile)
 	{
+		script.log("File Name : "  + fileName);
+		if (fileName == ""){return;}
 		SOUNDDATA = [];
 		SOUNDDATA = util.readFile(fileName).split(";");
 		previousFile = fileName;
@@ -1609,6 +1610,7 @@ function runReplay(fileName, myduration)
 	}
 
 	replay = true;
+	script.setUpdateRate(10);
 }
 
 // Find Audio input device name 
