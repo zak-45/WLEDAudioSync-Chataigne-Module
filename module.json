@@ -1,200 +1,794 @@
 {
-	"name": "WLEDAudioSync",
-	"type": "UDP",
-	"path": "Protocol",
-	"version": "1.1.0",
-	"description": "Stream Sound data to your WLED Sound Reactive",
+	"name": "SCAnalyzer",
+	"type": "Empty",
+	"path": "Custom",
+	
+	"version": "1.0.0",
+	"description": "Analysis Command for sequence/audio clip, based on Vamp plugin",
 	"url":"",
 	"downloadURL": "",
-	"hasInput": false,
+	"hasInput": true,
 	"hasOutput": true, 
 	"hideDefaultCommands": false,
-	"hideDefaultParameters": [
-		"protocol",
-		"autoAdd",
-		"messageStructure",
-		"firstValueIsTheName",
-		"input"
-	],
-	
-	"defaults": {
-		"input":{
-			"enabled": false
-		},
-		"autoAdd" : false,
-		"protocol" : "Raw",
-		"output":{
-			"local": false,
-			"remoteHost": "239.0.0.1",
-			"remotePort" : 11988
-		},
-		"multicastMode": true
-	},
+
 	"parameters": {
-		"IP Address to bind": {
-			"type": "Enum",
-			"description": "Bind Port to this IP address and send a test message.
-	Used if you're in trouble to send to the Multicast Group",
-			"default": "127.0.0.1",
-			"readOnly": false,
-			"options": {
-				"127.0.0.1":"127.0.0.1"				
-			}
-		},
-		"Send Test Message": {
-			"type": "Trigger",
-			"description": "Click to send test message to the Multicast Group",
-		},
-		"Live": {
-			"type": "Boolean",
-			"description": "Use live audio datas",
-			"default": true
-		},
-		"Visualize live audio": {
-			"type": "Trigger",
-			"description": "Friture is a real-time audio analyzer.
-It works on Windows, macOS and Linux. It is free and open source.",
-		},		
-		"Audio V1": {
-			"type": "Boolean",
-			"description": "V1 message structure",
-			"default": false
-		},
-		"Audio V2": {
-			"type": "Boolean",
-			"description": "V2 message structure",
-			"default": true			
-		},
-		"Delay": {
-			"type": "Integer",
-			"description": "Delay to send audio data (ms) : max 256",
-			"default": 0,
-			"min": 0,
-			"max": 256
-		},		
-		"Volume Multiplier": {
-			"type": "Float",
-			"description": "Volume level multiplier",
-			"default": 1024,
-			"min":0,
-			"max":10240
-		},
-		"Frequency Magnitude Multiplier": {
-			"type": "Float",
-			"description": "Frequency magnitude level multiplier",
-			"default": 254,
-			"min":0,
-			"max":2540
-		},
-		"Take Snapshot": {
-			"type": "Trigger",
-			"description": "Take a snapshot of audio data for replay",
-		},
-		"Beat Params":{
+		"Audio Params":{
 			"type": "Container",
-			"description":"Aubio Beat BPM parameters",
-			"collapsed": true,
-			"Use BPM": {
-				"type": "Boolean",
-				"description": "Checked, will use custom Live BPM calculation received via OSC ",
-				"default": false
-			},		
-			"Input audio": {
-				"type": "Enum",
-				"description": "Choose audio device name for input (first 9 only)",
-				"readOnly": false,
-				"options" : {}
-			},
-			"Script file": {
-				"type": "File",
-				"description": "OSC Script file name",
-				"readOnly": false,
-				"default" : "OSCBPM.js"
-			},			
-			"Force reload": {
-				"type": "Trigger",
-				"description": "Re run the BPM calculation process with 'Input audio' data",
-				"readOnly": false
-			}
-		},
-		"RTMGC Params":{
-			"type": "Container",
-			"description":"Real Time Music Genre Classification parameters",
-			"collapsed": true,
-			"Use RTMGC": {
-				"type": "Boolean",
-				"description": "Checked, will use RTMGC",
-				"default": false
-			},
-			"Server Port": {
+			"description":"Audio global parameters",
+			"collapsed": false,
+			"Global Delay": {
 				"type": "Integer",
-				"description": ": Node js server port : max 65536",
-				"default": 8000,
-				"min": 1,
-				"max": 65536
+				"description": "Time to delay consequences/outputs, in ms (max 640). To be used mainly in case of BT audio delay",
+				"default": 0,
+				"min":0,
+				"max":640
+			}
+		},		
+		"Sonic Params":{
+			"type": "Container",
+			"description":"Sonic annotator global parameters",
+			"collapsed": false,
+			"Run Sonic Visualiser": {
+				"type": "Trigger",
+				"description": "Launch Sonic Visualiser application"
 			},			
-			"Script file": {
-				"type": "File",
-				"description": "OSC Script file name",
+			"Sonic Annotator Info": {
+				"type": "Trigger",
+				"description": "Click to see documentation"
+			},
+			"Sonic annotator location": { 
+				"type": "File", 
+				"description": "Select the Sonic annotator application used",
+				"default":"sonic-annotator.exe"
+			},
+			"Output File": { 
+				"type": "File", 
+				"description": "Sonic annotator output Json file name. 
+	This one will store the analyzer output and will be read to create corresponding Triggers/outputs.
+	If left blank, will be created with same name as audio file name under tmp location."
+			},
+			"Transform file":{
+				"type":"File",
+				"default": "qmsegmenter.nc3",
+				"description": "Sonic annotator transform file name for Segmenter. 
+	Need to be specified when want to change default values, use the one provided in module folder (nc3)"				
+			},				
+			"Rhythm Transform file":{
+				"type":"File",
+				"default": "bbcrhythm.nc3",
+				"description": "Sonic annotator transform file name for Rhythm Difference. 
+	Need to be specified when want to change default values, use the one provided in module folder (nc3)"				
+			}			
+		},
+		"Group Params":{
+			"type": "Container",
+			"description":"Group parameters",
+			"collapsed": true,
+			"Link To Group Number": {
+				"type": "Enum",
+				"description": "Choose group name to use for mapping output, to store default values and calculated params.
+Group need to be set under scGroup xx.",
 				"readOnly": false,
-				"default" : "OSCRTMGC.js"
+				"options": {
+					"None":"0",
+					"01":"scGroup01",
+					"02":"scGroup02",
+					"03":"scGroup03",
+					"04":"scGroup04",
+					"05":"scGroup05",
+					"06":"scGroup06",
+					"07":"scGroup07",
+					"08":"scGroup08",
+					"09":"scGroup09",
+					"10":"scGroup10",
+					"11":"scGroup11",
+					"12":"scGroup12"
+				}
+			},
+			"ScGroup 01": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},
+			"ScGroup 02": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},
+			"ScGroup 03": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},
+			"ScGroup 04": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},
+			"ScGroup 05": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},
+			"ScGroup 06": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup WLED by IP and store default/calculated values.",
+			},
+			"ScGroup 07": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},
+			"ScGroup 08": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},
+			"ScGroup 09": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},			
+			"ScGroup 10": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},			
+			"ScGroup 11": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			},			
+			"ScGroup 12": {
+				"type": "String",
+				"description": "Create custom  variables group name. 
+	Used to regroup IP and store default/calculated values.",
+			}			
+		},
+		"Mapping Params":{
+			"type": "Container",
+			"description":"Mapping parameters",
+			"collapsed": true,
+			"Reset Mapping Max value": {
+				"type": "Boolean",
+				"description": "Checked, will create zero point before/after max point values.
+CAUTION: this will increase mapping time creation x3",
+				"default": false
+			},			
+			"Split": {
+				"type": "Boolean",
+				"description": "Checked, actions will be split thru all IPs - modulo - (IPs from associated group and only for Mappings)",
+				"default": false
+			},
+			"Sequential": {
+				"type": "Boolean",
+				"description": "Checked, actions will be split thru all IPs - sequential - (IPs from associated group and only for Mappings)",
+				"default": false
+			}
+		},		
+		"WLED Params":{
+			"type": "Container",
+			"description":"WLED parameters",
+			"collapsed": true,
+			"WLED Live": {
+				"type": "Boolean",
+				"description": "Checked, will put all WLED devices on live mode (not used when UDP)",
+				"default": false
+			},
+			"Use WebSocket": {
+				"type": "Boolean",
+				"description": "Checked, will create WS connection for all WLED IP if necessary (only for mapping output)",
+				"default": false
+			},
+			"AllIP": {
+				"type": "Boolean",
+				"description": "Checked, actions will be created for all WLED IPs (IP from associated group)",
+				"default": false
+			},			
+			"Preset": {
+				"type": "Integer",
+				"description": "Enter preset/playlist number to use in mapping (need to be created in WLED device before and bypassed when UDP)",
+				"default": 0,
+				"min":0,
+				"max":255
+			},
+			"Create WLED actions": {
+				"type": "Boolean",
+				"description": "Checked, will create consequences using associated colors/effects/palettes for Segmenter(http).
+And Mapping outputs by using Groups for RhythmAnalyzer(udp/ws).",
+				"default": false
+			}			
+		},
+		"LedFX Params":{
+			"type": "Container",
+			"description":"LedFX parameters",
+			"collapsed": true,
+			"Default virtual device name": {
+				"type": "String",
+				"description": "Enter default device name used for trigger consequences.
+Virtual device must be defined with ledFX App",
+				"default": "ledfxvirtualdevice"
+			},
+			"Default scene name": {
+				"type": "String",
+				"description": "Enter default scene name used for trigger consequences.
+Scene must be defined with ledFX App",
+				"default": "ledfxscene"
+			},			
+			"Associated scenes": {
+				"type": "Enum",
+				"description": "Scenes to use by segment from prefix A thru L e.g.'A = scene1, B = scene2 ,C ...' . Right click, set options to adapt",
+				"readOnly": false,
+				"options": {
+					"A":"scene1",
+					"B":"scene2",
+					"C":"scene3"
+				}
+			},			
+			"Associated effects": {
+				"type": "Enum",
+				"description": "Effect to use by segment from prefix A thru L e.g.'A = power, B = blocks ,C ...' . Right click, set options to adapt",
+				"readOnly": false,
+				"options": {
+					"A":"Power",
+					"B":"Bands",
+					"C":"Marching",
+					"D":"Energy",
+					"E":"Equalizer",
+					"F":"Melt",
+					"G":"Magnitude",
+					"H":"Spectrum",
+					"I":"Strobe",
+					"J":"Blocks",
+					"K":"BPM Strobe",
+					"L":"Bar"
+				}
+			},
+			"Load default": {
+				"type": "Trigger",
+				"description": "Load default effects association "
+			},			
+			"Use scenes": {
+				"type": "Boolean",
+				"description": "Checked, will create consequences using associated scenes instead effects ",
+				"default": false
+			},			
+			"Create actions": {
+				"type": "Boolean",
+				"description": "Checked, will create consequences using default device / associated effects or scenes activation",
+				"default": false
+			}
+		},
+		"Spleeter Params":{
+			"type": "Container",
+			"description":"Spleeter global parameters",
+			"collapsed": false,
+			"Create vocal": {
+				"type": "Boolean",
+				"description": "Checked, will create mapping for vocal part of the song.",
+				"default": false
+			}
+		},
+		"WLEDAudioSync Params":{
+			"type": "Container",
+			"description":"WLEDaudioSync global parameters",
+			"collapsed": true,
+			"Replay File": {
+				"type": "File",
+				"description": "Select file name for replay.
+If file name is set, this will create output/action for mapping",
+			},
+			"Duration": {
+				"type": "Integer",
+				"description": "How many time replay will send data, max 1500 ms",
+				"default": 1,
+				"min":1,
+				"max":1500
+			},
+			"Module name": {
+				"type": "Enum",
+				"description": "Select WLEDAudioSync module name to use",
+				"readOnly": false,
+				"options": {
+					"wLEDAudioSync": "wLEDAudioSync"
+				}				
+			},
+			"All Modules": {
+				"type": "Boolean",
+				"description": "Check to create output for all WLEDAudioSync modules",
+				"readOnly": false,
+				"default": false
+			}			
+		},		
+		"Default Colors":{
+			"type": "Container",
+			"description":"Color parameters",
+			"collapsed": true,
+			"Activate Colors": {
+				"type": "Trigger",
+				"description": "All colors activated. Colors consequences will be created. Will set Alpha to 255."
+			},
+			"DeActivate Colors": {
+				"type": "Trigger",
+				"description": "All colors bypassed. Will set Alpha to 191 (need to be <> of 255). "
+			},
+			"Loop Colors": {
+				"type": "Boolean",
+				"description": "Checked, will create Mapping for colors loop (Link to group need to be set).",
+				"default": false
+			},			
+			"segment A": {
+				"type": "Color",
+				"description": "Color for segment A",
+				"default": [1,1,1,0.75],
+			},
+			"segment B": {
+				"type": "Color",
+				"description": "Color for segment B",
+				"default": [1,1,0,0.75]
+			},
+			"segment C": {
+				"type": "Color",
+				"description": "Color for segment C",
+				"default": [1,0,0,0.75]
+			},
+			"segment D": {
+				"type": "Color",
+				"description": "Color for segment D",
+				"default": [0,1,1,0.75]
+			},
+			"segment E": {
+				"type": "Color",
+				"description": "Color for segment E",
+				"default": [0,0,1,0.75]
+			},
+			"segment F": {
+				"type": "Color",
+				"description": "Color for segment F",
+				"default": [1,0,1,0.75]
+			},
+			"segment G": {
+				"type": "Color",
+				"description": "Color for segment G",
+				"default": [0,1,0,0.75]
+			},
+			"segment H": {
+				"type": "Color",
+				"description": "Color for segment H",
+				"default": [0.1,1,1,0.75]
+			},
+			"segment I": {
+				"type": "Color",
+				"description": "Color for segment I",
+				"default": [1,0.1,1,0.75]
+			},
+			"segment J": {
+				"type": "Color",
+				"description": "Color for segment J",
+				"default": [1,1,0.1,0.75]
+			},
+			"segment K": {
+				"type": "Color",
+				"description": "Color for segment K",
+				"default": [1,0.1,0.1,0.75]
+			},
+			"segment L": {
+				"type": "Color",
+				"description": "Color for segment L",
+				"default": [0.1,0.1,1,0.75]
+			}
+		},
+		"Default Effects":{
+			"type": "Container",
+			"description":"Effect parameters",
+			"collapsed": true,
+			"Reset Effects": {
+				"type": "Trigger",
+				"description": "Put all effects to -1 (bypass)"
+			},				
+			"effect A": {
+				"type": "Integer",
+				"description": "Effect index for segment A",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect B": {
+				"type": "Integer",
+				"description": "Effect index for segment B",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect C": {
+				"type": "Integer",
+				"description": "Effect index for segment C",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect D": {
+				"type": "Integer",
+				"description": "Effect index for segment D",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect E": {
+				"type": "Integer",
+				"description": "Effect index for segment E",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect F": {
+				"type": "Integer",
+				"description": "Effect index for segment F",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect G": {
+				"type": "Integer",
+				"description": "Effect index for segment G",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect H": {
+				"type": "Integer",
+				"description": "Effect index for segment H",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect I": {
+				"type": "Integer",
+				"description": "Effect index for segment I",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect J": {
+				"type": "Integer",
+				"description": "Effect index for segment J",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect K": {
+				"type": "Integer",
+				"description": "Effect index for segment K",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"effect L": {
+				"type": "Integer",
+				"description": "Effect index for segment L",
+				"min":-1,
+				"max":256,
+				"default": -1
+			}
+		},
+		"Default Palettes":{
+			"type": "Container",
+			"description":"Palette parameters",
+			"collapsed": true,
+			"Reset Palettes": {
+				"type": "Trigger",
+				"description": "Put all palettes to -1 (bypass)"
+			},				
+			"palette A": {
+				"type": "Integer",
+				"description": "Palette index for segment A",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette B": {
+				"type": "Integer",
+				"description": "Palette index for segment B",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette C": {
+				"type": "Integer",
+				"description": "Palette index for segment C",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette D": {
+				"type": "Integer",
+				"description": "Palette index for segment D",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette E": {
+				"type": "Integer",
+				"description": "Palette index for segment E",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette F": {
+				"type": "Integer",
+				"description": "Palette index for segment F",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette G": {
+				"type": "Integer",
+				"description": "Palette index for segment G",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette H": {
+				"type": "Integer",
+				"description": "Palette index for segment H",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette I": {
+				"type": "Integer",
+				"description": "Palette index for segment I",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette J": {
+				"type": "Integer",
+				"description": "Palette index for segment J",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette K": {
+				"type": "Integer",
+				"description": "Palette index for segment K",
+				"min":-1,
+				"max":256,
+				"default": -1
+			},
+			"palette L": {
+				"type": "Integer",
+				"description": "Palette index for segment L",
+				"min":-1,
+				"max":256,
+				"default": -1
 			}
 		}
 	},
-
 	"values": {	
 	},
-	
-	
 	"scripts": [
-		"WLEDAudioSync.js"
+		"SCAnalyzer.js"
 	],
-
 	"commands": {
-
-		"Snapshot":
+		
+		"QM Segmenter":
 		{
-			"menu":"Replay",
-			"callback":"runReplay",
+			"menu":"Analyzer",
+			"callback":"segAnalyzer",
+			"parameters":{
+				"sequence":{
+					"type":"Target",
+					"description": "Select filePath from the Sequence / AudioClip  to analyse.
+Result will be stored on the existing sequence",
+					"allowedTypes":["File"]
+				},
+				"File name":{
+					"type":"File",
+					"description": "Select audio file to analyse.
+Result will create new sequence."					
+				},
+				"featureType":{
+					"type":"Enum",
+					"options":{
+						"Hybrid":1,
+						"Chromatic":2,
+						"Timbral":3
+					},
+					"default":"Hybrid",
+					"description": "'Hybrid', the default, which uses a Constant-Q transform (see related plugin): this is generally effective for modern studio recordings;
+    'Chromatic', using a chromagram derived from the Constant-Q feature (see related plugin): this may be preferable for live, acoustic, or older recordings, in which repeated sections may be less consistent in sound;
+    'Timbral', using Mel-Frequency Cepstral Coefficients (see related plugin), which is more likely to result in classification by instrumentation rather than musical content."
+				},
+				"nSegmentTypes":{
+					"type":"Integer",
+					"min": 1,
+					"max": 12,
+					"default": 10,
+					"description": "The maximum number of clusters (segment-types) to be returned. 
+	The default is 10. Unlike many clustering algorithms, the constrained clustering used in this plugin does not produce too many clusters or vary significantly even if this is set too high. 
+	However, this parameter can be useful for limiting the number of expected segment-types. "
+				},
+				"neighbourhoodLimit":{
+					"type":"Integer",
+					"min":1,
+					"max":15,
+					"default":4,
+					"description": "The approximate expected minimum duration for a segment, from 1 to 15 seconds. 
+	Changing this parameter may help the plugin to find musical sections rather than just following changes in the sound of the music, and also avoid wasting a segment-type cluster for timbrally distinct but too-short segments. 
+	The default of 4 seconds usually produces good results. "
+				}
+			}
+		},
+		"BBC Rhythm Difference":
+		{
+			"menu":"Analyzer",
+			"callback":"rhythmAnalyzer",
+			"parameters":{
+				"sequence":{
+					"type":"Target",
+					"description": "Select filePath from the AudioClip / sequence to analyse.
+Result will be stored on the existing sequence",
+					"allowedTypes":["File"]
+				},
+				"File name":{
+					"type":"File",
+					"description": "Select audio file to analyse.
+Result will create new sequence."
+				},
+				"SubBands":{
+					"type":"Integer",
+					"min": 0,
+					"max": 50,
+					"default": 7,
+					"description": "Number of sub-bands"
+				},
+				"Threshold":{
+					"type":"Float",
+					"min":0,
+					"max":10,
+					"default":1,
+					"description": "For peak picker"
+				},
+				"MovingAvgWindowLength":{
+					"type":"Integer",
+					"min": 0,
+					"max": 500,
+					"default": 200,
+					"description": "Length of window use for moving average"
+				},
+				"OnsetPeackWindowLength":{
+					"type":"Integer",
+					"min": 0,
+					"max": 20,
+					"default": 6,
+					"description": "Length of window use for peak picking"
+				},
+				"MinBPM":{
+					"type":"Integer",
+					"min": 5,
+					"max": 300,
+					"default": 12,
+					"description": "Minimum BPM calculated for autocorrelation"
+				},
+				"MaxBPM":{
+					"type":"Integer",
+					"min": 50,
+					"max": 400,
+					"default": 300,
+					"description": "Maximum BPM calculated for autocorrelation"
+				}
+			}
+		},
+		"CalcColorEffect":
+		{
+			"menu":"Utility",
+			"callback":"calcColorEffect",
+			"parameters":{
+				"sequence":{
+					"type":"Target",
+					"description": "Select filePath from the AudioClip / sequence to analyse.
+Result will be stored on the existing sequence",
+					"allowedTypes":["File"]
+				},
+				"Associated Group": {
+					"type": "Enum",
+					"description": "scGroup Number ",
+					"readOnly": false,
+					"options": {
+						"01":"scGroup01",
+						"02":"scGroup02",
+						"03":"scGroup03",
+						"04":"scGroup04",
+						"05":"scGroup05",
+						"06":"scGroup06",
+						"07":"scGroup07",
+						"08":"scGroup08",
+						"09":"scGroup09",
+						"10":"scGroup10",
+						"11":"scGroup11",
+						"12":"scGroup12"
+					}
+				},				
+				"featureType":{
+					"type":"Enum",
+					"options":{
+						"Hybrid":1,
+						"Chromatic":2,
+						"Timbral":3
+					},
+					"default":"Hybrid",
+					"description": "'Hybrid', the default, which uses a Constant-Q transform (see related plugin): this is generally effective for modern studio recordings;
+    'Chromatic', using a chromagram derived from the Constant-Q feature (see related plugin): this may be preferable for live, acoustic, or older recordings, in which repeated sections may be less consistent in sound;
+    'Timbral', using Mel-Frequency Cepstral Coefficients (see related plugin), which is more likely to result in classification by instrumentation rather than musical content."
+				},
+				"nSegmentTypes":{
+					"type":"Integer",
+					"min": 1,
+					"max": 12,
+					"default": 10,
+					"description": "The maximum number of clusters (segment-types) to be returned. 
+	The default is 10. Unlike many clustering algorithms, the constrained clustering used in this plugin does not produce too many clusters or vary significantly even if this is set too high. 
+	However, this parameter can be useful for limiting the number of expected segment-types. "
+				},
+				"neighbourhoodLimit":{
+					"type":"Integer",
+					"min":1,
+					"max":15,
+					"default":4,
+					"description": "The approximate expected minimum duration for a segment, from 1 to 15 seconds. 
+	Changing this parameter may help the plugin to find musical sections rather than just following changes in the sound of the music, and also avoid wasting a segment-type cluster for timbrally distinct but too-short segments. 
+	The default of 4 seconds usually produces good results. "
+				}
+			}
+		},
+		"Re/Generate IP List":
+		{
+			"menu":"Utility",
+			"callback":"generateIPList",
+			"parameters":{
+				"Group Name":{
+					"type":"String",
+					"description": "Provide Custom Variables Groupe name for IP list generation.
+This will populate the enum param with the IPs found on group variables (IPxx) "
+				}
+			}
+		},
+		"Re/Generate AudioSync Module List":
+		{
+			"menu":"Utility",
+			"callback":"generateAudioSyncList"
+			
+		},		
+		"Create Show":
+		{
+			"menu":"Utility",
+			"callback":"createShow",
 			"parameters":{
 				"File name":{
 					"type":"File",
-					"description": "Select audio data file to replay"
-				},
-				"Duration": {
-					"type": "Integer",
-					"description": "How many time for replay (ms) max 1500",
-					"readOnly": false,
-					"min": 1,
-					"max": 1500
+					"description": "Select audio file to analyse and show creation.
+Result will create new sequence / triggers / mappings depend of parameters."					
 				}
 			}
-		},
-		"WLED":
+		},		
+		"Play all sequences" :
 		{
-			"menu":"FFT",
-			"callback":"createWLEDFFT",
+			"menu":"Utility",
+			"callback":"analyzerRunshow",
 			"parameters":{
-				"Old Style":{
+				"play":{
 					"type":"Boolean",
-					"description": "Select old style FFT, otherwise new one",
-					"default": false
+					"description": "Checked will play all sequences in sequential order from first one to last one.
+	If you want to stop the process and take control, you need to uncheck it."
 				}
 			}
-		},
-		"Custom":
+		}, 
+		"Reset all sequences" :
 		{
-			"menu":"FFT",
-			"callback":"createFFT",
-			"parameters":{
-				"Size": {
-					"type": "Float",
-					"description": "Select FFT size",
-					"readOnly": false,
-					"min": 0.01,
-					"max": 1
-				}
-			}
-		}		
-	}	
+			"menu":"Utility",
+			"callback":"analyzerResetshow"
+		} 
+	}
 }
