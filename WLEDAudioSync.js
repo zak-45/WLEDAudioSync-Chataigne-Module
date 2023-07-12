@@ -535,6 +535,10 @@ function update ()
 		if (SCAModule.name != "undefined")
 		{
 			SCAModule.parameters.wLEDAudioSyncParams.moduleName.addOption(local.name, local.name);	
+			// workaround to avoid Chataigne crash
+			//root.modules.sCAnalyzer.scripts.sCAnalyzer.reload.trigger();
+			var mycontainer = SCAModule.parameters.getChild("WLEDAudioSync Params");
+			mycontainer.setCollapsed(false);			
 		}		
 		
 		// end
