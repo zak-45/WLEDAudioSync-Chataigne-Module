@@ -1202,7 +1202,7 @@ struct audioSyncPacket {
 	{
 		script.log("Take snapshot");
 		
-		var soundFileName = "Snapshot_" + util.getTimestamp() + ".csv";
+		var soundFileName = homeDIR + moduleDIR + "Snapshot_" + util.getTimestamp() + ".csv";
 		var data = wledVol + ";" + wledPeak + ";" + wledMag + ";" + wledFreq;
 		for (var i = 0; i < 16; i+=1)
 		{
