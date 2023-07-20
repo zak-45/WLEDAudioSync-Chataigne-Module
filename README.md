@@ -192,7 +192,7 @@ RTMGC
 
 https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/958e140b-c4e1-4627-93b5-a1b53836775c
 
-
+---
 
 LedFx demo
 
