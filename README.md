@@ -168,7 +168,11 @@ Custom / size 0.10
 ---
 
 
-Audio Configuration (Win)
+Audio Configuration:
+
+Linux : https://wiki.ubuntu.com/record_system_sound
+
+Win : https://thegeekpage.com/stereo-mix/
 
 For audio control, Voicemeeter is one of the best tools : https://voicemeeter.com/
 
