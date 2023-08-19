@@ -57,7 +57,9 @@ Take all from this repository and
 Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
 
 This is enough if you want to use WLED audio sync only.
+```
 
+```
 You will need additional step for beat / BPM or RTMGC if you want to use these features.
        Python need to be installed with pip if you want BPM (run pip as admin).
        For RTMGC, you can download binaries from https://github.com/zak-45/WLEDAudioSyncRTMGC
