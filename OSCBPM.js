@@ -5,6 +5,7 @@ v: 1.0.0
 
 Script to detect each Beat from aubio via osc
 From odd to even.
+Provide list probable genres.
 To be used with WLEDAudioSync module.
 
 */
@@ -18,7 +19,7 @@ function init()
 	local.register("/WLEDAudioSync/beat/BPM", "OSCBPM");
 	newOSCRTContainer = local.addContainer("WLEDAudioSync");
 	beat = newOSCRTContainer.addBoolParameter("Beat", "Beat odd even", true);
-	prob = newOSCRTContainer.addStringParameter("ProbGenre", "Probable playing music genre based on the BPM", '[]');
+	prob = newOSCRTContainer.addStringParameter("ProbGenre", "List of Probable playing music genres based on the BPM", '[]');
 	
 }
 
@@ -39,7 +40,7 @@ function OSCBPM(address, args)
 	prob.set(getProbableGenres(parseInt(local.values._WLEDAudioSync_beat_BPM.get())));
 }
 
-// We take the BPM to give a genre probability, based on medium values.
+// We take the BPM to obtain a list of genre probability, based on medium values.
 // could be associated to RTMGC
 function getProbableGenres (bpm) 
 {

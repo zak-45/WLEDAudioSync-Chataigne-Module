@@ -53,7 +53,7 @@
 		"Visualize live audio": {
 			"type": "Trigger",
 			"description": "Friture is a real-time audio analyzer.
-It works on Windows, macOS and Linux. It is free and open source.",
+	It works on Windows, macOS and Linux. It is free and open source.",
 		},		
 		"Audio V1": {
 			"type": "Boolean",
@@ -67,7 +67,8 @@ It works on Windows, macOS and Linux. It is free and open source.",
 		},
 		"Delay": {
 			"type": "Integer",
-			"description": "Delay to send audio data (ms) : max 256",
+			"description": "Delay to send audio data (ms) : max 256.
+	Audio datas during the delay are lost",
 			"default": 0,
 			"min": 0,
 			"max": 256
@@ -75,9 +76,9 @@ It works on Windows, macOS and Linux. It is free and open source.",
 		"Volume Multiplier": {
 			"type": "Float",
 			"description": "Volume level multiplier",
-			"default": 1024,
+			"default": 512,
 			"min":0,
-			"max":10240
+			"max":5120
 		},
 		"Frequency Magnitude Multiplier": {
 			"type": "Float",
@@ -101,10 +102,22 @@ It works on Windows, macOS and Linux. It is free and open source.",
 			},		
 			"Input audio": {
 				"type": "Enum",
-				"description": "Choose audio device name for input (first 9 only)",
+				"description": "Choose audio device name for input (first 9 only).
+	Appear only if you click in Use BPM.
+	You need to use it only if you want to bypass Chataigne's input defaut audio or have some trouble.",
 				"readOnly": false,
 				"options" : {}
 			},
+			"Aubio Buffer": {
+				"type": "Integer",
+				"description": "Select the size of the buffer used for beat detection. 
+	A larger buffer is more accurate, but also more sluggish. 
+	Refer to the aubio documentation of the tempo module for more details. 
+	Example: -b 128",
+				"default": 256,
+				"min": 1,
+				"max": 1024
+			},			
 			"Script file": {
 				"type": "File",
 				"description": "OSC Script file name",

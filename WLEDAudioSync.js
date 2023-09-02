@@ -111,7 +111,7 @@ var winHOME = "";
 // Volume
 var wledVol = 0;
 // Volume Multiplier
-var volMultiplier = 1024;
+var volMultiplier = 512;
 
 // Global FFT Multiplier
 var fftMultiplier = 254;
@@ -160,7 +160,7 @@ var  UDP_AUDIO_SYNC_V2 = [];
 // BPM
 var aubioCmdName = "aubio.cmd";
 var aubioProcName = "aubio-beat-osc";
-var aubioBuffer = 128;
+
 // Friture
 var fritureCmdName = "friture.cmd";
 // RTMGC
@@ -263,14 +263,12 @@ function init ()
 	}
 	
 	script.setUpdateRate(50);
-	
 }
 
 // execution depend on the user response
 function messageBoxCallback (id, result)
 {
-	script.log("Message box callback : "+id+" : "+result); 
-	
+	script.log("Message box callback : "+id+" : "+result); 	
 }
 
 function moduleParameterChanged (param)
@@ -370,7 +368,7 @@ function moduleParameterChanged (param)
 				{
 					options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
 								" -d " + aubioDevices[i].value +
-								" -b " + aubioBuffer;
+								" -b " + local.parameters.beatParams.aubioBuffer.get();
 					var command = homeDIR + moduleDIR + aubioCmdName + options;
 					script.log("command to run : " + command);
 					root.modules.os.launchCommand(command, true);
@@ -423,7 +421,7 @@ function moduleParameterChanged (param)
 		
 		options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
 					" -d " + local.parameters.beatParams.inputAudio.get() +
-					" -b " + aubioBuffer;
+					" -b " + local.parameters.beatParams.aubioBuffer.get();
 		var command = homeDIR + moduleDIR + aubioCmdName + options;
 		script.log("command to run : " + command);		
 		root.modules.os.launchCommand(command, true);	
@@ -1532,7 +1530,7 @@ function addOSCScript(scriptName)
 		util.delayThreadMS(100);
 		if (localTest.scriptFile.get() == scriptName + ".js")
 		{
-			mysc.filePath.set(homeDIR + "/Chataigne/modules/WLEDAudioSync/"+scriptName+".js");
+			mysc.filePath.set(homeDIR + moduleDIR + scriptName+".js");
 			
 		} else {
 			
@@ -1751,12 +1749,12 @@ function highFFT(onOff)
 // reset volume & magnitude multiplier
 function resetVolMag()
 {
-	local.parameters.volumeMultiplier.set(1024);
+	local.parameters.volumeMultiplier.set(512);
 	local.parameters.frequencyMagnitudeMultiplier.set(254);
 }
 
 // We take the BPM to give a genre probability, based on medium values.
-// could be associated to RTMGC
+// could be associated with RTMGC
 function getProbableGenres (bpm) 
 {
 	// Name: min BPM, max BPM
