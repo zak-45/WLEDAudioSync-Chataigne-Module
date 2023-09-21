@@ -88,6 +88,7 @@ Go to Modules, right click, Protocol/Community Modules, WLEDAudioSync.
 ```
 ![image](https://user-images.githubusercontent.com/121941293/227391581-d8341ed8-aeb0-4507-9ab9-d0bdd89a4c07.png)
 
+Initial settings with WLED : https://youtu.be/5Y2O9qGDVE0
 
 ```
 On Inspector:
