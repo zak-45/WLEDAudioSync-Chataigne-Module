@@ -187,7 +187,7 @@ https://user-images.githubusercontent.com/121941293/227597492-aff9c8a6-5314-4f5f
 ---
 
 
-Real Time audio analysis
+Real Time audio analysis: all values you see there can be used by State Machine or others and by scripts.
 
 
 https://user-images.githubusercontent.com/121941293/230689672-cc5d42c5-c94b-488a-aab2-aea43275ef82.mp4
