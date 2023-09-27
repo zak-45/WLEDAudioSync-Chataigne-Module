@@ -3,6 +3,7 @@
 Stream music/audio datas to WLED Audio reactive.
 
 Real time audio analysis : the real time audio datas are not supposed to be fully accurate but enough for light show creation.
+See : https://youtu.be/YtS6dwke0LE
 
 Real Time Music Genre Classification : get real-time music genre predictions based on the analysed audio stream.
 
