@@ -194,7 +194,7 @@ Real Time audio analysis: all values you see there can be used by State Machine 
 https://user-images.githubusercontent.com/121941293/230689672-cc5d42c5-c94b-488a-aab2-aea43275ef82.mp4
 
 
-RTMGC : real time music genre detection
+RTMGC : real time music genre detection. Detected music genre is sent to Chataigne via OSC.
 
 
 
