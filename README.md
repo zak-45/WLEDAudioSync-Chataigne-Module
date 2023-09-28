@@ -52,7 +52,7 @@ For RMTGC see: https://github.com/zak-45/WLEDAudioSyncRTMGC
 
 ### ***Installation :***
 
-Manual
+Manual (any OS)
 ```
 Take all from this repository and 
 Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
