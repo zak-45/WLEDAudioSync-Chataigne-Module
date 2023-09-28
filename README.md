@@ -7,7 +7,7 @@ See : https://youtu.be/YtS6dwke0LE
 
 Real Time Music Genre Classification : get real-time music genre predictions based on the analysed audio stream.
 
-This can be used with or without WLED device.
+This can be used with or without WLED device. Should work on any OS where Chataigne is running.
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
