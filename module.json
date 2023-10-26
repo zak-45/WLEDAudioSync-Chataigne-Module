@@ -2,7 +2,7 @@
 	"name": "WLEDAudioSync",
 	"type": "UDP",
 	"path": "Protocol",
-	"version": "1.1.0",
+	"version": "1.2.0",
 	"description": "Stream Sound data to your WLED Sound Reactive",
 	"url":"",
 	"downloadURL": "",
@@ -99,14 +99,6 @@
 				"type": "Boolean",
 				"description": "Checked, will use custom Live BPM calculation received via OSC ",
 				"default": false
-			},		
-			"Input audio": {
-				"type": "Enum",
-				"description": "Choose audio device name for input (first 9 only).
-	Appear only if you click in Use BPM.
-	You need to use it only if you want to bypass Chataigne's input defaut audio or have some trouble.",
-				"readOnly": false,
-				"options" : {}
 			},
 			"Aubio Buffer": {
 				"type": "Integer",
@@ -118,16 +110,24 @@
 				"min": 1,
 				"max": 1024
 			},			
+			"Input audio": {
+				"type": "Enum",
+				"description": "Choose audio device name for input (first 9 only).
+	Appear only if you click in Use BPM.
+	You need to use it only if you want to bypass Chataigne's input audio or have some trouble.",
+				"readOnly": false,
+				"options" : {}
+			},
+			"Force reload": {
+				"type": "Trigger",
+				"description": "Re run the BPM calculation process with 'Input audio' data",
+				"readOnly": false
+			},
 			"Script file": {
 				"type": "File",
 				"description": "OSC Script file name",
 				"readOnly": false,
 				"default" : "OSCBPM.js"
-			},			
-			"Force reload": {
-				"type": "Trigger",
-				"description": "Re run the BPM calculation process with 'Input audio' data",
-				"readOnly": false
 			}
 		},
 		"RTMGC Params":{
@@ -136,23 +136,62 @@
 			"collapsed": true,
 			"Use RTMGC": {
 				"type": "Boolean",
-				"description": "Checked, will use RTMGC",
+				"description": "Checked, will use RTMGC
+	Real Time Music Genre Classification",
 				"default": false
 			},
+			"Include All Predictions": {
+				"type": "Boolean",
+				"description": "Check to include all prediction datas to determine the Most Probale Genre.
+	Otherwise, only the first one (with 1.0 score) will be selected.",
+				"default": false
+			},			
+			"Include BPM Data": {
+				"type": "Boolean",
+				"description": "Check to include probable genre from BPM to determine the Most Probale Genre ",
+				"default": false
+			},			
 			"Server Port": {
 				"type": "Integer",
-				"description": ": Node js server port : max 65536",
+				"description": "NodeJs server port : max 65536",
 				"default": 8000,
 				"min": 1,
 				"max": 65536
-			},			
+			},
 			"Script file": {
 				"type": "File",
 				"description": "OSC Script file name",
 				"readOnly": false,
 				"default" : "OSCRTMGC.js"
 			}
-		}
+		},
+		"RTMMD Params":{
+			"type": "Container",
+			"description":"Real Time Music Mood Detection parameters",
+			"collapsed": true,
+			"Use RTMMD": {
+				"type": "Boolean",
+				"description": "Checked, will use RTMMD:
+	Real Time Music Mood Detection",
+				"default": false
+			},
+			"Show Screen": {
+				"type": "Boolean",
+				"description": "Show Emotion Color Map Screen",
+				"default": true
+			},
+			"Verbose": {
+				"type": "Boolean",
+				"description": "Show verbose informations",
+				"default": false
+			},			
+			"Script file": {
+				"type": "File",
+				"description": "OSC Script file name",
+				"readOnly": false,
+				"default" : "OSCRTMMD.js"
+			}			
+		}		
 	},
 
 	"values": {	

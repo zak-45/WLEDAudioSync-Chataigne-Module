@@ -2,7 +2,7 @@
 
 a:zak45
 d:25/01/2023
-v:1.1.0
+v:1.2.0
 
 Chataigne Module for  WLED Sound Reactive
 Send sound card audio data via UDP.
@@ -93,9 +93,6 @@ the software sends/receives one packet every 20 milliseconds (approx). An extern
 // sound Card
 var SCexist = false;
 
-// os
-var OSmodule = null;
-
 // osc
 var OSCModule = null;
 var OSCIP = "127.0.0.1";
@@ -166,6 +163,8 @@ var fritureCmdName = "friture.cmd";
 // RTMGC
 var rtmgcCmdName = "rtmgc.cmd";
 var rtmgcProcName = "WrtmgcSRV";
+// RTMMD
+var rtmmdCmdName = "rtmmd.cmd";
 // multicast
 var multicastCmdName = "multicast.cmd";
 // python
@@ -183,43 +182,9 @@ function init ()
 {
 	script.log("-- Custom command called init()");	
 	
-	var UDPexist = root.modules.getItemWithName("WLEDAudioSync");
-	var SCtest = root.modules.getItemWithName("Sound Card");
-	OSmodule = root.modules.getItemWithName("OS");
 	OSCModule = root.modules.getItemWithName("OSC");
 	SCAModule = root.modules.getItemWithName("SCAnalyzer");	
 	
-	if (SCtest.name == "soundCard")
-	{	
-		script.log("Sound Card present");
-		SCexist = true;
-		
-	} else {
-			
-		script.log("No Sound Card present");
-		var newSCModule = root.modules.addItem("Sound Card");
-		util.delayThreadMS(100);
-		if (newSCModule.name != "undefined")
-		{
-			SCexist = true;
-			
-		} else {
-			
-			SCexist = false;
-		}
-	}
-
-	if (OSmodule.name == "os")
-	{
-		script.log("Module OS exist");
-		
-	} else {
-			
-		OSModule = root.modules.addItem("OS");
-		util.delayThreadMS(100);
-			
-	}
-
 	if (OSCModule.name == "osc")
 	{
 		script.log("Module OSC exist");
@@ -240,8 +205,35 @@ function init ()
 			
 	}	
 
+
+	if (checkModuleExist("Sound Card"))
+	{	
+		script.log("Sound Card present");
+		SCexist = true;
+		
+	} else {
+			
+		script.log("No Sound Card present");
+		var newSCModule = root.modules.addItem("Sound Card");
+		util.delayThreadMS(100);
+		if (newSCModule.name != "undefined")
+		{
+			SCexist = true;
+			
+		} else {
+			
+			SCexist = false;
+		}
+	}
+
+	if (SCexist === true) 
+	{
+		root.modules.soundCard.parameters.pitchDetectionMethod.set("YIN");
+	}
+
+
+
 	local.scripts.wLEDAudioSync.updateRate.setAttribute("readOnly",false);
-	root.modules.soundCard.parameters.pitchDetectionMethod.set("YIN");
 
 	var infos = util.getOSInfos(); 
 	script.log("Hello "+infos.username);	
@@ -265,10 +257,94 @@ function init ()
 	script.setUpdateRate(50);
 }
 
-// execution depend on the user response
-function messageBoxCallback (id, result)
+// update rate (no more than 50fps)
+function update ()
 {
-	script.log("Message box callback : "+id+" : "+result); 	
+	// Initialize only once some Params when script run
+	if (isInit === true)
+	{
+		script.log('Initialize');
+
+		if (checkModuleExist("OS"))
+		{
+			script.log("Module OS exist");
+			
+		} else {
+				
+			root.modules.addItem("OS");
+			util.delayThreadMS(100);				
+		}
+
+		// retreive all IPs
+		var ips = util.getIPs();
+		local.parameters.ipAddressToBind.removeOptions();
+		
+		for( var i=0; i<ips.length; i +=1 ) 
+		{ 
+			local.parameters.ipAddressToBind.addOption(ips[i],i);
+		}		
+		
+		local.parameters.ipAddressToBind.set(root.modules.os.values.networkInfos.ip.get());
+		multicastIP = local.parameters.output.remoteHost.get();;
+		uDPPort = local.parameters.output.remotePort.get();
+		myIP = local.parameters.ipAddressToBind.get();
+		
+		testMultiCast();
+/*	
+		// if no FFT then create FFT : new
+		var testFFT = root.modules.soundCard.parameters.fftAnalysis.getItemWithName("Analyzer 1");
+		if (testFFT.name != "undefined") 
+		{
+			script.log("FFT already there !!");
+			
+		} else {
+			
+			createWLEDFFT(false);
+			root.modules.soundCard.parameters.fftAnalysis.enabled.set(1);
+			
+		}
+*/		
+		// Remove read only from rate
+		local.scripts.wLEDAudioSync.updateRate.setAttribute("readOnly",false);
+		
+		// add WLEDAudioSync to SCAnalyzer options
+		if (SCAModule.name != "undefined")
+		{
+			SCAModule.parameters.wLEDAudioSyncParams.moduleName.addOption(local.name, local.name);	
+			// workaround to avoid Chataigne crash
+			//root.modules.sCAnalyzer.scripts.sCAnalyzer.reload.trigger();
+			var mycontainer = SCAModule.parameters.getChild("WLEDAudioSync Params");
+			mycontainer.setCollapsed(false);			
+		}		
+		
+		// end
+		isInit = false;
+	}
+	
+	// Send audio data
+	if (SCexist && root.modules.soundCard.values.volume.get()!= 0 && replay === false && local.parameters.live.get() == 1)
+	{
+		sendAudio(false);
+		
+	} else if (replay === true){
+		
+		if ( duration > 0 )
+		{
+			sendAudio(true);
+			
+		} else {
+
+			replay = false;
+			
+			util.delayThreadMS(30);	
+			for ( var k = 0; k < 10; k += 1 )
+			{
+				sendAudio(false);	
+			}
+			
+			script.setUpdateRate(50);
+		}
+	}
 }
 
 function moduleParameterChanged (param)
@@ -470,101 +546,52 @@ function moduleParameterChanged (param)
 				addOSCScript("OSCRTMGC");				
 				var oscPort = OSCModule.parameters.oscInput.localPort.get();
 				options = " " + local.parameters.rtmgcParams.serverPort.get() + " " + OSCIP + " " + oscPort;
-				var command = homeDIR + moduleDIR + rtmgcCmdName + options;
-				script.log("command to run : " + command);
-				if (util.fileExists(homeDIR + moduleDIR + rtmgcCmdName)){
-					root.modules.os.launchProcess(command, false);
-				} else {
-					script.log('Command file do not exist : ' + homeDIR + moduleDIR + rtmgcCmdName);
-				}
 			}
-		}
-	}
-}
-
-function moduleValueChanged (value) 
-{	
-	//script.log("Module value changed : "+value.get());
-	
-}
-
-
-// update rate (no more than 50fps)
-function update ()
-{
-	// Initialize only once some Params when script run
-	if (isInit === true)
-	{
-		script.log('Initialize');
-		
-		// retreive all IPs
-		var ips = util.getIPs();
-		local.parameters.ipAddressToBind.removeOptions();
-		
-		for( var i=0; i<ips.length; i +=1 ) 
-		{ 
-			local.parameters.ipAddressToBind.addOption(ips[i],i);
-		}		
-		
-		local.parameters.ipAddressToBind.set(root.modules.os.values.networkInfos.ip.get());
-		multicastIP = local.parameters.output.remoteHost.get();;
-		uDPPort = local.parameters.output.remotePort.get();
-		myIP = local.parameters.ipAddressToBind.get();
-		
-		testMultiCast();
-		
-		// if no FFT then create FFT : new
-		var testFFT = root.modules.soundCard.parameters.fftAnalysis.getItemWithName("Analyzer 1");
-		if (testFFT.name != "undefined") 
-		{
-			script.log("FFT already there !!");
 			
 		} else {
 			
-			createWLEDFFT(false);
-			root.modules.soundCard.parameters.fftAnalysis.enabled.set(1);
-			
+			options = " kill ";
 		}
 		
-		// Remove read only from rate
-		local.scripts.wLEDAudioSync.updateRate.setAttribute("readOnly",false);
-		
-		// add WLEDAudioSync to SCAnalyzer options
-		if (SCAModule.name != "undefined")
-		{
-			SCAModule.parameters.wLEDAudioSyncParams.moduleName.addOption(local.name, local.name);	
-			// workaround to avoid Chataigne crash
-			//root.modules.sCAnalyzer.scripts.sCAnalyzer.reload.trigger();
-			var mycontainer = SCAModule.parameters.getChild("WLEDAudioSync Params");
-			mycontainer.setCollapsed(false);			
-		}		
-		
-		// end
-		isInit = false;
-	}
-	
-	// Send audio data
-	if (SCexist && root.modules.soundCard.values.volume.get()!= 0 && replay === false && local.parameters.live.get() == 1)
-	{
-		sendAudio(false);
-		
-	} else if (replay === true){
-		
-		if ( duration > 0 )
-		{
-			sendAudio(true);
-			
+		var command = homeDIR + moduleDIR + rtmgcCmdName + options;
+		script.log("command to run : " + command);
+		if (util.fileExists(homeDIR + moduleDIR + rtmgcCmdName)){
+			root.modules.os.launchProcess(command, false);
 		} else {
+			script.log('Command file do not exist : ' + homeDIR + moduleDIR + rtmgcCmdName);
+		}
 
-			replay = false;
-			
-			util.delayThreadMS(30);	
-			for ( var k = 0; k < 10; k += 1 )
-			{
-				sendAudio(false);	
+		
+	} else if (param.name == "useRTMMD") {
+	
+		if ( local.parameters.rtmmdParams.useRTMMD.get() == 1) 
+		{			
+			addOSCScript("OSCRTMMD");
+			var showScreen = local.parameters.rtmmdParams.showScreen.get();
+			if (showScreen){
+				showScreen = 'Y';
+			} else {
+				showScreen = 'N';				
 			}
+			var verbose = local.parameters.rtmmdParams.verbose.get();
+			if (verbose){
+				verbose = 'Y';
+			} else {
+				verbose = 'N';				
+			}			
+			options = " " + showScreen + " " + verbose;
+
+		} else {
 			
-			script.setUpdateRate(50);
+			script.log('killing Emotion Color Map');
+			options = " kill ";
+		}
+		var command = homeDIR + moduleDIR + rtmmdCmdName + options;
+		script.log("command to run : " + command);
+		if (util.fileExists(homeDIR + moduleDIR + rtmmdCmdName)){
+			root.modules.os.launchCommand(command, true);
+		} else {
+			script.log('Command file do not exist : ' + homeDIR + moduleDIR + rtmmdCmdName);
 		}
 	}
 }
@@ -1515,6 +1542,10 @@ function addOSCScript(scriptName)
 	} else if (scriptName == "OSCRTMGC") {
 		
 		localTest = local.parameters.getChild("RTMGC Params");
+
+	} else if (scriptName == "OSCRTMMD") {
+		
+		localTest = local.parameters.getChild("RTMMD Params");
 		
 	} else {
 		
@@ -1753,77 +1784,19 @@ function resetVolMag()
 	local.parameters.frequencyMagnitudeMultiplier.set(254);
 }
 
-// We take the BPM to give a genre probability, based on medium values.
-// could be associated with RTMGC
-function getProbableGenres (bpm) 
+function checkModuleExist (moduleName)
 {
-	// Name: min BPM, max BPM
-	var genres = [
-		'Ambient: 60, 100',
-		'Bachata: 128, 128',
-		'Ballad: 60, 80',
-		'Blues: 60, 120',
-		'Classical: 60, 120',
-		'Country: 60, 120',
-		'Crunk: 80, 80',
-		'Cumbia: 70, 80',
-		'Disco: 110, 140',
-		'Drum n Bass: 160, 180',
-		'Dubstep: 130, 150',
-		'Electronic: 120, 140',
-		'Eurodance: 126, 132',
-		'Frenchcore: 200, 210',
-		'Folk: 90, 130',
-		'Funk: 90, 120',
-		'Funky House: 128, 136',
-		'Hard Rock: 130, 160',
-		'Heavy Metal: 100, 120',
-		'Hip Hop: 60, 100',
-		'House: 120, 130',
-		'Indie: 100, 160',
-		'Jazz: 80, 140',
-		'Latin: 90, 130',
-		'Makina: 150, 190',
-		'Metal: 100, 200',
-		'New Beat: 110, 120',
-		'Pop: 90, 130',
-		'Psytrance: 140, 145',
-		'Punk: 150, 200',
-		'R&B: 60, 100',
-		'Rap: 90, 100',
-		'Reggae: 70, 100',
-		'Reggaeton: 80, 90',
-		'Rock: 100, 160',
-		'Salsa: 150, 250',
-		'Soul: 60, 120',
-		'Tango: 50, 56',	
-		'Techno: 120, 140',
-		'Techno Hardcore: 170, 200',
-		'Trance: 130, 150',
-		'Tribe: 145, 180',
-		'Trip Hop: 60, 120'
-	];
-
-	var probableGenres = [];
-	var j = 0;
-
-	for (var i = 0; i < genres.length; i ++) {
-		var genre = genres[i].split(':');
-		var bpmRange = genre[1].split(',');
-		if (bpm >= parseInt(bpmRange[0]) && bpm <= parseInt(bpmRange[1])) {
-		  probableGenres[j] = genre[0];
-		  j = j+1;
-		}
+	var moduleExist = root.modules.getItemWithName(moduleName);
+	var result = false;
+	if (moduleExist.name != "undefined")
+	{
+		result = true;
 	}
-
-	return probableGenres;
+	return result;
 }
-
 
 // just for some test
 function test()
 {
-		script.log('test');
-		root.modules.sCAnalyzer.parameters.wLEDAudioSyncParams.moduleName.addOption(local.name, local.name);
-		script.log(local.name);
+
 }
