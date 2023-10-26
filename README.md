@@ -68,11 +68,12 @@ This is enough if you want to use WLED audio sync only.
 ```
 
 ```
-You will need additional step for beat / BPM or RTMGC if you want to use these features.
+You will need additional step for beat / BPM / RTMGC or RTMMD if you want to use these features.
        Python need to be installed with pip if you want BPM (run pip as admin).
        For RTMGC, you can download binaries from https://github.com/zak-45/WLEDAudioSyncRTMGC
+       For RTMMD, you can download binairies from https://github.com/zak-45/WLEDAudioSyncRTMood
        To use integrated tools (not mandatory), you need to customize :
-       rtmgc.cmd, aubio.cmd, friture.cmd, multicast.cmd
+       rtmmd.cmd, rtmgc.cmd, aubio.cmd, friture.cmd, multicast.cmd
 
 ```
 
