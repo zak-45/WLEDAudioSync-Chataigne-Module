@@ -42,6 +42,9 @@ This can be used with or without WLED device. Should work on any OS where Chatai
 - Real Time Music Genre Classification send data via OSC  
   thanks to Essentia.js https://mtg.github.io/essentia.js/
 
+- Real Time Music Mood Detection send data via OSC
+  thanks to : https://github.com/tyiannak/color_your_music_mood
+
 ```
 
 GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
