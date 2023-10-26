@@ -7,6 +7,8 @@ See : https://youtu.be/YtS6dwke0LE
 
 Real Time Music Genre Classification : get real-time music genre predictions based on the analysed audio stream.
 
+Real Time Music Mood Detection: set Colors based on the music mood.
+
 This can be used with or without WLED device. Should work on any OS where Chataigne is running.
 ```
 - Send your music from any computer to WLED sound reactive LED.
@@ -49,6 +51,8 @@ For beat / BPM see : https://github.com/DrLuke/aubio-beat-osc
 For Friture see : https://friture.org/
 
 For RMTGC see: https://github.com/zak-45/WLEDAudioSyncRTMGC
+
+For RTMMD see: https://github.com/zak-45/WLEDAudioSyncRTMood
 
 ### ***Installation :***
 
