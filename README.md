@@ -47,7 +47,7 @@ This can be used with or without WLED device. Should work on any OS where Chatai
 
 ```
 
-GitHub: https://github.com/benkuper/Chataigne --> min version 1.9.14b11
+For Chataigne : http://benjamin.kuperberg.fr/chataigne/en#download --> min version 1.9.14b11
 
 For beat / BPM see : https://github.com/zak-45/WLEDAudioSyncRTBeat
 
