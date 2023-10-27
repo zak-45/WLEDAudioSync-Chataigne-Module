@@ -72,7 +72,7 @@ This is enough if you want to use WLED audio sync only.
 _Options_
 ```
 You will need additional step for beat / BPM / RTMGC or RTMMD if you want to use these features.
-       Python need to be installed with pip if you want BPM (run pip as admin).
+       For BPM, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTBeat
        For RTMGC, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTMGC
        For RTMMD, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTMood
        To use integrated tools (not mandatory), you need to customize :
