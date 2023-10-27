@@ -227,6 +227,7 @@ Click here : https://youtu.be/yu8QgQlLT5g
 
 This module use WLED Audio Sync feature to send data via UDP / Multicast. Message version 1 & 2 are provided.
 // On 10/03/2023: Multicast do not work as expected on Chataigne, mainly when more than one network card. Small python utility provided  to bind on UDP port on specified IP address and join the MulticastGroup in case of.
+See : https://github.com/zak-45/WLEDAudioSyncMCast
 
 On 26/03/2023:
 for ESP8266, old SR WLED fw version required : 0.13.0b3 https://wled-install.github.io/.
