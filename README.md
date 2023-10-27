@@ -57,9 +57,9 @@ For RMTGC see: https://github.com/zak-45/WLEDAudioSyncRTMGC
 
 For RTMMD see: https://github.com/zak-45/WLEDAudioSyncRTMood
 
-### ***Installation :***
+## ***Installation :***
 
-Manual (any OS)
+### Manual (any OS)
 ```
 Take all from this repository and 
 Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
@@ -67,6 +67,7 @@ Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
 This is enough if you want to use WLED audio sync only.
 ```
 
+_Options_
 ```
 You will need additional step for beat / BPM / RTMGC or RTMMD if you want to use these features.
        Python need to be installed with pip if you want BPM (run pip as admin).
@@ -77,7 +78,7 @@ You will need additional step for beat / BPM / RTMGC or RTMMD if you want to use
 
 ```
 
-For Windows
+### For Windows
 
 Download release : (https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases)
 ```
@@ -88,7 +89,7 @@ Nota : If Chataigne already installed, you can abort its installation.
       Provide portable Nodejs with WrtmgcSRV.js preconfigured (optional but recommanded).
 ```
 
-### ***Use it :***
+## ***Use it :***
 
 ```
 Open  Chataigne.
@@ -220,7 +221,7 @@ Click here : https://youtu.be/yu8QgQlLT5g
 ---
 
 
-### ***Info ***
+## ***Info ***
 
 This module use WLED Audio Sync feature to send data via UDP / Multicast. Message version 1 & 2 are provided.
 // On 10/03/2023: Multicast do not work as expected on Chataigne, mainly when more than one network card. Small python utility provided  to bind on UDP port on specified IP address and join the MulticastGroup in case of.
