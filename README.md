@@ -1,6 +1,8 @@
 ![image](https://user-images.githubusercontent.com/121941293/227901678-8f3d1f7c-ae1d-4b85-8199-5b763ec91a5b.png)
 # **WLEDAudioSync Module for Chataigne.**
-Stream music/audio datas to WLED Audio reactive.
+
+
+## Stream music/audio datas to WLED Audio reactive.
 
 Real time audio analysis : the real time audio datas are not supposed to be fully accurate but enough for light show creation.
 See : https://youtu.be/YtS6dwke0LE
