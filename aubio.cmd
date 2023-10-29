@@ -6,6 +6,6 @@ Rem							" -d " + aubioDevices[i].value +
 Rem							" -b " + aubioBuffer;
 Rem which will give " beat -c 127.0.0.1 12000 /WLEDAudioSync/beat/BPM -d 1 -b 128" for example
 
-call "%USERPROFILE%\Documents\Chataigne\Python\WPy64-39100\scripts\env_for_icons.bat"
 
-aubio-beat-osc %1 %2 %3 %4 %5 %6 %7 %8 %9
+"%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTBeat-Windows.exe" %1 %2 %3 %4 %5 %6 %7 %8 %9
+

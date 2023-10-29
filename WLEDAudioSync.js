@@ -156,7 +156,7 @@ var  UDP_AUDIO_SYNC_V2 = [];
 
 // BPM
 var aubioCmdName = "aubio.cmd";
-var aubioProcName = "aubio-beat-osc";
+var aubioProcName = "WLEDAudioSyncRTBeat";
 
 // Friture
 var fritureCmdName = "friture.cmd";
@@ -290,7 +290,7 @@ function update ()
 		myIP = local.parameters.ipAddressToBind.get();
 		
 		testMultiCast();
-/*	
+
 		// if no FFT then create FFT : new
 		var testFFT = root.modules.soundCard.parameters.fftAnalysis.getItemWithName("Analyzer 1");
 		if (testFFT.name != "undefined") 
@@ -303,7 +303,7 @@ function update ()
 			root.modules.soundCard.parameters.fftAnalysis.enabled.set(1);
 			
 		}
-*/		
+
 		// Remove read only from rate
 		local.scripts.wLEDAudioSync.updateRate.setAttribute("readOnly",false);
 		
@@ -442,7 +442,7 @@ function moduleParameterChanged (param)
 				
 				if (aubioIsRunning === false)
 				{
-					options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
+					options = 	" beat -s " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
 								" -d " + aubioDevices[i].value +
 								" -b " + local.parameters.beatParams.aubioBuffer.get();
 					var command = homeDIR + moduleDIR + aubioCmdName + options;
@@ -495,7 +495,7 @@ function moduleParameterChanged (param)
 		
 		util.delayThreadMS(200);
 		
-		options = 	" beat -c " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
+		options = 	" beat -s " + OSCIP + " " + root.modules.osc.parameters.oscInput.localPort.get() + ' "/WLEDAudioSync/beat/BPM"' + 
 					" -d " + local.parameters.beatParams.inputAudio.get() +
 					" -b " + local.parameters.beatParams.aubioBuffer.get();
 		var command = homeDIR + moduleDIR + aubioCmdName + options;
