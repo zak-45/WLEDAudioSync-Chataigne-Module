@@ -7,7 +7,7 @@
 **Real time audio analysis** : the real time audio datas are not supposed to be fully accurate for scientific works but enough for light show creation.
 See : https://youtu.be/YtS6dwke0LE
 
-**Real Time BEAT/ BPM** sent to OSC
+**Real Time Beat/ BPM** sent to OSC
 
 **Real Time Music Genre Classification** sent to OSC : get real-time music genre predictions based on the analysed audio stream.
 
