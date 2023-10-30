@@ -15,6 +15,7 @@ GOTO :end
 :folder
 
 start "WLEDAudioSyncRTMood from Chataigne" /HIGH /D "%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTMood\" WLEDAudioSyncRTMood-Windows.exe -sc %1 -v %2
+if exist "%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTMood-Windows.exe" del "%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTMood-Windows.exe"
 
 GOTO :end
 
