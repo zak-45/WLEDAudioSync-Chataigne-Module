@@ -15,7 +15,7 @@ See : https://youtu.be/YtS6dwke0LE
 
 _Should work on any OS where Chataigne is running._
 
-**This can be used with or without WLED device**
+***This can be used with or without WLED device***
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
@@ -38,12 +38,15 @@ _Should work on any OS where Chataigne is running._
 
 - Real time FFT Analysis fully customisable by GUI
   this provide different way for effects customisation.
-  
-- Real Time Beat and BPM  send data via OSC
-  thanks to https://github.com/DrLuke/aubio-beat-osc
-  
+
 - Real time pitch detection : freq / pitch / note / octave
   thanks to Chataigne...
+
+- Real Time audio analysis :
+  thanks to https://friture.org/
+
+- Real Time Beat and BPM  send data via OSC
+  thanks to https://github.com/DrLuke/aubio-beat-osc
 
 - Real Time Music Genre Classification send data via OSC  
   thanks to Essentia.js https://mtg.github.io/essentia.js/
@@ -86,13 +89,11 @@ You will need additional step for beat / BPM / RTMGC or RTMMD if you want to use
 
 ### For Windows
 
-Download release : (https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases)
+Download release : [Windows Installer](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases)
 ```
-This will install Chataigne / python module / chataigne module / Friture / WrtmgcSRV
+This will install chataigne module / and optionally : Chataigne  && all portable apps e.g. Friture / WrtmgcSRV ...
 
-Nota : If Chataigne already installed, you can abort its installation. 
-      Provide portable Python 3.9 x64 with all installed (optional but recommanded).
-      Provide portable Nodejs with WrtmgcSRV.js preconfigured (optional but recommanded).
+Nota : Provide portable Nodejs with WrtmgcSRV.js preconfigured (optional but recommanded to use RTMGC).
 ```
 
 ## ***Use it :***
