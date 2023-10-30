@@ -4,14 +4,18 @@
 
 ## Stream music/audio datas to WLED Audio reactive.
 
-Real time audio analysis : the real time audio datas are not supposed to be fully accurate for scientific works but enough for light show creation.
+**Real time audio analysis** : the real time audio datas are not supposed to be fully accurate for scientific works but enough for light show creation.
 See : https://youtu.be/YtS6dwke0LE
 
-Real Time Music Genre Classification : get real-time music genre predictions based on the analysed audio stream.
+**Real Time BEAT/ BPM** sent to OSC
 
-Real Time Music Mood Detection: set Colors based on the music mood.
+**Real Time Music Genre Classification** sent to OSC : get real-time music genre predictions based on the analysed audio stream.
 
-This can be used with or without WLED device. Should work on any OS where Chataigne is running.
+**Real Time Music Mood Detection** sent to OSC: set Colors based on the music mood.
+
+_Should work on any OS where Chataigne is running._
+
+**This can be used with or without WLED device**
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
