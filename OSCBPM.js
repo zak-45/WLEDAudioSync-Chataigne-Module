@@ -11,14 +11,26 @@ To be used with WLEDAudioSync module.
 */
 
 var newOSCRTContainer = '';
+var soundCardModule = root.modules.soundCard;
 var beat = '';
+var beat_SC = '';
+var beat_Exist = false;
 var prob = '';
+var bpm_Value = 0;
 
 function init()
 {
 	local.register("/WLEDAudioSync/beat/BPM", "OSCBPM");
 	newOSCRTContainer = local.addContainer("WLEDAudioSync");
 	beat = newOSCRTContainer.addBoolParameter("Beat", "Beat odd even", true);
+	if (soundCardModule.name != "undefined")
+	{
+		beat_SC = soundCardModule.values.addBoolParameter("Beat", "Beat odd even", true);
+		beat_SC.setAttribute("readOnly", true);		
+		bpm_SC = soundCardModule.values.addFloatParameter("BPM", "Beat Per Minute", 0);
+		bpm_SC.setAttribute("readOnly", true);
+		beat_Exist = true;
+	}
 	prob = newOSCRTContainer.addStringParameter("ProbGenre", "List of Probable playing music genres based on the BPM", '[]');
 	
 }
@@ -27,17 +39,29 @@ function OSCBPM(address, args)
 {
 	
 	//script.log("Received message : "+ address + " with value of : " + args[0]);
+	
+	bpm_Value = parseInt(local.values._WLEDAudioSync_beat_BPM.get());
 
 	if (beat.get() == 0) 
 	{
 		beat.set(1);
+		if (beat_Exist)
+		{
+			beat_SC.set(1);
+			bpm_SC.set(bpm_Value);
+		}
+
 		
 	} else {
 		
 		beat.set(0);
+		if (beat_Exist)
+		{
+			beat_SC.set(0);
+		}
 	}
 
-	prob.set(getProbableGenres(parseInt(local.values._WLEDAudioSync_beat_BPM.get())));
+	prob.set(getProbableGenres(bpm_Value));
 }
 
 // We take the BPM to obtain a list of genre probability, based on medium values.
