@@ -167,8 +167,7 @@ var rtmgcProcName = "WrtmgcSRV";
 var rtmmdCmdName = "rtmmd.cmd";
 // multicast
 var multicastCmdName = "multicast.cmd";
-// python
-var wpythonPath = "";
+
 // module
 var moduleDIR = "/Chataigne/modules/WLEDAudioSync/";
 
@@ -231,8 +230,6 @@ function init ()
 		root.modules.soundCard.parameters.pitchDetectionMethod.set("YIN");
 	}
 
-
-
 	local.scripts.wLEDAudioSync.updateRate.setAttribute("readOnly",false);
 
 	var infos = util.getOSInfos(); 
@@ -243,11 +240,6 @@ function init ()
 	{
 		homeDIR = util.getEnvironmentVariable("USERPROFILE") + "/Documents";
 		winHOME = util.getEnvironmentVariable("USERPROFILE");
-		if (util.directoryExists(homeDIR + "/Chataigne/Python/WPy64-39100/python-3.9.10.amd64/"))
-		{
-			// set win exe path to python portable
-			wpythonPath = homeDIR + "/Chataigne/Python/WPy64-39100/python-3.9.10.amd64";
-		}
 		
 	} else {
 		
@@ -311,8 +303,6 @@ function update ()
 		if (SCAModule.name != "undefined")
 		{
 			SCAModule.parameters.wLEDAudioSyncParams.moduleName.addOption(local.name, local.name);	
-			// workaround to avoid Chataigne crash
-			//root.modules.sCAnalyzer.scripts.sCAnalyzer.reload.trigger();
 			var mycontainer = SCAModule.parameters.getChild("WLEDAudioSync Params");
 			mycontainer.setCollapsed(false);			
 		}		
@@ -1784,6 +1774,7 @@ function resetVolMag()
 	local.parameters.frequencyMagnitudeMultiplier.set(254);
 }
 
+// true if module exist
 function checkModuleExist (moduleName)
 {
 	var moduleExist = root.modules.getItemWithName(moduleName);
