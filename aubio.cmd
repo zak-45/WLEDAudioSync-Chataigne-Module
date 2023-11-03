@@ -6,6 +6,19 @@ Rem							" -d " + aubioDevices[i].value +
 Rem							" -b " + aubioBuffer;
 Rem which will give " beat -c 127.0.0.1 12000 /WLEDAudioSync/beat/BPM -d 1 -b 128" for example
 
+if exist "%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTBeat\" GOTO :folder
 
-"%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTBeat-Windows.exe" %1 %2 %3 %4 %5 %6 %7 %8 %9
+%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTBeat-Windows.exe %1 %2 %3 %4 %5 %6 %7 %8 %9
 
+GOTO :end
+
+:folder
+
+%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTBeat\WLEDAudioSyncRTBeat-Windows.exe %1 %2 %3 %4 %5 %6 %7 %8 %9
+if exist "%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTBeat-Windows.exe" del "%USERPROFILE%\Documents\Chataigne\xtra\WLEDAudioSyncRTBeat-Windows.exe"
+
+GOTO :end
+
+:end
+
+exit
