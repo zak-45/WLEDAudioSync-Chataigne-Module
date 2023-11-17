@@ -1,6 +1,5 @@
-![image](https://user-images.githubusercontent.com/121941293/227901678-8f3d1f7c-ae1d-4b85-8199-5b763ec91a5b.png)
+![Chataigne_Module_250](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/94bb9a2c-65b0-4d98-a483-e49d4d9b0eb1) ![image](https://user-images.githubusercontent.com/121941293/227901678-8f3d1f7c-ae1d-4b85-8199-5b763ec91a5b.png)
 # **WLEDAudioSync Module for Chataigne.**
-
 
 ## Stream music/audio datas to WLED Audio reactive.
 
