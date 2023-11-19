@@ -55,7 +55,7 @@ _Should work on any OS where Chataigne is running._
 
 ```
 
-For Chataigne : http://benjamin.kuperberg.fr/chataigne/en#download --> min version 1.9.14b11
+For Chataigne : http://benjamin.kuperberg.fr/chataigne/en#download --> min version 1.9.17b10
 
 For beat / BPM see : https://github.com/zak-45/WLEDAudioSyncRTBeat
 
