@@ -245,11 +245,12 @@ function init ()
 		
 		homeDIR = util.getEnvironmentVariable("$HOME");
 	}
-	
+
+	// update rate (no more than 50fps)	
 	script.setUpdateRate(50);
 }
 
-// update rate (no more than 50fps)
+
 function update ()
 {
 	// Initialize only once some Params when script run
