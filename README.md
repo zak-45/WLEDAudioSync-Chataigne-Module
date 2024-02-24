@@ -183,7 +183,7 @@ On Inspector:
     the one selected will be used when 'Force reload' clicked.
   Script file : script file name for OSC module
     use OSCBPM.js under modules folder.
-  Force reload : kill (if running) and create a new aubio-beat-osc process.
+  Force reload : kill (if running) and create a new WLEDAudioSyncRTBeat process.
   
   Use RTMGC : this will execute the Nodejs server and launch chrome
   Server Port : port number for the Nodejs server , default to 8000
