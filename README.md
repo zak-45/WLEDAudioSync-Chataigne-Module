@@ -89,13 +89,28 @@ You will need additional step for beat / BPM / RTMGC or RTMMD if you want to use
 ### For Windows
 
 Download release : [Windows Installer](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases)
+
+You have two options :
+
+
+-1- **WLEDAudioSync.exe** provide full installation, options :
+
 ```
 This will install chataigne module / and optionally : Chataigne  && all portable apps e.g. Friture / WrtmgcSRV ...
 
 Nota : Provide portable Nodejs with WrtmgcSRV.js preconfigured (optional but recommanded to use RTMGC).
 ```
 
-## ***Use it :***
+-2- **WLEDAudioSync-Portable.zip** is a 'portable' version :
+
+If you want only to use the WLED audio sync feature in a easy way, this one is for you.
+
+```
+Just unzip it and execute WLEDAudioSync.cmd.
+This will do automatically all necessaries steps to have a running Chataigne with Beat detection.
+```
+
+## ***Use it (full options):***
 
 ```
 Open  Chataigne.
