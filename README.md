@@ -65,6 +65,8 @@ For RMTGC see: https://github.com/zak-45/WLEDAudioSyncRTMGC
 
 For RTMMD see: https://github.com/zak-45/WLEDAudioSyncRTMood
 
+---
+
 ## ***Installation :***
 
 ### Manual (any OS)
@@ -109,6 +111,8 @@ If you want only to use the WLED audio sync feature in a easy way, this one is f
 Just unzip it and execute WLEDAudioSync.cmd.
 This will do automatically all necessaries steps to have a running Chataigne with Beat detection.
 ```
+---
+
 
 ## ***Use it (Win 'portable' version):***
 
@@ -130,6 +134,11 @@ if you click on it, this will open the main interface.
 From there, you will be able to modify settings /parameters. This should be necessary only the first time to put your audio parameters. 
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/41fbfb01-15e7-46df-8690-8de416b73f86)
+
+Once done, click on save and close Chataigne with the 'cross'
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/d9dbde16-de6e-4f54-a096-bdff43fe6d47)
+
 
 
 After, you can access the main features from any web browser, this mean even from your phone / tablet, by entering the IP address of your running PC and port number '9998' e.g. http://192.168.x.y:9998
