@@ -110,6 +110,33 @@ Just unzip it and execute WLEDAudioSync.cmd.
 This will do automatically all necessaries steps to have a running Chataigne with Beat detection.
 ```
 
+## ***Use it (Win 'portable' version):***
+
+Open folder with unzipped files and click on **WLEDAudioSync.cmd**
+
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/0b7d3499-e97e-4347-a609-2158119f9793)
+
+
+You will be able to found the running program under 'hidden icons':
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/fcf70fbb-6c32-46d4-a624-0bed09f3b155)
+
+if you click on it, this will open the main interface. 
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/4035170d-7c2f-4c64-b57b-9441dfa07a84)
+
+
+From there, you will be able to modify settings /parameters. This should be necessary only the first time to put your audio parameters. 
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/41fbfb01-15e7-46df-8690-8de416b73f86)
+
+
+After, you can access the main features from any web browser, this mean even from your phone / tablet, by entering the IP address of your running PC and port number '9998' e.g. http://192.168.x.y:9998
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/6ae987e5-57ea-46f0-bb1d-d0c544e27d99)
+
+
 ## ***Use it (full options):***
 
 ```
