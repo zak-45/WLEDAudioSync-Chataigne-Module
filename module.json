@@ -2,7 +2,7 @@
 	"name": "WLEDAudioSync",
 	"type": "UDP",
 	"path": "Protocol",
-	"version": "1.2.0",
+	"version": "2.0.0",
 	"description": "Stream Sound data to your WLED Sound Reactive",
 	"url":"",
 	"downloadURL": "",
@@ -106,7 +106,7 @@
 	A larger buffer is more accurate, but also more sluggish. 
 	Refer to the aubio documentation of the tempo module for more details. 
 	Example: -b 128",
-				"default": 256,
+				"default": 512,
 				"min": 1,
 				"max": 1024
 			},			
