@@ -109,7 +109,7 @@ If you want only to use the WLED audio sync feature in a easy way, this one is f
 
 ```
 Just unzip it and execute WLEDAudioSync.cmd.
-This will do automatically all necessaries steps to have a running Chataigne with Beat detection.
+This will do all necessaries steps to have a running Chataigne with Beat detection.
 ```
 ---
 
