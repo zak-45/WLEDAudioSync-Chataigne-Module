@@ -206,6 +206,8 @@ Audio Configuration:
 
 Linux : https://wiki.ubuntu.com/record_system_sound
 
+Mac : https://github.com/ExistentialAudio/BlackHole
+
 Win : https://thegeekpage.com/stereo-mix/
 
 For audio control, Voicemeeter is one of the best tools : https://voicemeeter.com/
