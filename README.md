@@ -142,8 +142,9 @@ Once done, click on save and close Chataigne with the 'cross'
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/d9dbde16-de6e-4f54-a096-bdff43fe6d47)
 
 
+You are ready now to send your audio datas to any WLED device with audio reactive firmware and configured to receive them.
 
-After, you can access the main features from any web browser, this mean even from your phone / tablet, by entering the IP address of your running PC and port number '9998' e.g. http://192.168.x.y:9998
+If you want to modify data sent, you can access the main features from any web browser, this mean even from your phone / tablet, by entering the IP address of your running PC and port number '9998' e.g. http://192.168.x.y:9998
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/6ae987e5-57ea-46f0-bb1d-d0c544e27d99)
 
