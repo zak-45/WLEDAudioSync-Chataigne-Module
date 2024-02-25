@@ -128,12 +128,15 @@ You will be able to found the running program under 'hidden icons':
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/fcf70fbb-6c32-46d4-a624-0bed09f3b155)
 
-if you "left - click" on it, this will open the main interface. ("right - click" is for EXIT)
+
+
+If you "left - click" on it, this will open the main interface. ("right - click" is for EXIT) :
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/4035170d-7c2f-4c64-b57b-9441dfa07a84)
 
 
-From there, you will be able to modify settings /parameters. This should be necessary only the first time to put your audio parameters if default one not work. 
+
+From there, you will be able to modify settings /parameters. This should be necessary only the first time to put your audio parameters and the defaults one e.g. run at startup, minimized etc ...
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/41fbfb01-15e7-46df-8690-8de416b73f86)
 
