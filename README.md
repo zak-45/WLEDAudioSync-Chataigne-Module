@@ -140,9 +140,19 @@ From there, you will be able to modify settings /parameters. This should be nece
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/41fbfb01-15e7-46df-8690-8de416b73f86)
 
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/cd494688-f6ab-4826-920c-5c93a9647896)
+
+
+If you want to be able to acces main dashboard menu via a Web Browser :
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/107b195e-7f2f-49d3-83a4-1ddc3815a392)
+
+
 Once done, click on save and close Chataigne with the 'cross'
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/d9dbde16-de6e-4f54-a096-bdff43fe6d47)
+
 
 
 You are ready now to send your audio datas to any WLED device with audio reactive firmware and configured to receive them.
