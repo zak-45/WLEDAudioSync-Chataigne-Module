@@ -149,13 +149,13 @@ If you want to be able to acces main dashboard menu via a Web Browser :
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/107b195e-7f2f-49d3-83a4-1ddc3815a392)
 
 
-Once done, click on save and close Chataigne with the 'cross'
+Once done, click on save and close Chataigne with the 'cross X'
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/d9dbde16-de6e-4f54-a096-bdff43fe6d47)
 
 
 
-You are ready now to send your audio datas to any WLED device with audio reactive firmware and configured to receive them.
+You are ready now to send your audio datas to any WLED device with audio reactive firmware configured to receive them.
 
 If you want to modify data sent, you can access the main features from any web browser, this mean even from your phone / tablet, by entering the IP address of your running PC and port number '9998' e.g. http://192.168.x.y:9998
 
