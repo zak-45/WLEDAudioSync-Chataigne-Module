@@ -69,7 +69,7 @@ For RTMMD see: https://github.com/zak-45/WLEDAudioSyncRTMood
 
 ## ***Installation :***
 
-### Manual (any OS)
+### Manual (any OS with Chataigne installed)
 ```
 Take all from this repository and 
 Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
