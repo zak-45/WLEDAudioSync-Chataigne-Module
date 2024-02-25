@@ -179,8 +179,8 @@ On Inspector:
   Remote Port : port number to bind
   
   Use BPM : will create corresponding process for Beat via OSC
-    if unchecked and aubio-beat-osc process is running, this will kill it.
-  Input audio : audio devices detected by aubio-beat-osc list command 
+    if unchecked and WLEDAudioSyncRTBeat process is running, this will kill it.
+  Input audio : audio devices detected by WLEDAudioSyncRTBeat list command 
     the one selected will be used when 'Force reload' clicked.
   Script file : script file name for OSC module
     use OSCBPM.js under modules folder.
