@@ -300,6 +300,14 @@ Click here : https://youtu.be/yu8QgQlLT5g
 
 ---
 
+WLED demo
+
+click here : https://youtu.be/NIcdctzx6TY?feature=shared
+
+[![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/757030aa-e2d3-48e2-87db-651de051de63)](https://youtu.be/NIcdctzx6TY)
+
+
+---
 
 ## ***Info ***
 
