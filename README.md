@@ -113,6 +113,11 @@ This will do all necessary steps to have a running Chataigne with Beat detection
 No installation, only required folder creation.
 --- Check "%USERPROFILE%\Documents\Chataigne" folder
 ```
+
+You need to accept the unknown app and allow firewall
+
+![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/2ea134a3-d14a-46d2-a4f2-43783be65f71)
+
 ---
 
 
