@@ -2,7 +2,7 @@
 	"name": "WLEDAudioSync",
 	"type": "UDP",
 	"path": "Protocol",
-	"version": "2.0.0",
+	"version": "2.1.0",
 	"description": "Stream Sound data to your WLED Sound Reactive",
 	"url":"",
 	"downloadURL": "",
@@ -128,6 +128,22 @@
 				"description": "OSC Script file name",
 				"readOnly": false,
 				"default" : "OSCBPM.js"
+			},
+			"Sync to beat": {
+				"type":"Boolean",
+				"description":" Check it to send UDP message synchronized to beat",
+				"default":false
+			},
+			"Beat type": {
+				"type": "Enum",
+				"description": "Select odd, even, or both to send frame",
+				"readOnly": false,
+				"options" : {
+						"Both":0,
+						"Even":1,
+						"Odd":2
+				},
+				"default":"Both"
 			}
 		},
 		"RTMGC Params":{
@@ -194,9 +210,16 @@
 		}		
 	},
 
-	"values": {	
+	"values": {
+		
+		"beat":{
+			
+			"type":"Boolean",
+			"description":"Value true of false at each beat.",
+			"readOnly":true,
+			"default":false
+		}		
 	},
-	
 	
 	"scripts": [
 		"WLEDAudioSync.js"

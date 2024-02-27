@@ -2,7 +2,7 @@
 
 a:zak45
 d:25/01/2023
-v:2.0.0
+v:2.1.0
 
 Chataigne Module for  WLED Sound Reactive
 Send sound card audio data via UDP.
@@ -206,7 +206,12 @@ function update ()
 {
 	
 	// Send audio data and return
-	if (SCexist && root.modules.soundCard.values.volume.get()!= 0 && replay === false && local.parameters.live.get() == 1)
+	if (SCexist && 
+		root.modules.soundCard.values.volume.get()!= 0 && 
+		replay === false && 
+		local.parameters.live.get() == 1 && 
+		local.parameters.beatParams.syncToBeat.get() == 0
+		)
 	{
 		sendAudio(false);
 		
@@ -296,7 +301,7 @@ function update ()
 
 		if (SCexist === true) 
 		{
-			root.modules.soundCard.parameters.pitchDetectionMethod.set("YIN");
+			root.modules.soundCard.parameters.pitchDetectionMethod.set("MPM");
 			root.modules.soundCard.parameters.activityThreshold.set(0.075);
 		}
 
@@ -511,7 +516,20 @@ function moduleParameterChanged (param)
 			} else {
 				
 				script.log("nothing to kill");
-			}		
+			}
+
+			local.parameters.beatParams.syncToBeat.set(0);			
+		}
+
+	} else if (param.name == "syncToBeat"){
+
+		if (param.get() == 1){
+			
+			script.setUpdateRate(1);
+			
+		} else {
+			
+			script.setUpdateRate(50);
 		}
 		
 	} else if (param.name == "forceReload"){
@@ -633,6 +651,29 @@ function moduleParameterChanged (param)
 			root.modules.os.launchCommand(command, true);
 		} else {
 			script.log('Command file do not exist : ' + homeDIR + moduleDIR + rtmmdCmdName);
+		}
+	}
+}
+
+// called each time a beat value changed 
+function moduleValueChanged(param)
+{
+	if (param.name == "beat" && 
+		local.parameters.beatParams.syncToBeat.get() == 1){
+		
+		if (local.parameters.beatParams.beatType.get() == 0 ){
+			
+			sendAudio(false);
+					
+		} else if (local.parameters.beatParams.beatType.get() == 1 &&
+					param.get() == 1 ) {
+						
+			sendAudio(false);
+			
+		} else if (local.parameters.beatParams.beatType.get() == 2 && 
+					param.get() == 0 ) {
+						
+			sendAudio(false);
 		}
 	}
 }

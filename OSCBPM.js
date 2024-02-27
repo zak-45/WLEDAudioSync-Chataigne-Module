@@ -1,11 +1,11 @@
 /*
 a: zak45
 d: 07/04/2023
-v: 1.0.0
+v: 2.0.0
 
 Script to detect each Beat from aubio via osc
 From odd to even.
-Provide list probable genres.
+Provide list of probable genres.
 To be used with WLEDAudioSync module.
 
 */
@@ -49,6 +49,7 @@ function OSCBPM(address, args)
 		{
 			beat_SC.set(1);
 			bpm_SC.set(bpm_Value);
+			root.modules.wLEDAudioSync.values.beat.set(1);
 		}
 
 		
@@ -58,6 +59,7 @@ function OSCBPM(address, args)
 		if (beat_Exist)
 		{
 			beat_SC.set(0);
+			root.modules.wLEDAudioSync.values.beat.set(0);
 		}
 	}
 
