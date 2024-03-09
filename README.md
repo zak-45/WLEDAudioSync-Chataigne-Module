@@ -69,25 +69,6 @@ For RTMMD see: https://github.com/zak-45/WLEDAudioSyncRTMood
 
 ## ***Installation :***
 
-### Manual (any OS with Chataigne installed)
-```
-Take all from this repository and 
-Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
-
-This is enough if you want to use WLED audio sync only.
-```
-
-_Options_
-```
-You will need additional step for beat / BPM / RTMGC or RTMMD if you want to use these features.
-       For BPM, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTBeat
-       For RTMGC, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTMGC
-       For RTMMD, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTMood
-       To use integrated tools (not mandatory), you need to customize :
-       rtmmd.cmd, rtmgc.cmd, aubio.cmd, friture.cmd, multicast.cmd
-
-```
-
 ### For Windows
 
 Download release : [Windows Installer](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/releases)
@@ -118,8 +99,27 @@ You need to accept the unknown app and allow firewall
 
 ![image](https://github.com/zak-45/WLEDAudioSync-Chataigne-Module/assets/121941293/2ea134a3-d14a-46d2-a4f2-43783be65f71)
 
----
 
+
+### Manual (any OS with Chataigne installed)
+```
+Take all from this repository and 
+Copy  to <MyDocuments>\chataigne\modules\WLEDAudioSync.
+
+This is enough if you want to use WLED audio sync only.
+```
+
+_Options_
+```
+You will need additional step for beat / BPM / RTMGC or RTMMD if you want to use these features.
+       For BPM, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTBeat
+       For RTMGC, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTMGC
+       For RTMMD, you can download binary from https://github.com/zak-45/WLEDAudioSyncRTMood
+       To use integrated tools (not mandatory), you need to customize :
+       rtmmd.cmd, rtmgc.cmd, aubio.cmd, friture.cmd, multicast.cmd
+
+```
+----
 
 ## ***Use it (Win 'portable' version):***
 
