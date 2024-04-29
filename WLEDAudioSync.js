@@ -1295,7 +1295,7 @@ struct audioSyncPacket {
 
 ------------------------------------------------------
 
-    int v = map(MSGEQ7.getVolume(), 0, MSGEQ7_OUT_MAX, 0, 1023); // TODO: not sure this is right
+    int v = map(MSGEQ7.getVolume(), 0, MSGEQ7_OUT_MAX, 0, 1023); // TO DO: not sure this is right
     transmitData.sampleRaw = v; // Current sample
 
 ------------------------------------------------------
