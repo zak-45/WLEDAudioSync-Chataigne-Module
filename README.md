@@ -319,4 +319,4 @@ On 26/03/2023:
 for ESP8266, old SR WLED fw version required : 0.13.0b3 https://wled-install.github.io/.
 Port to the 0.14.xx version is on TO DO list...
 
-
+On 27/10/2024: WLED Beta 0.15.0b6 (160) include the Audio Reactive userModule, so now ESP8266 can act as UDP sync receiver for the audio.
