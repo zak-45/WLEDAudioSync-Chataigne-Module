@@ -6,15 +6,18 @@
 **Real time audio analysis** : the real time audio datas are not supposed to be fully accurate for scientific works but enough for light show creation.
 See : https://youtu.be/YtS6dwke0LE
 
-**Real Time Beat/ BPM** sent to OSC
-
-**Real Time Music Genre Classification** sent to OSC : get real-time music genre predictions based on the analysed audio stream.
-
-**Real Time Music Mood Detection** sent to OSC: set Colors based on the music mood.
-
-_Should work on any OS where Chataigne is running._
+_Should work on any OS where Chataigne is running._(Win/Mac/Linux)
 
 ***This can be used with or without WLED device***
+
+As options:
+
+- **Real Time Beat/ BPM** sent to OSC
+
+- **Real Time Music Genre Classification** sent to OSC : get real-time music genre predictions based on the analysed audio stream.
+
+- **Real Time Music Mood Detection** sent to OSC: set Colors based on the music mood.
+
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
