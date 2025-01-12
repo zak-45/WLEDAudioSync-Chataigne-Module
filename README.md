@@ -18,6 +18,7 @@ As options:
 
 - **Real Time Music Mood Detection** sent to OSC: set Colors based on the music mood.
 
+All features:
 ```
 - Send your music from any computer to WLED sound reactive LED.
 
