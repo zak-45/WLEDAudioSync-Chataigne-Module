@@ -2,7 +2,7 @@
 	"name": "WLEDAudioSync",
 	"type": "UDP",
 	"path": "Protocol",
-	"version": "2.1.0",
+	"version": "2.1.1",
 	"description": "Stream Sound data to your WLED Sound Reactive",
 	"url":"",
 	"downloadURL": "",
